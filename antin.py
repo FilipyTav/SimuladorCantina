@@ -9,5 +9,16 @@ class Product:
         self.date_expire: date = date_expire
         self.amount:int =  amount
 
+class PNode(object):
+    def __init__(self, data:Product=None, next:Product=None, prev:Product=None):
+        self.data:Product = data
+        self.prev:Product = prev
+        self.next:Product = next
+
+class PQueue:
+    def __init__(self):
+        self.head:Product = None
+        self.tail:Product = None
+
 if __name__ == '__main__':
     print("Teste")
