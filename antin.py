@@ -1,4 +1,7 @@
-from datetime import date
+from datetime import date, timedelta
+from faker import Faker
+
+fake = Faker()
 
 class Product:
     def __init__(self, name: str, price_buy: int, price_sell: int, date_buy: date, date_expire: date, amount: int):
@@ -8,6 +11,9 @@ class Product:
         self.date_buy: date = date_buy
         self.date_expire: date = date_expire
         self.amount:int =  amount
+
+    def __repr__(self):
+            return f"[{self.name} | Exp: {self.date_expire}]"
 
 class PNode(object):
     def __init__(self, data:Product=None, next:PNode=None, prev:PNode=None):
@@ -35,5 +41,28 @@ class PQueue:
 
         self.count += 1
 
+    def __str__(self):
+        nodes = []
+        current = self.head
+        while current:
+            nodes.append(str(current.data))
+            current = current.next
+        return " <-> ".join(nodes)
+
 if __name__ == '__main__':
-    print("Teste")
+    a = []
+    for _ in range(5):
+        d_buy = fake.date_between(start_date='-30d', end_date='today')
+        d_exp = d_buy + timedelta(days=fake.random_int(min=10, max=100))
+        
+        p = Product(
+            name=fake.ecommerce_name() if hasattr(fake, 'ecommerce_name') else fake.word().capitalize(),
+            price_buy=fake.random_int(min=5, max=50),
+            price_sell=fake.random_int(min=60, max=150),
+            date_buy=d_buy,
+            date_expire=d_exp,
+            amount=fake.random_int(min=1, max=100)
+        )
+        a.append(p)
+    for b in a:
+        print(b)
