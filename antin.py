@@ -22,7 +22,8 @@ class Product:
         self.amount: int = amount
 
     def __repr__(self) -> str:
-        return f"[{self.name} | Exp: {self.date_expire}]"
+        # return f"[{self.name} | Exp: {self.date_expire}]"
+        return f"[{self.name}]"
 
 
 class PNode(object):
@@ -57,8 +58,20 @@ class PQueue:
 
         self.count += 1
 
-    def dequeue(self) -> None:
-        pass
+    def dequeue(self) -> PNode:
+        assert self.head is not None
+
+        node: PNode = self.head
+
+        self.head = self.head.next
+
+        if self.head:
+            self.head.prev = None
+        else:
+            self.tail = None
+
+        self.count -= 1
+        return node
 
     def __str__(self) -> str:
         if not self.head:
@@ -99,4 +112,8 @@ if __name__ == "__main__":
         )
         products.enqueue(p)
 
+    print(products)
+    products.dequeue()
+    products.dequeue()
+    products.dequeue()
     print(products)
