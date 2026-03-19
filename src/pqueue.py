@@ -1,29 +1,4 @@
-from datetime import date, timedelta
-from faker import Faker
-
-fake = Faker()
-
-
-class Product:
-    def __init__(
-        self,
-        name: str,
-        price_buy: int,
-        price_sell: int,
-        date_buy: date,
-        date_expire: date,
-        amount: int,
-    ):
-        self.name: str = name
-        self.price_buy: int = price_buy
-        self.price_sell: int = price_sell
-        self.date_buy: date = date_buy
-        self.date_expire: date = date_expire
-        self.amount: int = amount
-
-    def __repr__(self) -> str:
-        # return f"[{self.name} | Exp: {self.date_expire}]"
-        return f"[{self.name}]"
+from product import Product
 
 
 class PNode(object):
@@ -95,31 +70,3 @@ class PQueue:
             current = current.next
 
         return " <-> ".join(nodes)
-
-
-if __name__ == "__main__":
-    products: PQueue = PQueue()
-    for _ in range(5):
-        d_buy = fake.date_between(start_date="-30d", end_date="today")
-        d_exp = d_buy + timedelta(days=fake.random_int(min=10, max=100))
-
-        p = Product(
-            name=(
-                fake.ecommerce_name()
-                if hasattr(fake, "ecommerce_name")
-                else fake.word().capitalize()
-            ),
-            price_buy=fake.random_int(min=5, max=50),
-            price_sell=fake.random_int(min=60, max=150),
-            date_buy=d_buy,
-            date_expire=d_exp,
-            amount=fake.random_int(min=1, max=100),
-        )
-        products.enqueue(p)
-
-    print(products)
-
-    for i in range(5):
-        node = products.dequeue()
-        print(f"Removed {node.data if node else 'nothing'}\n")
-        print(products)
