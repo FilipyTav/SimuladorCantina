@@ -37,6 +37,9 @@ class PNode(object):
         self.prev: PNode | None = prev
         self.next: PNode | None = next
 
+        def __repr__(self) -> str:
+            return f"[{self.data.name}]"
+
 
 class PQueue:
     def __init__(self):
@@ -58,8 +61,10 @@ class PQueue:
 
         self.count += 1
 
-    def dequeue(self) -> PNode:
-        assert self.head is not None
+    def dequeue(self) -> PNode | None:
+        if not self.head:
+            print("No element to dequeue - list empty")
+            return None
 
         node: PNode = self.head
 
@@ -113,7 +118,8 @@ if __name__ == "__main__":
         products.enqueue(p)
 
     print(products)
-    products.dequeue()
-    products.dequeue()
-    products.dequeue()
-    print(products)
+
+    for i in range(5):
+        node = products.dequeue()
+        print(f"Removed {node.data if node else 'nothing'}\n")
+        print(products)
