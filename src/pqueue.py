@@ -25,9 +25,9 @@ class PQueue:
     def enqueue(self, p: Product) -> None:
         new_node: PNode = PNode(p)
 
+        # Queue empty
         if not self.tail:
-            self.head = new_node
-            self.tail = new_node
+            self.head = self.tail = new_node
         # TODO: make it a priority queue, based on date_expiry
         else:
             new_node.prev = self.tail
@@ -52,6 +52,36 @@ class PQueue:
 
         self.count -= 1
         return node
+
+    # pos: [0, self.count[
+    def insert_before(self, product: Product, pos: int) -> bool:
+        if pos < 0 or pos >= self.count:
+            print(f"Index out of range: {pos}, the list has {self.count} element(s)")
+            return False
+
+        new_node: PNode = PNode(product)
+
+        # Should exist
+        assert self.head is not None
+
+        # new_node is now the head
+        if pos == 0:
+            new_node.next = self.head
+            self.head.prev = new_node
+            self.head = new_node
+            return True
+
+        current: PNode = self.head
+        index: int = 0
+        while current != self.tail and index < pos:
+            assert current.next is not None
+
+            current = current.next
+            index += 1
+
+        print(current.data, index)
+
+        return True
 
     def __str__(self) -> str:
         if not self.head:
