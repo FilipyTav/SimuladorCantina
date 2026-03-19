@@ -32,8 +32,7 @@ if __name__ == "__main__":
 
     print(products)
     newp: Product = gen_product()
-    print(newp)
-    products.insert_before(newp, 0)
+    products.insert_before(newp, 4)
     print(products)
 
     for i in range(6):

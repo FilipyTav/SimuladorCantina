@@ -64,13 +64,6 @@ class PQueue:
         # Should exist
         assert self.head is not None
 
-        # new_node is now the head
-        if pos == 0:
-            new_node.next = self.head
-            self.head.prev = new_node
-            self.head = new_node
-            return True
-
         current: PNode = self.head
         index: int = 0
         while current != self.tail and index < pos:
@@ -80,7 +73,21 @@ class PQueue:
             index += 1
 
         print(current.data, index)
+        print(new_node.data)
 
+        # Insertion
+        new_node.next = current
+        new_node.prev = current.prev
+
+        # new_node is now the head
+        if pos == 0:
+            self.head = new_node
+        else:
+            new_node.prev.next = new_node
+
+        current.prev = new_node
+
+        self.count += 1
         return True
 
     def __str__(self) -> str:
