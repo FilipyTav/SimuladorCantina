@@ -42,15 +42,25 @@ class PQueue:
         self.count += 1
 
     def __str__(self):
+        if not self.head:
+            return "List is empty."
+        
         nodes = []
         current = self.head
         while current:
-            nodes.append(str(current.data))
+            if current == self.head:
+                nodes.append(f"[HEAD: {current.data}]")
+            elif current.next is None:
+                nodes.append(f"[TAIL: {current.data}]")
+            else:
+                nodes.append(str(current.data))
+                
             current = current.next
+            
         return " <-> ".join(nodes)
 
 if __name__ == '__main__':
-    a = []
+    products:PQueue = PQueue()
     for _ in range(5):
         d_buy = fake.date_between(start_date='-30d', end_date='today')
         d_exp = d_buy + timedelta(days=fake.random_int(min=10, max=100))
@@ -63,6 +73,6 @@ if __name__ == '__main__':
             date_expire=d_exp,
             amount=fake.random_int(min=1, max=100)
         )
-        a.append(p)
-    for b in a:
-        print(b)
+        products.enqueue(p)
+    
+    print(products)
