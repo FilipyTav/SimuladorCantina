@@ -27,21 +27,22 @@ class PQueue:
         new_dtexp: date = p.date_expire
 
         # First
-        if not (self.tail and self.head) or (new_dtexp <= self.head.data.date_expire):
+        if not (self.tail and self.head) or (new_dtexp <= self.head.data.date_expire):  # type: ignore[reportOptionalMemberAccess]
             self.insert_first(p)
             return
+
         # Last
+        assert self.tail.data
         if new_dtexp >= self.tail.data.date_expire:
             self.insert_last(p)
             return
 
-        current: PNode | None = self.head
-        index: int = 0
-        while current and current.data.date_expire <= new_dtexp:
+        current: PNode = self.head
+        while current and current.data.date_expire <= new_dtexp:  # type: ignore[reportOptionalMemberAccess]
+            assert current.next
             current = current.next
-            index += 1
 
-        self.insert_at(p, index)
+        self.insert_before(p, current)
 
     def dequeue(self) -> PNode | None:
         if not self.head:
