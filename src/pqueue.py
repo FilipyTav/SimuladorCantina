@@ -166,6 +166,17 @@ class PQueue:
 
         return False
 
+    def get_by_name(self, pname: str) -> Product | None:
+        if not (self.head and self.tail):
+            return
+
+        current: PNode = self.head
+        while current:
+            assert current.data
+            if current.data.get_name().lower() == pname.lower():
+                return current.data
+            current = current.next  # type: ignore[reportOptionalMemberAccess]
+
     def __str__(self) -> str:
         if not self.head:
             return "List is empty."

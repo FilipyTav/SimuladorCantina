@@ -26,8 +26,8 @@ def gen_product() -> Product:
             if hasattr(fake, "ecommerce_name")
             else fake.word().capitalize()
         ),
-        price_buy=fake.random_int(min=5, max=50),
-        price_sell=fake.random_int(min=60, max=150),
+        price_buy=fake.random_int(min=5, max=50) * 100,
+        price_sell=fake.random_int(min=60, max=150) * 100,
         date_buy=d_buy,
         date_expire=d_exp,
         amount=fake.random_int(min=1, max=100),
@@ -35,22 +35,28 @@ def gen_product() -> Product:
 
 
 if __name__ == "__main__":
-    products: PQueue = PQueue()
+    stock: PQueue = PQueue()
     for _ in range(5):
-        products.enqueue(gen_product())
+        stock.enqueue(gen_product())
 
     newp: Product = gen_product()
     newp.set_name("Test")
     newp.set_dtexp(date(2026, 4, 15))
-    products.enqueue(newp)
+    stock.enqueue(newp)
 
-    print(products)
+    print(stock)
+    print()
 
-    paym: Payment = Payment("Eu", "aluno", "IA", 1020)
-    print(paym)
+    print(stock.get_by_name("Test"))
+
+    print()
+    print(stock)
+
+    # paym: Payment = Payment("Eu", "aluno", "IA", 1020)
+    # print(paym)
 
     for i in range(6):
         break
-        node = products.dequeue()
+        node = stock.dequeue()
         print(f"Removed {node.data if node else 'nothing'}\n")
-        print(products)
+        print(stock)
