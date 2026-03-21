@@ -26,13 +26,11 @@ class PQueue:
         new_node: PNode = PNode(p)
 
         # Queue empty
-        if not self.tail:
-            self.head = self.tail = new_node
+        if not (self.tail and self.head):
+            self.insert(p, 0)
         # TODO: make it a priority queue, based on date_expiry
         else:
-            new_node.prev = self.tail
-            self.tail.next = new_node
-            self.tail = new_node
+            self.insert(p, self.count)
 
         self.count += 1
 
