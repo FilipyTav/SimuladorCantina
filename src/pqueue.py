@@ -27,18 +27,18 @@ class PQueue:
         new_dtexp: date = p.date_expire
 
         # First
-        if not (self.tail and self.head) or (new_dtexp <= self.head.data.date_expire):  # type: ignore[reportOptionalMemberAccess]
+        if not (self.tail and self.head) or (new_dtexp <= self.head.data.get_dtexp()):  # type: ignore[reportOptionalMemberAccess]
             self.insert_first(p)
             return
 
         # Last
         assert self.tail.data
-        if new_dtexp >= self.tail.data.date_expire:
+        if new_dtexp >= self.tail.data.get_dtexp():
             self.insert_last(p)
             return
 
         current: PNode = self.head
-        while current and current.data.date_expire <= new_dtexp:  # type: ignore[reportOptionalMemberAccess]
+        while current and current.data.get_dtexp() <= new_dtexp:  # type: ignore[reportOptionalMemberAccess]
             assert current.next
             current = current.next
 

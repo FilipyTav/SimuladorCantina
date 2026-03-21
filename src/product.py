@@ -18,12 +18,14 @@ class Product:
         self.date_expire: date = date_expire
         self.amount: int = amount
 
+    # Name
     def get_name(self) -> str:
         return self.name
 
     def set_name(self, value: str) -> None:
         self.name = value
 
+    # Amount
     def get_amount(self) -> int:
         return self.amount
 
@@ -33,8 +35,15 @@ class Product:
 
         self.amount = value
 
+    # Date of expiry
+    def get_dtexp(self) -> date:
+        return self.date_expire
+
+    def set_dtexp(self, value: date) -> None:
+        self.date_expire = value
+
     def __repr__(self) -> str:
         # return f"[{self.name} | Exp: {self.date_expire}]"
-        # return f"[{self.date_expire}]"
+        return f"[{self.date_expire}]"
         # return f"[{self.name}]"
-        return f"[{self.name} | Am: {self.amount}]"
+        # return f"[{self.name} | Am: {self.amount}]"

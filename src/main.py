@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     newp: Product = gen_product()
     newp.set_name("Test")
-    newp.date_expire = date(2026, 4, 15)
+    newp.set_dtexp(date(2026, 4, 15))
     products.enqueue(newp)
 
     print(products)
