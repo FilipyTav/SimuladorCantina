@@ -37,19 +37,17 @@ if __name__ == "__main__":
     products: PQueue = PQueue()
     for _ in range(5):
         products.enqueue(gen_product())
-        # products.insert(gen_product(), products.count)
 
     print(products)
 
     print(products)
-    # newp: Product = gen_product()
-    # newp.date_expire = date(2026, 4, 15)
-    # products.enqueue(newp)
+    newp: Product = gen_product()
+    newp.date_expire = date(2026, 4, 15)
+    products.enqueue(newp)
 
-    new2: Product = gen_product()
     print("\nStarts here")
-    print(f"Should find for {new2}\n")
-    products.insert_before(new2, products.head)
+    print(f"Should find for {newp}\n")
+    products.insert_after(newp, products.head)
 
     print(products)
 

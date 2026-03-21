@@ -125,6 +125,26 @@ class PQueue:
 
         self.count += 1
 
+    def insert_after(self, p: Product, node: PNode) -> None:
+        if not (self.head and self.tail):
+            self.insert_at(p, 0)
+            return
+        if node == self.tail:
+            self.insert_at(p, self.count)
+            return
+
+        new_node: PNode = PNode(p)
+
+        new_node.prev = node
+        new_node.next = node.next
+
+        if node.next:
+            node.next.prev = new_node
+
+        node.next = new_node
+
+        self.count += 1
+
     def __str__(self) -> str:
         if not self.head:
             return "List is empty."
