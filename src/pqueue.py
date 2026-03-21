@@ -53,39 +53,50 @@ class PQueue:
         self.count -= 1
         return node
 
-    # pos: [0, self.count[
-    def insert_before(self, product: Product, pos: int) -> bool:
-        if pos < 0 or pos >= self.count:
+    # pos: [0, self.count]
+    def insert(self, product: Product, pos: int) -> bool:
+        if pos < 0 or pos > self.count:
             print(f"Index out of range: {pos}, the list has {self.count} element(s)")
             return False
 
         new_node: PNode = PNode(product)
 
-        # Should exist
-        assert self.head is not None
-
-        current: PNode = self.head
-        index: int = 0
-        while current != self.tail and index < pos:
-            assert current.next is not None
-
-            current = current.next
-            index += 1
-
-        print(current.data, index)
-        print(new_node.data)
-
-        # Insertion
-        new_node.next = current
-        new_node.prev = current.prev
+        # Empty
+        if self.count == 0 or not (self.head and self.tail):
+            self.head = self.tail = new_node
+            self.count += 1
+            return True
 
         # new_node is now the head
         if pos == 0:
+            new_node.next = self.head
+            self.head.prev = new_node
+
             self.head = new_node
+        # new_node is now the tail
+        elif pos == self.count:
+            new_node.prev = self.tail
+            self.tail.next = new_node
+
+            self.tail = new_node
         else:
+            current: PNode | None = self.head
+
+            for _ in range(pos):
+                if not current:
+                    return False
+                current = current.next
+
+            # Because LSP
+            assert current is not None
+            assert current.prev is not None
+
+            new_node.prev = current.prev
+            new_node.next = current
+
             new_node.prev.next = new_node
 
-        current.prev = new_node
+            current.prev = new_node
 
         self.count += 1
         return True

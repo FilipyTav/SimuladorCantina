@@ -27,12 +27,12 @@ def gen_product() -> Product:
 
 if __name__ == "__main__":
     products: PQueue = PQueue()
-    for _ in range(5):
-        products.enqueue(gen_product())
+    # for _ in range(5):
+    #     products.enqueue(gen_product())
 
     print(products)
     newp: Product = gen_product()
-    products.insert_before(newp, 4)
+    products.insert(newp, 0)
     print(products)
 
     for i in range(6):
