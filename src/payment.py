@@ -25,6 +25,9 @@ class Payment:
 
         self.dttime: datetime = dttime
 
+    def __repr__(self) -> str:
+        return f"[{self.name} - {self.value}]"
+
     def __str__(self):
         return (
             f"Pagamento de {self.name} ({self.category}) - "

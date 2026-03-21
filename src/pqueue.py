@@ -15,6 +15,7 @@ class PNode(object):
             return f"[{self.data.name}]"
 
 
+# Doubly linked list - priority queue
 class PQueue:
     def __init__(self):
         self.head: PNode | None = None

@@ -1,9 +1,11 @@
-from payment import Payment
+from payment import Payment, TypeUser, TypeCourse
+from payment_history import PaymentLedger
 from product import Product
 from pqueue import PQueue
 
 from faker import Faker
 from datetime import timedelta, date
+import random
 
 fake = Faker()
 
@@ -34,18 +36,41 @@ def gen_product() -> Product:
     )
 
 
+def gen_payment() -> Payment:
+    category: TypeUser = random.choice(["aluno", "servidor", "professor"])
+    course: TypeCourse = random.choice(["IA", "ESG"])
+
+    value_in_cents = random.randint(1000, 10000)
+
+    return Payment(
+        name=fake.name(),
+        category=category,
+        course=course,
+        value=value_in_cents,
+        # dttime=fake.date_time_between(start_date='-30d', end_date='now')
+    )
+
+
 if __name__ == "__main__":
     stock: PQueue = PQueue()
     for _ in range(5):
         stock.enqueue(gen_product())
 
-    newp: Product = gen_product()
-    newp.set_name("Test")
-    newp.set_dtexp(date(2026, 4, 15))
-    stock.enqueue(newp)
+    ledger: PaymentLedger = PaymentLedger()
+    for _ in range(5):
+        ledger.insert_at(gen_payment(), 0)
 
-    paym: Payment = Payment("Eu", "aluno", "IA", 1020)
+    # newp: Product = gen_product()
+    # newp.set_name("Test")
+    # newp.set_dtexp(date(2026, 4, 15))
+    # stock.enqueue(newp)
+
+    paym: Payment = Payment("Me Myself", "aluno", "IA", 1020)
     print(paym)
+    print()
+
+    ledger.insert_at(paym, 1)
+    print(ledger)
 
     for i in range(6):
         break
