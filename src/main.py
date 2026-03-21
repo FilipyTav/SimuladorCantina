@@ -1,3 +1,4 @@
+from payment import Payment
 from product import Product
 from pqueue import PQueue
 
@@ -44,13 +45,9 @@ if __name__ == "__main__":
     products.enqueue(newp)
 
     print(products)
-    print()
-    # products.insert_after(newp, products.head)
 
-    print(products.set_product_amount("Test", 17))
-
-    print()
-    print(products)
+    paym: Payment = Payment("Eu", "aluno", "IA", 1020)
+    print(paym)
 
     for i in range(6):
         break

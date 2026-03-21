@@ -5,6 +5,7 @@ class Product:
     def __init__(
         self,
         name: str,
+        # In cents
         price_buy: int,
         price_sell: int,
         date_buy: date,
