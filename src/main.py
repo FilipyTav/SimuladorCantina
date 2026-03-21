@@ -47,7 +47,7 @@ if __name__ == "__main__":
     print(stock)
     print()
 
-    print(stock.get_by_name("Test"))
+    print(stock.set_product_amount("Test", 17))
 
     print()
     print(stock)

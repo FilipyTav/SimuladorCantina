@@ -153,18 +153,12 @@ class PQueue:
         self.insert_at(p, self.count)
 
     def set_product_amount(self, pname: str, amount: int) -> bool:
-        if not (self.head and self.tail):
+        prod: Product | None = self.get_by_name(pname)
+        if not prod:
             return False
 
-        current: PNode = self.head
-        while current:
-            assert current.data
-            if current.data.get_name().lower() == pname.lower():
-                current.data.set_amount(amount)
-                return True
-            current = current.next  # type: ignore[reportOptionalMemberAccess]
-
-        return False
+        prod.set_amount(amount)
+        return True
 
     def get_by_name(self, pname: str) -> Product | None:
         if not (self.head and self.tail):
