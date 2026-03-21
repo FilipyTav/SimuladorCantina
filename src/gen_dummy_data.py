@@ -3,7 +3,7 @@ from datetime import timedelta
 import random
 
 from product import Product
-from payment import Payment, TypeUser, TypeCourse
+from payment import COURSES_AVAILABLE, USERS_CATEGORIES, Payment, TypeUser, TypeCourse
 
 fake = Faker()
 
@@ -35,8 +35,8 @@ def gen_product() -> Product:
 
 
 def gen_payment() -> Payment:
-    category: TypeUser = random.choice(["aluno", "servidor", "professor"])
-    course: TypeCourse = random.choice(["IA", "ESG"])
+    category: TypeUser = random.choice(USERS_CATEGORIES)
+    course: TypeCourse = random.choice(COURSES_AVAILABLE)
 
     value_in_cents = random.randint(1000, 10000)
 

@@ -1,9 +1,12 @@
 # Crie estrutura de dados adequada para gerenciar cada pagamento realizado. Armazenar o nome de quem pagou, categoria ( aluno, servidor ou professor ), curso, valor pago, data e hora do pagamento.
-from typing import Literal
+from typing import Literal, get_args
 from datetime import datetime
 
 TypeUser = Literal["aluno", "servidor", "professor"]
 TypeCourse = Literal["IA", "ESG"]
+
+USERS_CATEGORIES = get_args(TypeUser)
+COURSES_AVAILABLE = get_args(TypeCourse)
 
 
 class Payment:
