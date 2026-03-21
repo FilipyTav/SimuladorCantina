@@ -55,6 +55,9 @@ class PaymentLedger:
         self.count += 1
         return True
 
+    def push(self, p: Payment) -> bool:
+        return self.insert_at(p, self.count)
+
     def __repr__(self) -> str:
         if not self.head:
             return "PaymentLedger: [Vazio]"

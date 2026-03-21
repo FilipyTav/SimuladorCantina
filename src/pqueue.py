@@ -145,11 +145,11 @@ class PQueue:
 
         self.count += 1
 
-    def insert_first(self, p: Product) -> None:
-        self.insert_at(p, 0)
+    def insert_first(self, p: Product) -> bool:
+        return self.insert_at(p, 0)
 
-    def insert_last(self, p: Product) -> None:
-        self.insert_at(p, self.count)
+    def insert_last(self, p: Product) -> bool:
+        return self.insert_at(p, self.count)
 
     def set_product_amount(self, pname: str, amount: int) -> bool:
         prod: Product | None = self.get_by_name(pname)
