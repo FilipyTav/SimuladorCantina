@@ -1,55 +1,7 @@
-from payment import Payment, TypeUser, TypeCourse
+from gen_dummy_data import gen_payment, gen_product
+from payment import Payment
 from payment_history import PaymentLedger
-from product import Product
 from pqueue import PQueue
-
-from faker import Faker
-from datetime import timedelta, date
-import random
-
-fake = Faker()
-
-# expiry_counter = 0
-
-
-def gen_product() -> Product:
-    # global expiry_counter
-    # expiry_counter += 10
-
-    d_buy = fake.date_between(start_date="-30d", end_date="today")
-    d_exp = d_buy + timedelta(days=fake.random_int(min=1, max=100))
-
-    # d_buy = date.today()
-    # d_exp = d_buy + timedelta(days=expiry_counter)
-
-    return Product(
-        name=(
-            fake.ecommerce_name()
-            if hasattr(fake, "ecommerce_name")
-            else fake.word().capitalize()
-        ),
-        price_buy=fake.random_int(min=5, max=50) * 100,
-        price_sell=fake.random_int(min=60, max=150) * 100,
-        date_buy=d_buy,
-        date_expire=d_exp,
-        amount=fake.random_int(min=1, max=100),
-    )
-
-
-def gen_payment() -> Payment:
-    category: TypeUser = random.choice(["aluno", "servidor", "professor"])
-    course: TypeCourse = random.choice(["IA", "ESG"])
-
-    value_in_cents = random.randint(1000, 10000)
-
-    return Payment(
-        name=fake.name(),
-        category=category,
-        course=course,
-        value=value_in_cents,
-        # dttime=fake.date_time_between(start_date='-30d', end_date='now')
-    )
-
 
 if __name__ == "__main__":
     stock: PQueue = PQueue()
@@ -58,7 +10,7 @@ if __name__ == "__main__":
 
     ledger: PaymentLedger = PaymentLedger()
     for _ in range(5):
-        ledger.insert_at(gen_payment(), 0)
+        ledger.push(gen_payment())
 
     # newp: Product = gen_product()
     # newp.set_name("Test")
