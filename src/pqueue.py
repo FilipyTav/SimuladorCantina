@@ -152,6 +152,20 @@ class PQueue:
     def insert_last(self, p: Product) -> None:
         self.insert_at(p, self.count)
 
+    def set_product_amount(self, pname: str, amount: int) -> bool:
+        if not (self.head and self.tail):
+            return False
+
+        current: PNode = self.head
+        while current:
+            assert current.data
+            if current.data.get_name().lower() == pname.lower():
+                current.data.set_amount(amount)
+                return True
+            current = current.next  # type: ignore[reportOptionalMemberAccess]
+
+        return False
+
     def __str__(self) -> str:
         if not self.head:
             return "List is empty."

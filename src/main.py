@@ -6,18 +6,18 @@ from datetime import timedelta, date
 
 fake = Faker()
 
-expiry_counter = 0
+# expiry_counter = 0
 
 
 def gen_product() -> Product:
-    global expiry_counter
-    expiry_counter += 10
+    # global expiry_counter
+    # expiry_counter += 10
 
-    # d_buy = fake.date_between(start_date="-30d", end_date="today")
-    # d_exp = d_buy + timedelta(days=fake.random_int(min=1, max=100))
+    d_buy = fake.date_between(start_date="-30d", end_date="today")
+    d_exp = d_buy + timedelta(days=fake.random_int(min=1, max=100))
 
-    d_buy = date.today()
-    d_exp = d_buy + timedelta(days=expiry_counter)
+    # d_buy = date.today()
+    # d_exp = d_buy + timedelta(days=expiry_counter)
 
     return Product(
         name=(
@@ -38,16 +38,18 @@ if __name__ == "__main__":
     for _ in range(5):
         products.enqueue(gen_product())
 
-    print(products)
-
     newp: Product = gen_product()
+    newp.set_name("Test")
     newp.date_expire = date(2026, 4, 15)
-    print("\nStarts here")
-    print(f"Should find for {newp}\n")
     products.enqueue(newp)
 
+    print(products)
+    print()
     # products.insert_after(newp, products.head)
 
+    print(products.set_product_amount("Test", 17))
+
+    print()
     print(products)
 
     for i in range(6):
