@@ -54,6 +54,10 @@ class Product:
     def set_dtexp(self, value: date) -> None:
         self.date_expire = value
 
+    # ID
+    def get_id(self) -> int:
+        return self.id
+
     def __repr__(self) -> str:
         # return f"[{self.name} | Exp: {self.date_expire}]"
         # return f"[{self.date_expire}]"

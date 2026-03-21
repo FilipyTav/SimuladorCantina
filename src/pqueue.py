@@ -170,6 +170,22 @@ class PQueue:
                 return current.data
             current = current.next  # type: ignore[reportOptionalMemberAccess]
 
+    def get_by_ids(self, ids: set[int]) -> list[Product]:
+        if not (self.head and self.tail):
+            return []
+
+        prods: list[Product] = []
+        current: PNode = self.head
+        while current:
+            assert current.data
+            if current.data.get_id() in ids:
+                prods.append(current.data)
+
+                if len(prods) == len(ids):
+                    break
+            current = current.next  # type: ignore[reportOptionalMemberAccess]
+        return prods
+
     def __str__(self) -> str:
         if not self.head:
             return "List is empty."
