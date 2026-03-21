@@ -1,7 +1,6 @@
 from datetime import date
-from faker import Faker
 
-fake = Faker()
+current_id: int = 0
 
 
 class Product:
@@ -14,7 +13,7 @@ class Product:
         date_buy: date,
         date_expire: date,
         amount: int,
-        id: int = fake.random_int(min=0, max=10000),
+        id: int = -1,
     ):
         self.name: str = name
         self.price_buy: int = price_buy
@@ -22,7 +21,14 @@ class Product:
         self.date_buy: date = date_buy
         self.date_expire: date = date_expire
         self.amount: int = amount
-        self.id: int = id
+
+        global current_id
+        self.id: int = current_id
+        if id < 0:
+            self.id = current_id
+            current_id += 1
+        else:
+            self.id = id
 
     # Name
     def get_name(self) -> str:
@@ -51,6 +57,6 @@ class Product:
     def __repr__(self) -> str:
         # return f"[{self.name} | Exp: {self.date_expire}]"
         # return f"[{self.date_expire}]"
-        # return f"[{self.name}]"
+        # return f"[{self.id}]"
         # return f"[{self.name} | Price: {self.price_buy}]"
         return f"[{self.name} | Am: {self.amount}]"

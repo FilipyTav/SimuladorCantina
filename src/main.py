@@ -17,6 +17,7 @@ if __name__ == "__main__":
     # newp.set_dtexp(date(2026, 4, 15))
     # stock.enqueue(newp)
 
+    print(stock)
     paym: Payment = Payment("Me Myself", "aluno", "IA", 1020)
     print(paym)
     print()
