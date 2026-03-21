@@ -2,14 +2,22 @@ from product import Product
 from pqueue import PQueue
 
 from faker import Faker
-from datetime import timedelta
+from datetime import timedelta, date
 
 fake = Faker()
 
+expiry_counter = 0
+
 
 def gen_product() -> Product:
-    d_buy = fake.date_between(start_date="-30d", end_date="today")
-    d_exp = d_buy + timedelta(days=fake.random_int(min=1, max=100))
+    global expiry_counter
+    expiry_counter += 10
+
+    # d_buy = fake.date_between(start_date="-30d", end_date="today")
+    # d_exp = d_buy + timedelta(days=fake.random_int(min=1, max=100))
+
+    d_buy = date.today()
+    d_exp = d_buy + timedelta(days=expiry_counter)
 
     return Product(
         name=(
@@ -29,10 +37,16 @@ if __name__ == "__main__":
     products: PQueue = PQueue()
     for _ in range(5):
         products.enqueue(gen_product())
+        # products.insert(gen_product(), products.count)
+
+    print(products)
 
     print(products)
     newp: Product = gen_product()
-    products.insert(newp, 0)
+    newp.date_expire = date(2026, 4, 15)
+    print("\nStarts here")
+    print(f"Should find for {newp}\n")
+    products.enqueue(newp)
     print(products)
 
     for i in range(6):

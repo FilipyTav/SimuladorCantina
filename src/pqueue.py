@@ -1,4 +1,5 @@
 from product import Product
+from datetime import date
 
 
 class PNode(object):
@@ -23,16 +24,24 @@ class PQueue:
         self.count: int = 0
 
     def enqueue(self, p: Product) -> None:
-        new_node: PNode = PNode(p)
+        new_dtexp: date = p.date_expire
 
-        # Queue empty
-        if not (self.tail and self.head):
+        # First
+        if not (self.tail and self.head) or (new_dtexp <= self.head.data.date_expire):
             self.insert(p, 0)
-        # TODO: make it a priority queue, based on date_expiry
-        else:
+            return
+        # Last
+        if new_dtexp >= self.tail.data.date_expire:
             self.insert(p, self.count)
+            return
 
-        self.count += 1
+        current: PNode | None = self.head
+        index: int = 0
+        while current and current.data.date_expire <= new_dtexp:
+            current = current.next
+            index += 1
+
+        self.insert(p, index)
 
     def dequeue(self) -> PNode | None:
         if not self.head:
@@ -108,8 +117,8 @@ class PQueue:
         while current:
             if current == self.head:
                 nodes.append(f"[HEAD: {current.data}]")
-            elif current.next is None:
-                nodes.append(f"[TAIL: {current.data}]")
+            elif current == self.tail:
+                nodes.append(f"[TAIL: {current.data}] - L: {self.count}")
             else:
                 nodes.append(str(current.data))
 

@@ -20,5 +20,5 @@ class Product:
 
     def __repr__(self) -> str:
         # return f"[{self.name} | Exp: {self.date_expire}]"
-        # return f"[{self.date_expire}]"
-        return f"[{self.name}]"
+        return f"[{self.date_expire}]"
+        # return f"[{self.name}]"
