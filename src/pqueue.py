@@ -28,11 +28,11 @@ class PQueue:
 
         # First
         if not (self.tail and self.head) or (new_dtexp <= self.head.data.date_expire):
-            self.insert_at(p, 0)
+            self.insert_first(p)
             return
         # Last
         if new_dtexp >= self.tail.data.date_expire:
-            self.insert_at(p, self.count)
+            self.insert_last(p)
             return
 
         current: PNode | None = self.head
@@ -110,7 +110,7 @@ class PQueue:
 
     def insert_before(self, p: Product, node: PNode) -> None:
         if not (self.head and self.tail) or node == self.head:
-            self.insert_at(p, 0)
+            self.insert_first(p)
             return
 
         new_node: PNode = PNode(p)
@@ -127,10 +127,10 @@ class PQueue:
 
     def insert_after(self, p: Product, node: PNode) -> None:
         if not (self.head and self.tail):
-            self.insert_at(p, 0)
+            self.insert_first(p)
             return
         if node == self.tail:
-            self.insert_at(p, self.count)
+            self.insert_last(p)
             return
 
         new_node: PNode = PNode(p)
@@ -144,6 +144,12 @@ class PQueue:
         node.next = new_node
 
         self.count += 1
+
+    def insert_first(self, p: Product) -> None:
+        self.insert_at(p, 0)
+
+    def insert_last(self, p: Product) -> None:
+        self.insert_at(p, self.count)
 
     def __str__(self) -> str:
         if not self.head:

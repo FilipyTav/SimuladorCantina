@@ -40,14 +40,13 @@ if __name__ == "__main__":
 
     print(products)
 
-    print(products)
     newp: Product = gen_product()
     newp.date_expire = date(2026, 4, 15)
-    products.enqueue(newp)
-
     print("\nStarts here")
     print(f"Should find for {newp}\n")
-    products.insert_after(newp, products.head)
+    products.enqueue(newp)
+
+    # products.insert_after(newp, products.head)
 
     print(products)
 
