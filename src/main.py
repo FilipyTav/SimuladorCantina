@@ -44,16 +44,8 @@ if __name__ == "__main__":
     newp.set_dtexp(date(2026, 4, 15))
     stock.enqueue(newp)
 
-    print(stock)
-    print()
-
-    print(stock.set_product_amount("Test", 17))
-
-    print()
-    print(stock)
-
-    # paym: Payment = Payment("Eu", "aluno", "IA", 1020)
-    # print(paym)
+    paym: Payment = Payment("Eu", "aluno", "IA", 1020)
+    print(paym)
 
     for i in range(6):
         break

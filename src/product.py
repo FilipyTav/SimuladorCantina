@@ -1,4 +1,7 @@
 from datetime import date
+from faker import Faker
+
+fake = Faker()
 
 
 class Product:
@@ -11,6 +14,7 @@ class Product:
         date_buy: date,
         date_expire: date,
         amount: int,
+        id: int = fake.random_int(min=0, max=10000),
     ):
         self.name: str = name
         self.price_buy: int = price_buy
@@ -18,6 +22,7 @@ class Product:
         self.date_buy: date = date_buy
         self.date_expire: date = date_expire
         self.amount: int = amount
+        self.id: int = id
 
     # Name
     def get_name(self) -> str:

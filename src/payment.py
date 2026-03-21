@@ -12,14 +12,17 @@ class Payment:
         name: str,
         category: TypeUser,
         course: TypeCourse,
-        # In cents
         value: int,
         dttime: datetime = datetime.now(),
     ) -> None:
+        # Client info
         self.name: str = name
         self.category: TypeUser = category
         self.course: TypeCourse = course
+
+        # In cents
         self.value: int = value
+
         self.dttime: datetime = dttime
 
     def __str__(self):

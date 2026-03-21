@@ -6,12 +6,10 @@ class PNode(object):
     def __init__(
         self,
         data: Product | None = None,
-        next: "PNode | None" = None,
-        prev: "PNode | None" = None,
     ):
         self.data: Product | None = data
-        self.prev: PNode | None = prev
-        self.next: PNode | None = next
+        self.prev: PNode | None = None
+        self.next: PNode | None = None
 
         def __repr__(self) -> str:
             return f"[{self.data.name}]"
