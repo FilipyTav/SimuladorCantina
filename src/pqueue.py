@@ -28,11 +28,11 @@ class PQueue:
 
         # First
         if not (self.tail and self.head) or (new_dtexp <= self.head.data.date_expire):
-            self.insert(p, 0)
+            self.insert_at(p, 0)
             return
         # Last
         if new_dtexp >= self.tail.data.date_expire:
-            self.insert(p, self.count)
+            self.insert_at(p, self.count)
             return
 
         current: PNode | None = self.head
@@ -41,7 +41,7 @@ class PQueue:
             current = current.next
             index += 1
 
-        self.insert(p, index)
+        self.insert_at(p, index)
 
     def dequeue(self) -> PNode | None:
         if not self.head:
@@ -61,7 +61,7 @@ class PQueue:
         return node
 
     # pos: [0, self.count]
-    def insert(self, product: Product, pos: int) -> bool:
+    def insert_at(self, product: Product, pos: int) -> bool:
         if pos < 0 or pos > self.count:
             print(f"Index out of range: {pos}, the list has {self.count} element(s)")
             return False
@@ -107,6 +107,23 @@ class PQueue:
 
         self.count += 1
         return True
+
+    def insert_before(self, p: Product, node: PNode) -> None:
+        if not (self.head and self.tail) or node == self.head:
+            self.insert_at(p, 0)
+            return
+
+        new_node: PNode = PNode(p)
+
+        new_node.prev = node.prev
+        new_node.next = node
+
+        if node.prev:
+            node.prev.next = new_node
+
+        node.prev = new_node
+
+        self.count += 1
 
     def __str__(self) -> str:
         if not self.head:

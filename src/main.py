@@ -42,11 +42,15 @@ if __name__ == "__main__":
     print(products)
 
     print(products)
-    newp: Product = gen_product()
-    newp.date_expire = date(2026, 4, 15)
+    # newp: Product = gen_product()
+    # newp.date_expire = date(2026, 4, 15)
+    # products.enqueue(newp)
+
+    new2: Product = gen_product()
     print("\nStarts here")
-    print(f"Should find for {newp}\n")
-    products.enqueue(newp)
+    print(f"Should find for {new2}\n")
+    products.insert_before(new2, products.head)
+
     print(products)
 
     for i in range(6):
