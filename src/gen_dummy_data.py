@@ -45,5 +45,6 @@ def gen_payment() -> Payment:
         category=category,
         course=course,
         value=value_in_cents,
+        items={0: 2, 1: 2, 2: 2},
         # dttime=fake.date_time_between(start_date='-30d', end_date='now')
     )

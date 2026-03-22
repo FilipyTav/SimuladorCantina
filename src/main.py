@@ -16,7 +16,6 @@ def process_sale(
         return
 
     total: int = 0
-
     amount: int = 0
     # Check stock
     for prod in prods:
@@ -43,6 +42,7 @@ def process_sale(
         category,
         course,
         total,
+        items=p.copy(),
     )
 
 
@@ -61,9 +61,6 @@ if __name__ == "__main__":
     # stock.enqueue(newp)
 
     print(stock)
-    # paym: Payment = Payment("Me Myself", "aluno", "IA", 1020)
-    # print(paym)
-    print()
 
     # ledger.insert_at(paym, 1)
     # print(ledger)
@@ -74,6 +71,10 @@ if __name__ == "__main__":
         2: 9,
         4: 6,
     }
+
+    paym: Payment = Payment("Me Myself", "aluno", "IA", 1020, prods)
+    print(paym)
+    print()
 
     if not process_sale(prods, ("", "aluno", "IA"), stock):
         print("Tente novamente")

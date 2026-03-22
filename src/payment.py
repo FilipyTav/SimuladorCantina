@@ -16,6 +16,7 @@ class Payment:
         category: TypeUser,
         course: TypeCourse,
         value: int,
+        items: dict[int, int],
         dttime: datetime = datetime.now(),
     ) -> None:
         # Client info
@@ -26,6 +27,7 @@ class Payment:
         # In cents
         self.value: int = value
 
+        self.items: dict[int, int] = items
         self.dttime: datetime = dttime
 
     def __repr__(self) -> str:
@@ -35,5 +37,6 @@ class Payment:
         return (
             f"Pagamento de {self.name} ({self.category}) - "
             f"Curso: {self.course} | Valor: R${self.value / 100:.2f} | "
-            f"Data: {self.dttime.strftime('%d/%m/%Y %H:%M')}"
+            f"Data: {self.dttime.strftime('%d/%m/%Y %H:%M')} | "
+            f"Items: {self.items}"
         )
