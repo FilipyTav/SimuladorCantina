@@ -58,9 +58,13 @@ class Product:
     def get_id(self) -> int:
         return self.id
 
+    # Price
+    def get_sell_price(self) -> int:
+        return self.price_sell
+
     def __repr__(self) -> str:
         # return f"[{self.name} | Exp: {self.date_expire}]"
         # return f"[{self.date_expire}]"
-        # return f"[{self.id}]"
+        return f"[{self.name} - {self.id} - {self.price_sell}]"
         # return f"[{self.name} | Price: {self.price_buy}]"
-        return f"[{self.name} | Am: {self.amount}]"
+        # return f"[{self.name} | Am: {self.amount}]"
