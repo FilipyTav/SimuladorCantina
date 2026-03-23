@@ -4,6 +4,7 @@ from payment import Payment, TypeCourse, TypeUser
 from payment_history import PaymentLedger
 from pqueue import PQueue
 from product import Product
+from ui import menu_admin, menu_client
 
 
 def process_sale(
@@ -87,14 +88,17 @@ if __name__ == "__main__":
             case "1":
                 print("\n--- Modo Administrador ---")
                 is_admin = True
+                menu_admin()
             case "2":
                 is_admin = False
-                print("\n--- Bem-vindo, Cliente! ---")
+                menu_client(stock)
             case "q":
-                print("Encerrando o sistema...")
+                print("\nEncerrando o sistema...")
                 is_running = False
                 break
             case _:
                 print("Opção inválida! Escolha 1, 2 ou q.")
 
-        print("Should no print")
+        if is_admin:
+            is_running = False
+            break
