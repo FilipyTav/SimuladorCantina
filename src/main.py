@@ -95,7 +95,10 @@ if __name__ == "__main__":
                 print("This screen does not exist")
                 break
 
-        if new_sc == Screen.MAIN:
+        if new_sc == screen:
+            continue
+
+        elif new_sc == Screen.MAIN:
             history = [Screen.MAIN]
 
         elif new_sc == Screen.EXIT:
@@ -103,6 +106,7 @@ if __name__ == "__main__":
             history.clear()
 
         elif new_sc == Screen.BACK:
+            print("Should go back")
             history.pop()
 
         else:

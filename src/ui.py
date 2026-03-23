@@ -88,7 +88,9 @@ def menu_client_buy(stock: PQueue) -> Screen:
     print("Ou pressione 'b' para voltar ao menu anterior")
 
     choice: str = input("> ").strip()
+    print(f"Choice: |{choice}| - {choice == 'b'}")
     if choice == "b":
+        print("WHY NOT")
         return Screen.BACK
 
     choice = choice.replace(" ", "")
