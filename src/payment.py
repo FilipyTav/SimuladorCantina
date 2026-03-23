@@ -44,6 +44,7 @@ class Payment:
             f"Items: {self.items}"
         )
 
+
 def process_sale(
     p: dict[int, int], client_info: tuple[str, TypeUser, TypeCourse], stock: PQueue
 ) -> Payment | None:
@@ -51,7 +52,7 @@ def process_sale(
     # If unavailable ID
     if len(prods) != len(p):
         missing: set[int] = set(p.keys()) - {pr.get_id() for pr in prods}
-        print(f"Erro: Os seguintes IDs de produto não existem: {missing}")
+        print(f"[!] Erro: Os seguintes IDs de produto não existem: {missing} [!]")
         return
 
     total: int = 0
@@ -59,10 +60,9 @@ def process_sale(
     # Check stock
     for prod in prods:
         amount = p[prod.id]
-        # TODO: activate later
-        if amount > prod.get_amount() and False:
+        if amount > prod.get_amount():
             print(
-                f"{prod.get_name()} tem somente {prod.get_amount()} unidade(s) em estoque."
+                f"ID: {prod.get_id()}({prod.get_name()}) tem somente {prod.get_amount()} unidade(s) em estoque."
             )
             return
 

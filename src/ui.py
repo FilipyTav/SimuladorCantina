@@ -1,3 +1,4 @@
+from payment import process_sale
 from pqueue import PQueue
 from enum import Enum, auto
 import os
@@ -93,6 +94,7 @@ def menu_client_buy(stock: PQueue) -> Screen:
             return Screen.BACK
 
         try:
+            print()
             parts: str = choice.replace(" ", "")
             if not parts:
                 raise ValueError("Entrada vazia.")
@@ -109,10 +111,11 @@ def menu_client_buy(stock: PQueue) -> Screen:
                 k, v = p.split(".")
                 prods[int(k)] = int(v)
 
-            print(prods)
+            process_sale(prods, ("TTTTTTTT", "aluno", "IA"), stock)
+            print()
         except ValueError:
             print(
-                "\n[!] Entrada inválida. Use apenas números no formato ID.quantidade separados por vírgula. [!]"
+                "[!] Entrada inválida. Use apenas números no formato ID.quantidade separados por vírgula. [!]"
             )
             print("[Exemplo correto: 1.5, 2.10]\n")
 
