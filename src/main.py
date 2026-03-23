@@ -1,10 +1,9 @@
-from typing import Literal
 from gen_dummy_data import gen_payment, gen_product
 from payment import Payment, TypeCourse, TypeUser
 from payment_history import PaymentLedger
 from pqueue import PQueue
 from product import Product
-from ui import Screen, menu_admin, menu_client, screen_clear
+from ui import Screen, main_menu, menu_admin, menu_client, screen_clear
 
 
 def process_sale(
@@ -80,28 +79,7 @@ if __name__ == "__main__":
         print(f"\t--------{screen}--------\t")
         match screen:
             case Screen.MAIN:
-                print("\n" + "=" * 40)
-                print("\t--- CANTINA ---")
-                print("=" * 40)
-
-                print("Que usuário usar?\n")
-
-                print("1. Admin")
-                print("2. Cliente")
-                print("q. Sair")
-
-                choice: str = input("\nEscolha uma opção: ").strip().lower()
-
-                match choice:
-                    case "1":
-                        print("\n--- Modo Administrador ---")
-                        new_sc = Screen.ADMIN
-                    case "2":
-                        new_sc = Screen.CLIENT
-                    case "q":
-                        new_sc = Screen.EXIT
-                    case _:
-                        print("Opção inválida! Escolha 1, 2 ou q.")
+                new_sc = main_menu()
 
             case Screen.ADMIN:
                 new_sc = menu_admin()

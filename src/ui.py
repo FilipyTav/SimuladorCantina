@@ -19,6 +19,31 @@ class Screen(Enum):
     EXIT = auto()
 
 
+def main_menu() -> Screen:
+    print("\n" + "=" * 40)
+    print("\t--- CANTINA ---")
+    print("=" * 40)
+
+    print("Que usuário usar?\n")
+
+    print("1. Admin")
+    print("2. Cliente")
+    print("q. Sair")
+
+    choice: str = input("\nEscolha uma opção: ").strip().lower()
+
+    match choice:
+        case "1":
+            return Screen.ADMIN
+        case "2":
+            return Screen.CLIENT
+        case "q":
+            return Screen.EXIT
+        case _:
+            print("Opção inválida! Escolha 1, 2 ou q.")
+            return Screen.MAIN
+
+
 def menu_admin() -> Screen:
     return Screen.MAIN
 
