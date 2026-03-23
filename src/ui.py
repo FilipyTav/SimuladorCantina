@@ -231,11 +231,11 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
             print(f"[!] Erro: Os seguintes IDs de produto não existem: {missing} [!]\n")
             continue
 
-        # 0. Nome | 1. Preço de compra | 2. Preço de venda | 3. Data compra | 4. Data validade | 5. Quantidade
         attributes: dict[str, str] = prods[0].get_attributes()
 
         for p in prods:
             while True:
+                screen_clear()
                 print("\n" + "=" * 30)
                 p.print_admin()
                 print("=" * 30)
@@ -246,13 +246,48 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
                 print(f"\nModificando: {p.name} (ID: {p.id})")
                 print(f"{menu_opcoes} | C. Cancelar | S. Próximo/Sair")
 
-                op = input("Selecione o campo: ").strip().lower()
+                op: str = input("Selecione o campo: ").strip().lower()
+                new_val: str = ""
 
                 match op:
                     case "c":
                         return Screen.ADMIN_UPDATE_STOCK
 
                     case "s":
+                        break
+
+                    # Nome
+                    case "0":
+                        new_val = input("Novo nome: ")
+                        p.set_name(new_val)
+
+                    # Preço de compra
+                    case "1":
+                        new_val = (
+                            input("Novo preço de compra (R$): ")
+                            .strip()
+                            .replace(",", "")
+                        )
+                        cents: int = int(new_val)
+                        if cents < 0:
+                            print("[!] O preço não pode ser negativo. [!]")
+                        else:
+                            p.set_sell_price(int(new_val))
+
+                    # Preço de venda
+                    case "2":
+                        break
+
+                    # 3. Data compra
+                    case "3":
+                        break
+
+                    # 4. Data validade
+                    case "4":
+                        break
+
+                    # Quantidade
+                    case "5":
                         break
 
                     case _:

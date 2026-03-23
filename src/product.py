@@ -62,6 +62,15 @@ class Product:
     def get_sell_price(self) -> int:
         return self.price_sell
 
+    def set_sell_price(self, value: int) -> None:
+        self.price_sell = value
+
+    def get_buy_price(self) -> int:
+        return self.price_buy
+
+    def set_buy_price(self, value: int) -> None:
+        self.price_buy = value
+
     def print_admin(self) -> None:
         p_buy: str = f"{self.price_buy / 100:.2f}".replace(".", ",")
         p_sell: str = f"{self.price_sell / 100:.2f}".replace(".", ",")
