@@ -1,4 +1,3 @@
-from datetime import date, datetime
 from payment import (
     COURSES_AVAILABLE,
     USERS_CATEGORIES,
@@ -13,6 +12,7 @@ from enum import Enum, auto
 import os
 
 from product import Product
+from utils.input import get_valid_date
 
 
 def screen_clear():
@@ -190,25 +190,6 @@ def menu_admin_stock(stock: PQueue) -> Screen:
                 return Screen.ADMIN_SEE_STOCK
 
     return Screen.BACK
-
-
-def get_valid_date(label: str) -> date:
-    while True:
-        raw_val = input(f"{label} (DD/MM/AAAA): ").strip()
-
-        if not raw_val:
-            print("\n[!] A data não pode estar vazia. [!]\n")
-            continue
-
-        try:
-            dt_obj = datetime.strptime(raw_val, "%d/%m/%Y")
-
-            return dt_obj.date()
-
-        except ValueError:
-            print(
-                "\n[!] Formato inválido ou data inexistente. Use o padrão DIA/MÊS/ANO (ex: 01/01/1970). [!]\n"
-            )
 
 
 def menu_admin_update_stock(stock: PQueue) -> Screen:
