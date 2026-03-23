@@ -64,10 +64,10 @@ def menu_admin() -> Screen:
 
 
 # Returns if the program should exit
-def menu_client() -> Screen:
+def menu_client(client_name: str) -> Screen:
     print("\n" + "=" * 40)
     print("\t--- CANTINA ---")
-    print("  --- Bem-vindo(a), Cliente! ---")
+    print(f"  --- Bem-vindo(a), {client_name.capitalize()}! ---")
     print("=" * 40)
 
     print("Como prosseguir?\n")

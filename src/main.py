@@ -50,13 +50,17 @@ if __name__ == "__main__":
                 new_sc = main_menu()
 
             case Screen.ADMIN:
+                # TODO: password verification
+                # TODO: print payments
+                # TODO: add to stock
                 new_sc = menu_admin()
 
             case Screen.CLIENT:
                 if not client_info:
                     new_sc = Screen.CLIENT_ASK_INFO
                 else:
-                    new_sc = menu_client()
+                    # TODO: make a new struct for client_info
+                    new_sc = menu_client(client_info[0])
 
             case Screen.CLIENT_ASK_INFO:
                 new_sc, client_info = menu_client_get_info()
