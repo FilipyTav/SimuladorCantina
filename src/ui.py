@@ -12,7 +12,7 @@ from enum import Enum, auto
 import os
 
 from product import Product
-from utils.input import get_valid_date, get_valid_price
+from utils.input import get_valid_date, get_valid_int, get_valid_price
 
 
 def screen_clear():
@@ -280,7 +280,9 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
 
                     # Quantidade
                     case "5":
-                        break
+                        p.set_amount(
+                            get_valid_int("Nova quantidade: ", min=0, max=999999)
+                        )
 
                     case _:
                         continue
