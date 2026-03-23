@@ -83,25 +83,37 @@ def menu_client_buy(stock: PQueue) -> Screen:
     print("=" * 40)
     stock.print_for_client()
 
-    print("Escolha o que deseja comprar.")
-    print("Formato: ID.quantidade, separados por espaço. Ex.: 0.2, 3.4")
-    print("Ou pressione 'b' para voltar ao menu anterior")
+    while True:
+        print("Escolha o que deseja comprar.")
+        print("Formato: ID.quantidade, separados por espaço. Ex.: 0.2, 3.4")
+        print("Ou pressione 'b' para voltar ao menu anterior")
 
-    choice: str = input("> ").strip()
-    print(f"Choice: |{choice}| - {choice == 'b'}")
-    if choice == "b":
-        print("WHY NOT")
-        return Screen.BACK
+        choice: str = input("> ").strip()
+        if choice == "b":
+            return Screen.BACK
 
-    choice = choice.replace(" ", "")
-    s: list[str] = choice.split(",")
-    prods: dict[int, int] = {}
-    for p in s:
-        k, v = p.split(".")
-        k = int(k)
-        v = int(v)
-        prods[k] = v
+        try:
+            parts: str = choice.replace(" ", "")
+            if not parts:
+                raise ValueError("Entrada vazia.")
 
-    print(prods)
+            s: list[str] = parts.split(",")
+            for item in s:
+                if "." not in item:
+                    raise ValueError(
+                        f"Item '{item}' está fora do formato ID.quantidade"
+                    )
+
+            prods: dict[int, int] = {}
+            for p in s:
+                k, v = p.split(".")
+                prods[int(k)] = int(v)
+
+            print(prods)
+        except ValueError:
+            print(
+                "\n[!] Entrada inválida. Use apenas números no formato ID.quantidade separados por vírgula. [!]"
+            )
+            print("[Exemplo correto: 1.5, 2.10]\n")
 
     return Screen.CLIENT_BUY
