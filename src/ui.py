@@ -75,3 +75,9 @@ def menu_client() -> Screen:
         case _:
             print("Essa não é uma opção. Tente novamente")
             return Screen.CLIENT
+
+
+def menu_client_buy(stock: PQueue) -> Screen:
+    stock.print_for_client()
+    input()
+    return Screen.CLIENT_BUY

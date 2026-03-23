@@ -186,6 +186,32 @@ class PQueue:
             current = current.next  # type: ignore[reportOptionalMemberAccess]
         return prods
 
+    def print_for_client(self) -> None:
+        if not (self.head and self.tail):
+            return
+
+        current: PNode = self.head
+        while current:
+            if not current.data:
+                break
+
+            prod: Product = current.data
+            # Convert cents to a decimal currency format
+            display_price: str = f"R${prod.price_sell / 100:.2f}".replace(".", ",")
+
+            # Format the date (e.g., Jan 01, 2024)
+            expiry_str: str = prod.date_expire.strftime("%d/%m/%Y")
+
+            print(
+                f"--- {prod.name.upper()} ---\n"
+                f"Preço:      {display_price}\n"
+                f"Validade:   {expiry_str}\n"
+                f"Quantidade: {prod.get_amount()} unidade(s)\n"
+                f"ID:         {prod.get_id()}\n"
+            )
+
+            current = current.next  # type: ignore[reportOptionalMemberAccess]
+
     def __str__(self) -> str:
         if not self.head:
             return "List is empty."

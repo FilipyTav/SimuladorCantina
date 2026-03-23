@@ -3,7 +3,7 @@ from payment import Payment, TypeCourse, TypeUser
 from payment_history import PaymentLedger
 from pqueue import PQueue
 from product import Product
-from ui import Screen, main_menu, menu_admin, menu_client, screen_clear
+from ui import Screen, main_menu, menu_admin, menu_client, menu_client_buy, screen_clear
 
 
 def process_sale(
@@ -70,6 +70,7 @@ if __name__ == "__main__":
 
     is_admin: bool = False
     is_running: bool = True
+    # TODO: make it a custom stack struct
     history: list[Screen] = [Screen.MAIN]
     while is_running and history:
         screen: Screen = history[-1]
@@ -87,16 +88,22 @@ if __name__ == "__main__":
             case Screen.CLIENT:
                 new_sc = menu_client()
 
+            case Screen.CLIENT_BUY:
+                new_sc = menu_client_buy(stock)
+
             case _:
                 print("This screen does not exist")
                 break
 
         if new_sc == Screen.MAIN:
             history = [Screen.MAIN]
+
         elif new_sc == Screen.EXIT:
             print("\nEncerrando o sistema...")
             history.clear()
+
         elif new_sc == Screen.BACK:
             history.pop()
+
         else:
             history.append(new_sc)
