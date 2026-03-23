@@ -54,6 +54,13 @@ class Product:
     def set_dtexp(self, value: date) -> None:
         self.date_expire = value
 
+    # Date of purchase
+    def get_dtbuy(self) -> date:
+        return self.date_buy
+
+    def set_dtbuy(self, value: date) -> None:
+        self.date_buy = value
+
     # ID
     def get_id(self) -> int:
         return self.id
