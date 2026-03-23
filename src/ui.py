@@ -43,7 +43,7 @@ def main_menu() -> Screen:
 
     print("1. Admin")
     print("2. Cliente")
-    print("q. Sair")
+    print("Q. Sair")
 
     choice: str = input("\nEscolha uma opção: ").strip().lower()
 
@@ -73,7 +73,7 @@ def menu_client() -> Screen:
     print("Como prosseguir?\n")
     print("0. Voltar")
     print("1. Ver estoque")
-    print("q. Sair")
+    print("Q. Sair")
 
     choice: str = input("\nEscolha uma opção: ")
 
