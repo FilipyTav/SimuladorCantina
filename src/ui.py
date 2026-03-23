@@ -196,13 +196,13 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
 
     while True:
         print(
-            f"Escolha os IDs dos produtos que deseja modificar, separados pro vírgula:"
+            f"Escolha os IDs dos produtos que deseja modificar, separados pro espaço:"
         )
 
         choice: str = input("> ").strip()
 
         if not choice:
-            print("[!] Erro: Você deve digitar ao menos um ID. [!]\n")
+            print("\n[!] Erro: Você deve digitar ao menos um ID. [!]\n")
             continue
 
         match choice:
@@ -213,15 +213,16 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
 
         ids: list[int] = []
         try:
-            ids = [int(s.strip()) for s in choice.split(",") if s.strip()]
+            ids = [int(s.strip()) for s in choice.split(" ") if s.strip()]
 
             if not ids:
                 raise ValueError
 
         except ValueError:
             print(
-                "[!] Erro: Digite apenas NÚMEROS separados por vírgula (ex: 1, 2, 5)."
+                "\n[!] Erro: Digite apenas NÚMEROS separados por espaço (ex: 1  2  5).\n"
             )
+            continue
 
         prods: list[Product] = stock.get_by_ids(set(ids))
 
@@ -248,7 +249,6 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
 
                 if op == "s":
                     break
-
 
         print("\nTodas as edições da lista foram concluídas.\n")
 
