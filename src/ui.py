@@ -78,20 +78,28 @@ def menu_client() -> Screen:
             return Screen.CLIENT
 
 
-def menu_client_buy(stock: PQueue) -> Screen:
+def print_prods_screen(stock: PQueue) -> None:
     print("\n" + "=" * 40)
     print("\t--- Estoque ---")
     print("=" * 40)
     stock.print_for_client()
 
+
+def menu_client_buy(stock: PQueue) -> Screen:
+    print_prods_screen(stock)
+
     while True:
         print("Escolha o que deseja comprar.")
         print("Formato: ID.quantidade, separados por espaço. Ex.: 0.2, 3.4")
-        print("Ou pressione 'b' para voltar ao menu anterior")
+        print("E. Mostrar estoque")
+        print("B. Voltar ao menu anterior")
 
         choice: str = input("> ").strip()
         if choice == "b":
             return Screen.BACK
+        elif choice == "e":
+            print_prods_screen(stock)
+            return Screen.CLIENT_BUY
 
         try:
             print()
