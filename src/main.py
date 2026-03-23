@@ -83,17 +83,18 @@ if __name__ == "__main__":
 
         choice: str = input("\nEscolha uma opção: ").strip().lower()
 
-        if choice == "1":
-            print("\n--- Modo Administrador ---")
-            is_admin = True
-        elif choice == "2":
-            is_admin = False
-            print("\n--- Bem-vindo, Cliente! ---")
-        elif choice == "q":
-            print("Encerrando o sistema...")
-            is_running = False
-            break
-        else:
-            print("Opção inválida! Escolha 1, 2 ou q.")
+        match choice:
+            case "1":
+                print("\n--- Modo Administrador ---")
+                is_admin = True
+            case "2":
+                is_admin = False
+                print("\n--- Bem-vindo, Cliente! ---")
+            case "q":
+                print("Encerrando o sistema...")
+                is_running = False
+                break
+            case _:
+                print("Opção inválida! Escolha 1, 2 ou q.")
 
-    print("")
+        print("Should no print")
