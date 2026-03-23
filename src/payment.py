@@ -69,7 +69,7 @@ class Payment:
 
 def process_sale(
     p: dict[int, int],
-    client_info: tuple[str, typeUser, typeCourse],
+    client_info: userInfo,
     stock: PQueue,
     needs_confirmation: bool = False,
 ) -> Payment | None:

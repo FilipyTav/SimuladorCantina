@@ -99,7 +99,7 @@ def print_prods_screen(stock: PQueue) -> None:
     stock.print_for_client()
 
 
-def menu_client_buy(stock: PQueue) -> Screen:
+def menu_client_buy(stock: PQueue, user_info: userInfo) -> Screen:
     print_prods_screen(stock)
 
     while True:
@@ -135,9 +135,7 @@ def menu_client_buy(stock: PQueue) -> Screen:
                 k, v = p.split(".")
                 prods[int(k)] = int(v)
 
-            payment: Payment | None = process_sale(
-                prods, ("TTTTTTTT", "aluno", "IA"), stock, True
-            )
+            payment: Payment | None = process_sale(prods, user_info, stock, True)
 
             if payment:
                 screen_clear()

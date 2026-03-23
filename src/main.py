@@ -62,7 +62,8 @@ if __name__ == "__main__":
                 new_sc, client_info = menu_client_get_info()
 
             case Screen.CLIENT_BUY:
-                new_sc = menu_client_buy(stock)
+                if client_info:
+                    new_sc = menu_client_buy(stock, client_info)
 
             case _:
                 print("This screen does not exist")
