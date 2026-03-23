@@ -4,7 +4,7 @@ from payment import Payment, TypeCourse, TypeUser
 from payment_history import PaymentLedger
 from pqueue import PQueue
 from product import Product
-from ui import menu_admin, menu_client
+from ui import Screen, menu_admin, menu_client
 
 
 def process_sale(
@@ -71,33 +71,55 @@ if __name__ == "__main__":
 
     is_admin: bool = False
     is_running: bool = True
+    history: list[Screen] = [Screen.MAIN]
     while is_running:
-        print("\n" + "=" * 40)
-        print("\t--- CANTINA ---")
-        print("=" * 40)
+        screen: Screen = history[-1]
 
-        print("Que usuário usar?\n")
+        print(f"\t--------{screen}--------\t")
+        match screen:
+            case Screen.MAIN:
+                print("\n" + "=" * 40)
+                print("\t--- CANTINA ---")
+                print("=" * 40)
 
-        print("1. Admin")
-        print("2. Cliente")
-        print("q. Sair")
+                print("Que usuário usar?\n")
 
-        choice: str = input("\nEscolha uma opção: ").strip().lower()
+                print("1. Admin")
+                print("2. Cliente")
+                print("q. Sair")
 
-        match choice:
-            case "1":
-                print("\n--- Modo Administrador ---")
-                is_admin = True
+                choice: str = input("\nEscolha uma opção: ").strip().lower()
+
+                match choice:
+                    case "1":
+                        print("\n--- Modo Administrador ---")
+                        is_admin = True
+                        history.append(Screen.ADMIN)
+                        # screen = Screen.ADMIN
+                    case "2":
+                        is_admin = False
+                        history.append(Screen.CLIENT)
+                        # screen = Screen.CLIENT
+                    case "q":
+                        print("\nEncerrando o sistema...")
+                        is_running = False
+                        history.pop()
+                        break
+                    case _:
+                        print("Opção inválida! Escolha 1, 2 ou q.")
+
+            case Screen.ADMIN:
                 menu_admin()
-            case "2":
-                is_admin = False
-                menu_client(stock)
-            case "q":
-                print("\nEncerrando o sistema...")
+                # screen = Screen.MAIN
+
+            case Screen.CLIENT:
+                history.append(menu_client(stock))
+                # screen = Screen.MAIN
+
+            case _:
+                print("This screen does not exist")
                 is_running = False
                 break
-            case _:
-                print("Opção inválida! Escolha 1, 2 ou q.")
 
         if is_admin:
             is_running = False
