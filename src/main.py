@@ -4,7 +4,7 @@ from payment import Payment, TypeCourse, TypeUser
 from payment_history import PaymentLedger
 from pqueue import PQueue
 from product import Product
-from ui import Screen, menu_admin, menu_client
+from ui import Screen, menu_admin, menu_client, screen_clear
 
 
 def process_sale(
@@ -75,6 +75,7 @@ if __name__ == "__main__":
     while is_running:
         screen: Screen = history[-1]
 
+        screen_clear()
         print(f"\t--------{screen}--------\t")
         match screen:
             case Screen.MAIN:

@@ -1,5 +1,10 @@
 from pqueue import PQueue
 from enum import Enum, auto
+import os
+
+
+def screen_clear():
+    os.system("cls" if os.name == "nt" else "clear")
 
 
 class Screen(Enum):
