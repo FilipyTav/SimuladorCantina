@@ -9,37 +9,43 @@ def screen_clear():
 
 class Screen(Enum):
     MAIN = auto()
+
     ADMIN = auto()
+
     CLIENT = auto()
     CLIENT_BUY = auto()
+
+    BACK = auto()
     EXIT = auto()
 
 
-def menu_admin():
-    return
+def menu_admin() -> Screen:
+    return Screen.MAIN
 
 
 # Returns if the program should exit
-def menu_client(stock: PQueue) -> Screen:
+def menu_client() -> Screen:
     print("\n" + "=" * 40)
     print("\t--- CANTINA ---")
     print("  --- Bem-vindo(a), Cliente! ---")
     print("=" * 40)
 
-    print("\nComo prosseguir?")
+    print("Como prosseguir?\n")
+    print("0. Voltar")
     print("1. Ver estoque")
     print("q. Sair")
 
     choice = input("\nEscolha uma opção: ")
 
     match choice:
+        case "0":
+            return Screen.BACK
+
         case "1":
-            print("Should be")
             return Screen.CLIENT_BUY
 
         case "q":
-            print("Should back")
-            return Screen.MAIN
+            return Screen.EXIT
 
         case _:
             print("Essa não é uma opção. Tente novamente")

@@ -72,8 +72,9 @@ if __name__ == "__main__":
     is_admin: bool = False
     is_running: bool = True
     history: list[Screen] = [Screen.MAIN]
-    while is_running:
+    while is_running and history:
         screen: Screen = history[-1]
+        new_sc: Screen = screen
 
         screen_clear()
         print(f"\t--------{screen}--------\t")
@@ -94,34 +95,30 @@ if __name__ == "__main__":
                 match choice:
                     case "1":
                         print("\n--- Modo Administrador ---")
-                        is_admin = True
-                        history.append(Screen.ADMIN)
-                        # screen = Screen.ADMIN
+                        new_sc = Screen.ADMIN
                     case "2":
-                        is_admin = False
-                        history.append(Screen.CLIENT)
-                        # screen = Screen.CLIENT
+                        new_sc = Screen.CLIENT
                     case "q":
-                        print("\nEncerrando o sistema...")
-                        is_running = False
-                        history.pop()
-                        break
+                        new_sc = Screen.EXIT
                     case _:
                         print("Opção inválida! Escolha 1, 2 ou q.")
 
             case Screen.ADMIN:
-                menu_admin()
-                # screen = Screen.MAIN
+                new_sc = menu_admin()
 
             case Screen.CLIENT:
-                history.append(menu_client(stock))
-                # screen = Screen.MAIN
+                new_sc = menu_client()
 
             case _:
                 print("This screen does not exist")
-                is_running = False
                 break
 
-        if is_admin:
-            is_running = False
-            break
+        if new_sc == Screen.MAIN:
+            history = [Screen.MAIN]
+        elif new_sc == Screen.EXIT:
+            print("\nEncerrando o sistema...")
+            history.clear()
+        elif new_sc == Screen.BACK:
+            history.pop()
+        else:
+            history.append(new_sc)
