@@ -8,6 +8,7 @@ from ui import (
     main_menu,
     menu_admin,
     menu_admin_buy,
+    menu_admin_stock,
     menu_client,
     menu_client_buy,
     menu_client_get_info,
@@ -60,12 +61,16 @@ if __name__ == "__main__":
             case Screen.ADMIN:
                 # TODO: print payments
                 # TODO: add to stock
+                # TODO: change stock product info
                 # TODO: show payment graph
                 # TODO: password verification
                 new_sc = menu_admin()
 
             case Screen.ADMIN_BUY:
                 new_sc = menu_admin_buy(prods_available)
+
+            case Screen.ADMIN_SEE_STOCK:
+                new_sc = menu_admin_stock(prods_available)
             # ------------------------
 
             # Client

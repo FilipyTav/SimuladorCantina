@@ -24,6 +24,7 @@ class Screen(Enum):
     ADMIN = auto()
     ADMIN_BUY = auto()
     ADMIN_SEE_STOCK = auto()
+    ADMIN_UPDATE_STOCK = auto()
     ADMIN_SEE_PAYMENTS = auto()
     ADMIN_REPORTS = auto()
     # ------------------------
@@ -110,7 +111,7 @@ def menu_admin() -> Screen:
 
 
 def menu_admin_buy(prods_available: PQueue) -> Screen:
-    print_prods_screen(prods_available)
+    print_prods_screen(prods_available, True)
 
     while True:
         print("Escolha o que deseja comprar.")
@@ -147,18 +148,9 @@ def menu_admin_buy(prods_available: PQueue) -> Screen:
 
             # Start here
             products: list[Product] = prods_available.get_by_ids(set(prods_dict.keys()))
+            # TODO: add to stock
             for p in products:
                 p.set_amount(p.get_amount() + prods_dict[p.get_id()])
-
-            print(products)
-            # payment: Payment | None = process_sale(
-            #     prods_dict, user_info, prods_available, True
-            # )
-            #
-            # if payment:
-            #     screen_clear()
-            #     print("Compra confirmada!")
-            #     payment.print_for_client()
 
             print()
         except ValueError:
@@ -167,7 +159,34 @@ def menu_admin_buy(prods_available: PQueue) -> Screen:
             )
             print("[Exemplo correto: 1.5, 2.10]\n")
 
-    return Screen.CLIENT_BUY
+    return Screen.ADMIN_BUY
+
+
+def menu_admin_stock(stock: PQueue) -> Screen:
+    while True:
+        print_prods_screen(stock)
+
+        print(
+            f"Escolha o que deseja fazer:\n"
+            f"0. Voltar ao menu anterior\n"
+            f"1. Mostrar estoque\n"
+            f"2. Modificar estoque\n"
+        )
+
+        choice: str = input("> ").strip()
+        match choice:
+            case "0":
+                return Screen.BACK
+            case "1":
+                print_prods_screen(stock)
+                return Screen.ADMIN_SEE_STOCK
+            # TODO: this
+            case "2":
+                return Screen.ADMIN_UPDATE_STOCK
+            case "q":
+                return Screen.EXIT
+
+    return Screen.BACK
 
 
 # Returns if the program should exit
@@ -199,11 +218,14 @@ def menu_client(client_name: str) -> Screen:
             return Screen.CLIENT
 
 
-def print_prods_screen(stock: PQueue) -> None:
+def print_prods_screen(stock: PQueue, for_admin=False) -> None:
     print("\n" + "=" * 40)
     print("\t--- Estoque ---")
     print("=" * 40)
-    stock.print_for_client()
+    if for_admin:
+        stock.print_for_admin()
+    else:
+        stock.print_for_client()
 
 
 def menu_client_buy(stock: PQueue, user_info: userInfo) -> Screen:
