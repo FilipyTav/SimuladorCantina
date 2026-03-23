@@ -1,4 +1,12 @@
-from payment import Payment, process_sale
+from payment import (
+    COURSES_AVAILABLE,
+    USERS_CATEGORIES,
+    Payment,
+    typeCourse,
+    process_sale,
+    typeUser,
+    userInfo,
+)
 from pqueue import PQueue
 from enum import Enum, auto
 import os
@@ -9,15 +17,21 @@ def screen_clear():
 
 
 class Screen(Enum):
-    MAIN = auto()
-
     ADMIN = auto()
 
+    # Client
+    # ------------------------
     CLIENT = auto()
     CLIENT_BUY = auto()
+    CLIENT_ASK_INFO = auto()
+    # ------------------------
 
+    # Helpers
+    # ------------------------
+    MAIN = auto()
     BACK = auto()
     EXIT = auto()
+    # ------------------------
 
 
 def main_menu() -> Screen:
@@ -138,3 +152,38 @@ def menu_client_buy(stock: PQueue) -> Screen:
             print("[Exemplo correto: 1.5, 2.10]\n")
 
     return Screen.CLIENT_BUY
+
+
+def get_valid_index(inp: str, options: list) -> int:
+    while True:
+        try:
+            choice = int(input(inp))
+            if 0 <= choice < len(options):
+                return choice
+            print(f"\n[!] Erro: Escolha um número entre 0 e {len(options) - 1}. [!]\n")
+        except ValueError:
+            print("\n[!] Erro: Digite apenas números. [!]\n")
+
+
+def menu_client_get_info() -> tuple[Screen, userInfo]:
+    print("\n--- Cadastro de Cliente ---")
+
+    name = input("Qual seu nome?\n> ").strip()
+    while not name:
+        name = input("O nome não pode ser vazio. Qual seu nome?\n> ").strip()
+
+    print("\nQual sua função?")
+    for i, cat in enumerate(USERS_CATEGORIES):
+        print(f"{i}. {cat}")
+
+    idx_cat = get_valid_index("> ", list(USERS_CATEGORIES))
+    tp_usr = USERS_CATEGORIES[idx_cat]
+
+    print("\nQual seu curso?")
+    for i, course in enumerate(COURSES_AVAILABLE):
+        print(f"{i}. {course}")
+
+    idx_course = get_valid_index("> ", list(COURSES_AVAILABLE))
+    tp_course = COURSES_AVAILABLE[idx_course]
+
+    return (Screen.CLIENT, (name, tp_usr, tp_course))

@@ -1,31 +1,32 @@
 # Crie estrutura de dados adequada para gerenciar cada pagamento realizado. Armazenar o nome de quem pagou, categoria ( aluno, servidor ou professor ), curso, valor pago, data e hora do pagamento.
-from typing import Literal, get_args
+from typing import Literal, TypeAlias, get_args
 from datetime import datetime
 
 from pqueue import PQueue
 from product import Product
 
-TypeUser = Literal["aluno", "servidor", "professor"]
-TypeCourse = Literal["IA", "ESG"]
+typeUser = Literal["aluno", "servidor", "professor"]
+typeCourse = Literal["IA", "ESG"]
+userInfo: TypeAlias = tuple[str, typeUser, typeCourse]
 
-USERS_CATEGORIES = get_args(TypeUser)
-COURSES_AVAILABLE = get_args(TypeCourse)
+USERS_CATEGORIES = get_args(typeUser)
+COURSES_AVAILABLE = get_args(typeCourse)
 
 
 class Payment:
     def __init__(
         self,
         name: str,
-        category: TypeUser,
-        course: TypeCourse,
+        category: typeUser,
+        course: typeCourse,
         value: int,
         items: dict[int, int],
         dttime: datetime = datetime.now(),
     ) -> None:
         # Client info
         self.name: str = name
-        self.category: TypeUser = category
-        self.course: TypeCourse = course
+        self.category: typeUser = category
+        self.course: typeCourse = course
 
         # In cents
         self.value: int = value
@@ -68,7 +69,7 @@ class Payment:
 
 def process_sale(
     p: dict[int, int],
-    client_info: tuple[str, TypeUser, TypeCourse],
+    client_info: tuple[str, typeUser, typeCourse],
     stock: PQueue,
     needs_confirmation: bool = False,
 ) -> Payment | None:

@@ -1,9 +1,17 @@
 from gen_dummy_data import gen_payment, gen_product
-from payment import Payment, TypeCourse, TypeUser
+from payment import Payment, typeCourse, userInfo
 from payment_history import PaymentLedger
 from pqueue import PQueue
 from product import Product
-from ui import Screen, main_menu, menu_admin, menu_client, menu_client_buy, screen_clear
+from ui import (
+    Screen,
+    main_menu,
+    menu_admin,
+    menu_client,
+    menu_client_buy,
+    menu_client_get_info,
+    screen_clear,
+)
 
 if __name__ == "__main__":
     stock: PQueue = PQueue()
@@ -30,6 +38,7 @@ if __name__ == "__main__":
     is_running: bool = True
     # TODO: make it a custom stack struct
     history: list[Screen] = [Screen.MAIN]
+    client_info: userInfo | None = None
     while is_running and history:
         screen: Screen = history[-1]
         new_sc: Screen = screen
@@ -44,7 +53,13 @@ if __name__ == "__main__":
                 new_sc = menu_admin()
 
             case Screen.CLIENT:
-                new_sc = menu_client()
+                if not client_info:
+                    new_sc = Screen.CLIENT_ASK_INFO
+                else:
+                    new_sc = menu_client()
+
+            case Screen.CLIENT_ASK_INFO:
+                new_sc, client_info = menu_client_get_info()
 
             case Screen.CLIENT_BUY:
                 new_sc = menu_client_buy(stock)
