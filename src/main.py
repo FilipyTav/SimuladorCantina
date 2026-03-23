@@ -1,3 +1,4 @@
+from typing import Literal
 from gen_dummy_data import gen_payment, gen_product
 from payment import Payment, TypeCourse, TypeUser
 from payment_history import PaymentLedger
@@ -55,32 +56,44 @@ if __name__ == "__main__":
     for _ in range(5):
         ledger.push(gen_payment())
 
-    # newp: Product = gen_product()
-    # newp.set_name("Test")
-    # newp.set_dtexp(date(2026, 4, 15))
-    # stock.enqueue(newp)
+    # print(stock)
+    #
+    # prods: dict[int, int] = {
+    #     #
+    #     0: 4,
+    #     2: 9,
+    #     4: 6,
+    # }
+    #
+    # if not process_sale(prods, ("", "aluno", "IA"), stock):
+    #     print("Tente novamente")
 
-    print(stock)
+    is_admin: bool = False
+    is_running: bool = True
+    while is_running:
+        print("\n" + "=" * 40)
+        print("\t--- CANTINA ---")
+        print("=" * 40)
 
-    # ledger.insert_at(paym, 1)
-    # print(ledger)
+        print("Que usuário usar?\n")
 
-    prods: dict[int, int] = {
-        #
-        0: 4,
-        2: 9,
-        4: 6,
-    }
+        print("1. Admin")
+        print("2. Cliente")
+        print("q. Sair")
 
-    paym: Payment = Payment("Me Myself", "aluno", "IA", 1020, prods)
-    print(paym)
-    print()
+        choice: str = input("\nEscolha uma opção: ").strip().lower()
 
-    if not process_sale(prods, ("", "aluno", "IA"), stock):
-        print("Tente novamente")
+        if choice == "1":
+            print("\n--- Modo Administrador ---")
+            is_admin = True
+        elif choice == "2":
+            is_admin = False
+            print("\n--- Bem-vindo, Cliente! ---")
+        elif choice == "q":
+            print("Encerrando o sistema...")
+            is_running = False
+            break
+        else:
+            print("Opção inválida! Escolha 1, 2 ou q.")
 
-    for i in range(6):
-        break
-        node = stock.dequeue()
-        print(f"Removed {node.data if node else 'nothing'}\n")
-        print(stock)
+    print("")
