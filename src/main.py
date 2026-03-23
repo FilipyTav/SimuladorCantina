@@ -62,7 +62,6 @@ if __name__ == "__main__":
             case Screen.ADMIN:
                 # TODO: print payments
                 # TODO: add to stock
-                # TODO: change stock product info
                 # TODO: show payment graph
                 # TODO: password verification
                 new_sc = menu_admin()

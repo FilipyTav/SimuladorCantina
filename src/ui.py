@@ -181,7 +181,6 @@ def menu_admin_stock(stock: PQueue) -> Screen:
             case "1":
                 print_prods_screen(stock)
                 return Screen.ADMIN_SEE_STOCK
-            # TODO: this
             case "2":
                 return Screen.ADMIN_UPDATE_STOCK
             case "q":
@@ -190,6 +189,61 @@ def menu_admin_stock(stock: PQueue) -> Screen:
                 return Screen.ADMIN_SEE_STOCK
 
     return Screen.BACK
+
+
+def modify_prod(p: Product) -> bool:
+    attributes: dict[str, str] = p.get_attributes()
+    while True:
+        screen_clear()
+        print("\n" + "=" * 30)
+        p.print_admin()
+        print("=" * 30)
+
+        options = list(attributes.keys())
+        menu_opcoes = " | ".join([f"{i}. {op}" for i, op in enumerate(options)])
+
+        print(f"\nModificando: {p.name} (ID: {p.id})")
+        print(f"{menu_opcoes} | C. Cancelar | S. Próximo/Sair")
+
+        op: str = input("Selecione o campo: ").strip().lower()
+        new_val: str = ""
+
+        match op:
+            case "c":
+                return False
+
+            case "s":
+                break
+
+            # Nome
+            case "0":
+                new_val = input("Novo nome: ")
+                p.set_name(new_val)
+
+            # Preço de compra
+            case "1":
+                p.set_buy_price(get_valid_price("Novo preço de compra(R$): "))
+
+            # Preço de venda
+            case "2":
+                p.set_sell_price(get_valid_price("Novo preço de venda(R$): "))
+
+            # 3. Data compra
+            case "3":
+                p.set_dtbuy(get_valid_date("Nova data de compra: "))
+
+            # 4. Data validade
+            case "4":
+                p.set_dtexp(get_valid_date("Nova data de validade: "))
+
+            # Quantidade
+            case "5":
+                p.set_amount(get_valid_int("Nova quantidade: ", min=0, max=999999))
+
+            case _:
+                continue
+
+    return True
 
 
 def menu_admin_update_stock(stock: PQueue) -> Screen:
@@ -232,60 +286,9 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
             print(f"[!] Erro: Os seguintes IDs de produto não existem: {missing} [!]\n")
             continue
 
-        attributes: dict[str, str] = prods[0].get_attributes()
-
         for p in prods:
-            while True:
-                screen_clear()
-                print("\n" + "=" * 30)
-                p.print_admin()
-                print("=" * 30)
-
-                options = list(attributes.keys())
-                menu_opcoes = " | ".join([f"{i}. {op}" for i, op in enumerate(options)])
-
-                print(f"\nModificando: {p.name} (ID: {p.id})")
-                print(f"{menu_opcoes} | C. Cancelar | S. Próximo/Sair")
-
-                op: str = input("Selecione o campo: ").strip().lower()
-                new_val: str = ""
-
-                match op:
-                    case "c":
-                        return Screen.ADMIN_UPDATE_STOCK
-
-                    case "s":
-                        break
-
-                    # Nome
-                    case "0":
-                        new_val = input("Novo nome: ")
-                        p.set_name(new_val)
-
-                    # Preço de compra
-                    case "1":
-                        p.set_buy_price(get_valid_price("Novo preço de compra(R$): "))
-
-                    # Preço de venda
-                    case "2":
-                        p.set_sell_price(get_valid_price("Novo preço de venda(R$): "))
-
-                    # 3. Data compra
-                    case "3":
-                        p.set_dtbuy(get_valid_date("Nova data de compra: "))
-
-                    # 4. Data validade
-                    case "4":
-                        p.set_dtexp(get_valid_date("Nova data de validade: "))
-
-                    # Quantidade
-                    case "5":
-                        p.set_amount(
-                            get_valid_int("Nova quantidade: ", min=0, max=999999)
-                        )
-
-                    case _:
-                        continue
+            if not modify_prod(p):
+                break
 
         print("\nTodas as edições da lista foram concluídas.\n")
 
