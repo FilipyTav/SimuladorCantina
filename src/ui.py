@@ -272,11 +272,18 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
                         if cents < 0:
                             print("[!] O preço não pode ser negativo. [!]")
                         else:
-                            p.set_sell_price(int(new_val))
+                            p.set_buy_price(int(new_val))
 
                     # Preço de venda
                     case "2":
-                        break
+                        new_val = (
+                            input("Novo preço de venda (R$): ").strip().replace(",", "")
+                        )
+                        cents: int = int(new_val)
+                        if cents < 0:
+                            print("[!] O preço não pode ser negativo. [!]")
+                        else:
+                            p.set_sell_price(int(new_val))
 
                     # 3. Data compra
                     case "3":
