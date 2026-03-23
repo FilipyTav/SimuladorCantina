@@ -93,7 +93,7 @@ def process_sale(
             return
 
     if needs_confirmation:
-        print(f"Total: {total}")
+        print(f"Total: R${total/100:.2f}".replace(".", ","))
         print("Confirmar compra? (s/n)")
         confirmed: str = input("> ").strip().lower()
         if confirmed == "n":
