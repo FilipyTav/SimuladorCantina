@@ -11,13 +11,22 @@ from pqueue import PQueue
 from enum import Enum, auto
 import os
 
+from product import Product
+
 
 def screen_clear():
     os.system("cls" if os.name == "nt" else "clear")
 
 
 class Screen(Enum):
+    # Admin
+    # ------------------------
     ADMIN = auto()
+    ADMIN_BUY = auto()
+    ADMIN_SEE_STOCK = auto()
+    ADMIN_SEE_PAYMENTS = auto()
+    ADMIN_REPORTS = auto()
+    # ------------------------
 
     # Client
     # ------------------------
@@ -60,7 +69,105 @@ def main_menu() -> Screen:
 
 
 def menu_admin() -> Screen:
+    print("\n" + "=" * 40)
+    print("--- PAINEL ADMINISTRADOR ---")
+    print("=" * 40)
+
+    print("Como prosseguir?\n")
+    print(
+        f"0. Voltar\n"
+        f"1. Ver estoque\n"
+        f"2. Adicionar ao estoque\n"
+        f"3. Mostrar vendas\n"
+        f"4. Relatório de vendas\n"
+        f"Q. Sair\n"
+    )
+    choice: str = input("> ").strip().lower()
+
+    match choice:
+        case "q":
+            return Screen.EXIT
+
+        case "0":
+            return Screen.BACK
+
+        case "1":
+            return Screen.ADMIN_SEE_STOCK
+
+        case "2":
+            return Screen.ADMIN_BUY
+
+        case "3":
+            return Screen.ADMIN_SEE_PAYMENTS
+
+        case "4":
+            return Screen.ADMIN_REPORTS
+
+        case _:
+            return Screen.BACK
+
     return Screen.MAIN
+
+
+def menu_admin_buy(prods_available: PQueue) -> Screen:
+    print_prods_screen(prods_available)
+
+    while True:
+        print("Escolha o que deseja comprar.")
+        print("Formato: ID.quantidade, separados por espaço. Ex.: 0.2, 3.4")
+        print("E. Mostrar estoque")
+        print("B. Voltar ao menu anterior")
+        # (∞)
+        choice: str = input("> ").strip()
+        if choice == "b":
+            return Screen.BACK
+        elif choice == "e":
+            print_prods_screen(prods_available)
+            return Screen.ADMIN_BUY
+        elif choice == "q":
+            return Screen.EXIT
+
+        try:
+            print()
+            parts: str = choice.replace(" ", "")
+            if not parts:
+                raise ValueError("Entrada vazia.")
+
+            s: list[str] = parts.split(",")
+            for item in s:
+                if "." not in item:
+                    raise ValueError(
+                        f"Item '{item}' está fora do formato ID.quantidade"
+                    )
+
+            prods_dict: dict[int, int] = {}
+            for p in s:
+                k, v = p.split(".")
+                prods_dict[int(k)] = int(v)
+
+            # Start here
+            products: list[Product] = prods_available.get_by_ids(set(prods_dict.keys()))
+            for p in products:
+                p.set_amount(p.get_amount() + prods_dict[p.get_id()])
+
+            print(products)
+            # payment: Payment | None = process_sale(
+            #     prods_dict, user_info, prods_available, True
+            # )
+            #
+            # if payment:
+            #     screen_clear()
+            #     print("Compra confirmada!")
+            #     payment.print_for_client()
+
+            print()
+        except ValueError:
+            print(
+                "[!] Entrada inválida. Use apenas números no formato ID.quantidade separados por vírgula. [!]"
+            )
+            print("[Exemplo correto: 1.5, 2.10]\n")
+
+    return Screen.CLIENT_BUY
 
 
 # Returns if the program should exit

@@ -7,6 +7,7 @@ from ui import (
     Screen,
     main_menu,
     menu_admin,
+    menu_admin_buy,
     menu_client,
     menu_client_buy,
     menu_client_get_info,
@@ -15,8 +16,12 @@ from ui import (
 
 if __name__ == "__main__":
     stock: PQueue = PQueue()
-    for _ in range(5):
-        stock.enqueue(gen_product())
+    prods_available: PQueue = PQueue()
+    for i in range(5):
+        prod: Product = gen_product()
+        if i < 3:
+            stock.enqueue(prod)
+        prods_available.enqueue(prod)
 
     ledger: PaymentLedger = PaymentLedger()
     for _ in range(5):
@@ -44,17 +49,27 @@ if __name__ == "__main__":
         new_sc: Screen = screen
 
         screen_clear()
-        print(f"\t--------{screen}--------\t")
+        # print(f"\t--------{screen}--------\t")
+        print(history)
         match screen:
             case Screen.MAIN:
                 new_sc = main_menu()
 
+            # Admin
+            # ------------------------
             case Screen.ADMIN:
-                # TODO: password verification
                 # TODO: print payments
                 # TODO: add to stock
+                # TODO: show payment graph
+                # TODO: password verification
                 new_sc = menu_admin()
 
+            case Screen.ADMIN_BUY:
+                new_sc = menu_admin_buy(prods_available)
+            # ------------------------
+
+            # Client
+            # ------------------------
             case Screen.CLIENT:
                 if not client_info:
                     new_sc = Screen.CLIENT_ASK_INFO
@@ -68,6 +83,7 @@ if __name__ == "__main__":
             case Screen.CLIENT_BUY:
                 if client_info:
                     new_sc = menu_client_buy(stock, client_info)
+            # ------------------------
 
             case _:
                 print("This screen does not exist")
