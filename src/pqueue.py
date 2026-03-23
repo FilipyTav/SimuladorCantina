@@ -203,7 +203,7 @@ class PQueue:
             expiry_str: str = prod.date_expire.strftime("%d/%m/%Y")
 
             print(
-                f"--- {prod.name.upper()} ---\n"
+                f"-------- {prod.name.upper()} --------\n"
                 f"Preço:      {display_price}\n"
                 f"Validade:   {expiry_str}\n"
                 f"Quantidade: {prod.get_amount()} unidade(s)\n"

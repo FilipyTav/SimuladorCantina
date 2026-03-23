@@ -60,7 +60,7 @@ def menu_client() -> Screen:
     print("1. Ver estoque")
     print("q. Sair")
 
-    choice = input("\nEscolha uma opção: ")
+    choice: str = input("\nEscolha uma opção: ")
 
     match choice:
         case "0":
@@ -78,6 +78,28 @@ def menu_client() -> Screen:
 
 
 def menu_client_buy(stock: PQueue) -> Screen:
+    print("\n" + "=" * 40)
+    print("\t--- Estoque ---")
+    print("=" * 40)
     stock.print_for_client()
-    input()
+
+    print("Escolha o que deseja comprar.")
+    print("Formato: ID.quantidade, separados por espaço. Ex.: 0.2, 3.4")
+    print("Ou pressione 'b' para voltar ao menu anterior")
+
+    choice: str = input("> ").strip()
+    if choice == "b":
+        return Screen.BACK
+
+    choice = choice.replace(" ", "")
+    s: list[str] = choice.split(",")
+    prods: dict[int, int] = {}
+    for p in s:
+        k, v = p.split(".")
+        k = int(k)
+        v = int(v)
+        prods[k] = v
+
+    print(prods)
+
     return Screen.CLIENT_BUY
