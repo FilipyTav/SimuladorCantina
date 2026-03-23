@@ -184,4 +184,4 @@ def menu_client_get_info() -> tuple[Screen, userInfo]:
     idx_course = get_valid_index("> ", list(COURSES_AVAILABLE))
     tp_course = COURSES_AVAILABLE[idx_course]
 
-    return (Screen.CLIENT, (name, tp_usr, tp_course))
+    return (Screen.BACK, (name, tp_usr, tp_course))
