@@ -311,7 +311,7 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
 
                     # 4. Data validade
                     case "4":
-                        break
+                        p.set_dtexp(get_valid_date("Nova data de validade: "))
 
                     # Quantidade
                     case "5":
