@@ -62,9 +62,43 @@ class Product:
     def get_sell_price(self) -> int:
         return self.price_sell
 
+    def print_admin(self) -> None:
+        p_buy: str = f"{self.price_buy / 100:.2f}".replace(".", ",")
+        p_sell: str = f"{self.price_sell / 100:.2f}".replace(".", ",")
+
+        # Formatação de datas
+        d_buy = self.date_buy.strftime("%d/%m/%Y")
+        d_exp = self.date_expire.strftime("%d/%m/%Y")
+
+        markers: int = 50
+
+        print(
+            f"{'-' * markers}\n"
+            f"Produto:      {self.name}\n"
+            f"ID:           {self.id}\n"
+            f"Qtd:          {self.amount}\n"
+            f"{'-' * markers}\n"
+            f"Preço Venda:  R${p_sell}\n"
+            f"Preço Compra: R${p_buy}\n"
+            f"{'-' * markers}\n"
+            f"Comprado em:  {d_buy}\n"
+            f"Vence em:     {d_exp}\n"
+            f"{'-' * markers}"
+        )
+
+    def get_attributes(self) -> dict[str, str]:
+        return {
+            "Nome": "name",
+            "Preço de compra": "price_buy",
+            "Preço de venda": "price_sell",
+            "Data compra": "date_buy",
+            "Data validade": "date_expire",
+            "Quantidade": "amount",
+        }
+
     def __repr__(self) -> str:
         # return f"[{self.name} | Exp: {self.date_expire}]"
         # return f"[{self.date_expire}]"
-        return f"[{self.name} - {self.id} - {self.amount}]"
+        # return f"[{self.name} - {self.id} - {self.amount}]"
         # return f"[{self.name} | Price: {self.price_buy}]"
-        # return f"[{self.name} | Am: {self.amount}]"
+        return f"[{self.name} | Am: {self.amount}]"

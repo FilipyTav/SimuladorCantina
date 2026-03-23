@@ -9,6 +9,7 @@ from ui import (
     menu_admin,
     menu_admin_buy,
     menu_admin_stock,
+    menu_admin_update_stock,
     menu_client,
     menu_client_buy,
     menu_client_get_info,
@@ -71,6 +72,9 @@ if __name__ == "__main__":
 
             case Screen.ADMIN_SEE_STOCK:
                 new_sc = menu_admin_stock(prods_available)
+
+            case Screen.ADMIN_UPDATE_STOCK:
+                new_sc = menu_admin_update_stock(prods_available)
             # ------------------------
 
             # Client

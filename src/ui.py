@@ -185,6 +185,74 @@ def menu_admin_stock(stock: PQueue) -> Screen:
                 return Screen.ADMIN_UPDATE_STOCK
             case "q":
                 return Screen.EXIT
+            case _:
+                return Screen.ADMIN_SEE_STOCK
+
+    return Screen.BACK
+
+
+def menu_admin_update_stock(stock: PQueue) -> Screen:
+    print_prods_screen(stock)
+
+    while True:
+        print(
+            f"Escolha os IDs dos produtos que deseja modificar, separados pro vírgula:"
+        )
+
+        choice: str = input("> ").strip()
+
+        if not choice:
+            print("[!] Erro: Você deve digitar ao menos um ID. [!]\n")
+            continue
+
+        match choice:
+            case "b":
+                return Screen.BACK
+            case "q":
+                return Screen.EXIT
+
+        ids: list[int] = []
+        try:
+            ids = [int(s.strip()) for s in choice.split(",") if s.strip()]
+
+            if not ids:
+                raise ValueError
+
+        except ValueError:
+            print(
+                "[!] Erro: Digite apenas NÚMEROS separados por vírgula (ex: 1, 2, 5)."
+            )
+
+        prods: list[Product] = stock.get_by_ids(set(ids))
+
+        if len(prods) != len(ids):
+            missing: set[int] = set(ids) - {pr.get_id() for pr in prods}
+            print(f"[!] Erro: Os seguintes IDs de produto não existem: {missing} [!]\n")
+            continue
+
+        attributes: dict[str, str] = prods[0].get_attributes()
+
+        for p in prods:
+            while True:
+                print("\n" + "=" * 30)
+                p.print_admin()
+                print("=" * 30)
+
+                options = list(attributes.keys())
+                menu_opcoes = " | ".join([f"{i}. {op}" for i, op in enumerate(options)])
+
+                print(f"\nModificando: {p.name} (ID: {p.id})")
+                print(f"{menu_opcoes} | S. Próximo/Sair")
+
+                op = input("Selecione o campo: ").strip().lower()
+
+                if op == "s":
+                    break
+
+
+        print("\nTodas as edições da lista foram concluídas.\n")
+
+        return Screen.ADMIN_UPDATE_STOCK
 
     return Screen.BACK
 
