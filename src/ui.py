@@ -1,4 +1,4 @@
-from payment import process_sale
+from payment import Payment, process_sale
 from pqueue import PQueue
 from enum import Enum, auto
 import os
@@ -100,6 +100,8 @@ def menu_client_buy(stock: PQueue) -> Screen:
         elif choice == "e":
             print_prods_screen(stock)
             return Screen.CLIENT_BUY
+        elif choice == "q":
+            return Screen.EXIT
 
         try:
             print()
@@ -119,7 +121,15 @@ def menu_client_buy(stock: PQueue) -> Screen:
                 k, v = p.split(".")
                 prods[int(k)] = int(v)
 
-            process_sale(prods, ("TTTTTTTT", "aluno", "IA"), stock)
+            payment: Payment | None = process_sale(
+                prods, ("TTTTTTTT", "aluno", "IA"), stock, True
+            )
+
+            if payment:
+                screen_clear()
+                print("Compra confirmada!")
+                payment.print_for_client()
+
             print()
         except ValueError:
             print(

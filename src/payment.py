@@ -33,6 +33,27 @@ class Payment:
         self.items: dict[int, int] = items
         self.dttime: datetime = dttime
 
+    def get_price_formatted(self) -> str:
+        return f"{self.value / 100:.2f}".replace(".", ",")
+
+    def print_for_client(self) -> None:
+        dt_formatted = self.dttime.strftime("%d/%m/%Y - %H:%M")
+
+        title: str = "COMPROVANTE DE VENDA"
+        markers: int = 25
+
+        print(
+            f"\n" + "=" * markers,
+            f"{title}",
+            f"=" * markers + "\n",
+            f"Cliente: {self.name}\n",
+            f"Data:    {dt_formatted}\n",
+            f"-" * 30 + "\n",
+            f"Total:   R${self.get_price_formatted()}\n",
+            f"Itens:   {self.items}",
+            f"\n" + "=" * (markers * 2 + len(title) + 2) + "\n",
+        )
+
     def __repr__(self) -> str:
         return f"[{self.name} - {self.value}]"
 
@@ -46,7 +67,10 @@ class Payment:
 
 
 def process_sale(
-    p: dict[int, int], client_info: tuple[str, TypeUser, TypeCourse], stock: PQueue
+    p: dict[int, int],
+    client_info: tuple[str, TypeUser, TypeCourse],
+    stock: PQueue,
+    needs_confirmation: bool = False,
 ) -> Payment | None:
     prods: list[Product] = stock.get_by_ids(set(p.keys()))
     # If unavailable ID
@@ -60,20 +84,27 @@ def process_sale(
     # Check stock
     for prod in prods:
         amount = p[prod.id]
+        total += prod.get_sell_price() * amount
         if amount > prod.get_amount():
             print(
                 f"ID: {prod.get_id()}({prod.get_name()}) tem somente {prod.get_amount()} unidade(s) em estoque."
             )
             return
 
+    if needs_confirmation:
+        print(f"Total: {total}")
+        print("Confirmar compra? (s/n)")
+        confirmed: str = input("> ").strip().lower()
+        if confirmed == "n":
+            print("\nCompra cancelada!")
+            return None
+        elif confirmed == "s":
+            pass
+
     # Update stock
     for prod in prods:
         amount = p[prod.id]
         prod.set_amount(prod.get_amount() - amount)
-
-        total += prod.get_sell_price() * amount
-
-    print(f"total: {total}")
 
     name, category, course = client_info
     return Payment(
