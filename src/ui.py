@@ -231,6 +231,7 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
             print(f"[!] Erro: Os seguintes IDs de produto não existem: {missing} [!]\n")
             continue
 
+        # 0. Nome | 1. Preço de compra | 2. Preço de venda | 3. Data compra | 4. Data validade | 5. Quantidade
         attributes: dict[str, str] = prods[0].get_attributes()
 
         for p in prods:
@@ -243,12 +244,19 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
                 menu_opcoes = " | ".join([f"{i}. {op}" for i, op in enumerate(options)])
 
                 print(f"\nModificando: {p.name} (ID: {p.id})")
-                print(f"{menu_opcoes} | S. Próximo/Sair")
+                print(f"{menu_opcoes} | C. Cancelar | S. Próximo/Sair")
 
                 op = input("Selecione o campo: ").strip().lower()
 
-                if op == "s":
-                    break
+                match op:
+                    case "c":
+                        return Screen.ADMIN_UPDATE_STOCK
+
+                    case "s":
+                        break
+
+                    case _:
+                        continue
 
         print("\nTodas as edições da lista foram concluídas.\n")
 
