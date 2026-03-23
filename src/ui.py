@@ -2,9 +2,7 @@ from payment import (
     COURSES_AVAILABLE,
     USERS_CATEGORIES,
     Payment,
-    typeCourse,
     process_sale,
-    typeUser,
     userInfo,
 )
 from pqueue import PQueue
@@ -12,7 +10,7 @@ from enum import Enum, auto
 import os
 
 from product import Product
-from utils.input import get_valid_date, get_valid_int, get_valid_price
+from utils.input import get_valid_date, get_valid_index, get_valid_int, get_valid_price
 
 
 def screen_clear():
@@ -70,6 +68,8 @@ def main_menu() -> Screen:
             return Screen.MAIN
 
 
+# Admin
+# ------------------------------------------------
 def menu_admin() -> Screen:
     print("\n" + "=" * 40)
     print("--- PAINEL ADMINISTRADOR ---")
@@ -297,7 +297,11 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
     return Screen.BACK
 
 
-# Returns if the program should exit
+# ------------------------------------------------
+
+
+# Client
+# ------------------------------------------------
 def menu_client(client_name: str) -> Screen:
     print("\n" + "=" * 40)
     print("\t--- CANTINA ---")
@@ -324,16 +328,6 @@ def menu_client(client_name: str) -> Screen:
         case _:
             print("Essa não é uma opção. Tente novamente")
             return Screen.CLIENT
-
-
-def print_prods_screen(stock: PQueue, for_admin=False) -> None:
-    print("\n" + "=" * 40)
-    print("\t--- Estoque ---")
-    print("=" * 40)
-    if for_admin:
-        stock.print_for_admin()
-    else:
-        stock.print_for_client()
 
 
 def menu_client_buy(stock: PQueue, user_info: userInfo) -> Screen:
@@ -389,17 +383,6 @@ def menu_client_buy(stock: PQueue, user_info: userInfo) -> Screen:
     return Screen.CLIENT_BUY
 
 
-def get_valid_index(inp: str, options: list) -> int:
-    while True:
-        try:
-            choice = int(input(inp))
-            if 0 <= choice < len(options):
-                return choice
-            print(f"\n[!] Erro: Escolha um número entre 0 e {len(options) - 1}. [!]\n")
-        except ValueError:
-            print("\n[!] Erro: Digite apenas números. [!]\n")
-
-
 def menu_client_get_info() -> tuple[Screen, userInfo]:
     print("\n--- Cadastro de Cliente ---")
 
@@ -422,3 +405,21 @@ def menu_client_get_info() -> tuple[Screen, userInfo]:
     tp_course = COURSES_AVAILABLE[idx_course]
 
     return (Screen.BACK, (name, tp_usr, tp_course))
+
+
+# ------------------------------------------------
+
+
+# Utils
+# ------------------------------------------------
+def print_prods_screen(stock: PQueue, for_admin=False) -> None:
+    print("\n" + "=" * 40)
+    print("\t--- Estoque ---")
+    print("=" * 40)
+    if for_admin:
+        stock.print_for_admin()
+    else:
+        stock.print_for_client()
+
+
+# ------------------------------------------------

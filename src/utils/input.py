@@ -64,3 +64,14 @@ def get_valid_int(label: str, min: int = 0, max: int = 10) -> int:
 
         except ValueError:
             print("\n[!] Formato inválido. Digite apenas um número.\n")
+
+
+def get_valid_index(inp: str, options: list) -> int:
+    while True:
+        try:
+            choice = int(input(inp))
+            if 0 <= choice < len(options):
+                return choice
+            print(f"\n[!] Erro: Escolha um número entre 0 e {len(options) - 1}. [!]\n")
+        except ValueError:
+            print("\n[!] Erro: Digite apenas números. [!]\n")
