@@ -12,7 +12,7 @@ from enum import Enum, auto
 import os
 
 from product import Product
-from utils.input import get_valid_date
+from utils.input import get_valid_date, get_valid_price
 
 
 def screen_clear():
@@ -264,27 +264,11 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
 
                     # Preço de compra
                     case "1":
-                        new_val = (
-                            input("Novo preço de compra (R$): ")
-                            .strip()
-                            .replace(",", "")
-                        )
-                        cents: int = int(new_val)
-                        if cents < 0:
-                            print("[!] O preço não pode ser negativo. [!]")
-                        else:
-                            p.set_buy_price(int(new_val))
+                        p.set_buy_price(get_valid_price("Novo preço de compra(R$): "))
 
                     # Preço de venda
                     case "2":
-                        new_val = (
-                            input("Novo preço de venda (R$): ").strip().replace(",", "")
-                        )
-                        cents: int = int(new_val)
-                        if cents < 0:
-                            print("[!] O preço não pode ser negativo. [!]")
-                        else:
-                            p.set_sell_price(int(new_val))
+                        p.set_sell_price(get_valid_price("Novo preço de venda(R$): "))
 
                     # 3. Data compra
                     case "3":
