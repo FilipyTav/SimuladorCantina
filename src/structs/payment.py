@@ -21,21 +21,21 @@ class Payment:
         dttime: datetime = datetime.now(),
     ) -> None:
         # Client info
-        self.name: str = name
-        self.category: TypeUser = category
-        self.course: TypeCourse = course
+        self.__name: str = name
+        self.__category: TypeUser = category
+        self.__course: TypeCourse = course
 
         # In cents
-        self.value: int = value
+        self.__value: int = value
 
-        self.items: dict[int, int] = items
-        self.dttime: datetime = dttime
+        self.__items: dict[int, int] = items
+        self.__dttime: datetime = dttime
 
     def get_price_formatted(self) -> str:
-        return f"{self.value / 100:.2f}".replace(".", ",")
+        return f"{self.__value / 100:.2f}".replace(".", ",")
 
     def print_for_client(self) -> None:
-        dt_formatted = self.dttime.strftime("%d/%m/%Y - %H:%M")
+        dt_formatted = self.__dttime.strftime("%d/%m/%Y - %H:%M")
 
         title: str = "COMPROVANTE DE VENDA"
         markers: int = 25
@@ -44,47 +44,47 @@ class Payment:
             f"\n" + "=" * markers,
             f"{title}",
             f"=" * markers + "\n",
-            f"Cliente: {self.name}\n",
+            f"Cliente: {self.__name}\n",
             f"Data:    {dt_formatted}\n",
             f"-" * 30 + "\n",
             f"Total:   R${self.get_price_formatted()}\n",
-            f"Itens:   {self.items}",
+            f"Itens:   {self.__items}",
             f"\n" + "=" * (markers * 2 + len(title) + 2) + "\n",
         )
 
     # Name
     def get_client_name(self) -> str:
-        return self.name
+        return self.__name
 
     # User type
     def get_client_category(self) -> TypeUser:
-        return self.category
+        return self.__category
 
     # User course
     def get_client_course(self) -> TypeCourse:
-        return self.course
+        return self.__course
 
     # Value
     def get_value(self) -> int:
-        return self.value
+        return self.__value
 
     # Items
     def get_items(self) -> dict[int, int]:
-        return self.items
+        return self.__items
 
     # Datetime
     def get_dttime(self) -> datetime:
-        return self.dttime
+        return self.__dttime
 
     def __repr__(self) -> str:
-        return f"[{self.name} - {self.value}]"
+        return f"[{self.__name} - {self.__value}]"
 
     def __str__(self):
         return (
-            f"Pagamento de {self.name} ({self.category}) - "
-            f"Curso: {self.course} | Valor: R${self.value / 100:.2f} | "
-            f"Data: {self.dttime.strftime('%d/%m/%Y %H:%M')} | "
-            f"Items: {self.items}"
+            f"Pagamento de {self.__name} ({self.__category}) - "
+            f"Curso: {self.__course} | Valor: R${self.__value / 100:.2f} | "
+            f"Data: {self.__dttime.strftime('%d/%m/%Y %H:%M')} | "
+            f"Items: {self.__items}"
         )
 
 

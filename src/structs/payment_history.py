@@ -127,13 +127,13 @@ class PaymentLedger:
 
                 valor_fmt = f"R$ {p.get_value() / 100:>8.2f}".replace(".", ",")
 
-                total_itens = sum(p.get_items().values())
+                total_itens: int = sum(p.get_items().values())
 
                 print(
                     f"{dt_fmt:<18} | {p.get_client_name()[:15]:<15} | {p.get_client_course()[:10]:<10} | {p.get_client_category():<10} | {valor_fmt}"
                 )
 
-                total += p.value
+                total += p.get_value()
 
             current = current.next
 
