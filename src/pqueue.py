@@ -77,7 +77,7 @@ class PQueue:
         new_node: PNode = PNode(product)
 
         # Empty
-        if self.count == 0 or not (self.head and self.tail):
+        if self.is_empty():
             self.head = self.tail = new_node
             self.count += 1
             self.ids.append(product.get_id())
@@ -119,7 +119,7 @@ class PQueue:
         return True
 
     def insert_before(self, p: Product, node: PNode) -> None:
-        if not (self.head and self.tail) or node == self.head:
+        if self.is_empty() or node == self.head:
             self.insert_first(p)
             return
 
@@ -137,7 +137,7 @@ class PQueue:
         self.ids.append(p.get_id())
 
     def insert_after(self, p: Product, node: PNode) -> None:
-        if not (self.head and self.tail):
+        if self.is_empty():
             self.insert_first(p)
             return
         if node == self.tail:
@@ -163,6 +163,9 @@ class PQueue:
     def insert_last(self, p: Product) -> bool:
         return self.insert_at(p, self.count)
 
+    def is_empty(self) -> bool:
+        return not (self.head and self.tail) or self.count <= 0
+
     def set_product_amount(self, pname: str, amount: int) -> bool:
         prod: Product | None = self.get_by_name(pname)
         if not prod:
@@ -172,7 +175,7 @@ class PQueue:
         return True
 
     def get_by_name(self, pname: str) -> Product | None:
-        if not (self.head and self.tail):
+        if self.is_empty():
             return
 
         current: PNode = self.head
@@ -183,7 +186,7 @@ class PQueue:
             current = current.next  # type: ignore[reportOptionalMemberAccess]
 
     def get_by_ids(self, ids: set[int]) -> list[Product]:
-        if not (self.head and self.tail):
+        if self.is_empty():
             return []
 
         prods: list[Product] = []
@@ -199,7 +202,7 @@ class PQueue:
         return prods
 
     def print_for_admin(self) -> None:
-        if not (self.head and self.tail):
+        if self.is_empty():
             return
 
         current: PNode = self.head
@@ -225,7 +228,7 @@ class PQueue:
             current = current.next  # type: ignore[reportOptionalMemberAccess]
 
     def print_for_client(self) -> None:
-        if not (self.head and self.tail):
+        if self.is_empty():
             return
 
         current: PNode = self.head
