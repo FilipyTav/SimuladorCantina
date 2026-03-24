@@ -347,7 +347,9 @@ def menu_client(client_name: str) -> Screen:
             return Screen.CLIENT
 
 
-def menu_client_buy(stock: PQueue, user_info: userInfo) -> Screen:
+def menu_client_buy(
+    stock: PQueue, ledger: PaymentLedger, user_info: userInfo
+) -> Screen:
     print_prods_screen(stock)
 
     while True:
@@ -388,6 +390,7 @@ def menu_client_buy(stock: PQueue, user_info: userInfo) -> Screen:
             if payment:
                 screen_clear()
                 print("Compra confirmada!")
+                ledger.push(payment)
                 payment.print_for_client()
 
             print()

@@ -30,18 +30,6 @@ if __name__ == "__main__":
     for _ in range(5):
         ledger.push(gen_payment())
 
-    # print(stock)
-    #
-    # prods: dict[int, int] = {
-    #     #
-    #     0: 4,
-    #     2: 9,
-    #     4: 6,
-    # }
-    #
-    # if not process_sale(prods, ("", "aluno", "IA"), stock):
-    #     print("Tente novamente")
-
     is_admin: bool = False
     is_running: bool = True
     # TODO: make it a custom stack struct
@@ -61,7 +49,6 @@ if __name__ == "__main__":
             # Admin
             # ------------------------
             case Screen.ADMIN:
-                # TODO: print payments
                 # TODO: add to stock
                 # TODO: show payment graph
                 # TODO: password verification
@@ -94,7 +81,7 @@ if __name__ == "__main__":
 
             case Screen.CLIENT_BUY:
                 if client_info:
-                    new_sc = menu_client_buy(stock, client_info)
+                    new_sc = menu_client_buy(stock, ledger, client_info)
             # ------------------------
 
             case _:
