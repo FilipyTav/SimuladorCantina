@@ -43,6 +43,10 @@ class Screen(Enum):
     EXIT = auto()
     # ------------------------
 
+def print_main_options(back: bool = True, main: bool = True, stop: bool = True) -> None:
+    if back: print("B. Voltar ao menu anterior")
+    if main: print("M. Voltar ao menu inicial")
+    if stop: print("Q. Fechar programa")
 
 def main_menu() -> Screen:
     print("\n" + "=" * 40)
@@ -53,7 +57,8 @@ def main_menu() -> Screen:
 
     print("1. Admin")
     print("2. Cliente")
-    print("Q. Sair")
+    print()
+    print_main_options(back=False, main=False, stop=True)
 
     choice: str = input("\nEscolha uma opção: ").strip().lower()
 
@@ -78,32 +83,31 @@ def menu_admin() -> Screen:
 
     print("Como prosseguir?\n")
     print(
-        f"0. Voltar\n"
-        f"1. Ver estoque\n"
-        f"2. Adicionar ao estoque\n"
-        f"3. Mostrar vendas\n"
-        f"4. Relatório de vendas\n"
-        f"Q. Sair\n"
+        f"0. Ver estoque\n"
+        f"1. Adicionar ao estoque\n"
+        f"2. Mostrar vendas\n"
+        f"3. Relatório de vendas\n"
     )
+    print_main_options(back=True, main=False, stop=True)
     choice: str = input("> ").strip().lower()
 
     match choice:
         case "q":
             return Screen.EXIT
 
-        case "0":
+        case "b":
             return Screen.BACK
 
-        case "1":
+        case "0":
             return Screen.ADMIN_SEE_STOCK
 
-        case "2":
+        case "1":
             return Screen.ADMIN_BUY
 
-        case "3":
+        case "2":
             return Screen.ADMIN_SEE_PAYMENTS
 
-        case "4":
+        case "3":
             return Screen.ADMIN_REPORTS
 
         case _:
@@ -118,17 +122,20 @@ def menu_admin_buy(prods_available: PQueue, stock: PQueue) -> Screen:
     while True:
         print("Escolha o que deseja comprar.")
         print("Formato: ID.quantidade, separados por espaço. Ex.: 0.2, 3.4")
-        print("E. Mostrar produtos disponíveis")
-        print("B. Voltar ao menu anterior")
+        print("E. Mostrar produtos disponíveis\n")
+
+        print_main_options(back=True, main=True, stop=True)
         # (∞)
         choice: str = input("> ").strip()
         if choice == "b":
             return Screen.BACK
+        elif choice == "q":
+            return Screen.EXIT
+        elif choice == "m":
+            return Screen.MAIN
         elif choice == "e":
             print_prods_screen(prods_available)
             return Screen.ADMIN_BUY
-        elif choice == "q":
-            return Screen.EXIT
 
         try:
             print()
@@ -174,22 +181,24 @@ def menu_admin_stock(stock: PQueue) -> Screen:
 
         print(
             f"Escolha o que deseja fazer:\n"
-            f"0. Voltar ao menu anterior\n"
-            f"1. Mostrar estoque\n"
-            f"2. Modificar estoque\n"
+            f"0. Mostrar estoque\n"
+            f"1. Modificar estoque\n"
         )
+        print_main_options(back=True, main=True, stop=True)
 
         choice: str = input("> ").strip()
         match choice:
-            case "0":
+            case "b":
                 return Screen.BACK
-            case "1":
-                print_prods_screen(stock)
-                return Screen.ADMIN_SEE_STOCK
-            case "2":
-                return Screen.ADMIN_UPDATE_STOCK
+            case "m":
+                return Screen.MAIN
             case "q":
                 return Screen.EXIT
+            case "0":
+                print_prods_screen(stock)
+                return Screen.ADMIN_SEE_STOCK
+            case "1":
+                return Screen.ADMIN_UPDATE_STOCK
             case _:
                 return Screen.ADMIN_SEE_STOCK
 
@@ -200,12 +209,13 @@ def menu_admin_see_payments(ledger: PaymentLedger) -> Screen:
     while True:
         screen_clear()
         ledger.print_admin()
-        print(f"B. Voltar ao menu anterior")
+        print_main_options(back=True, main=True, stop=True)
         choice: str = input("> ").strip().lower()
         match choice:
             case "b":
                 return Screen.BACK
-
+            case "m":
+                return Screen.MAIN
             case "q":
                 return Screen.EXIT
 
@@ -321,19 +331,22 @@ def menu_admin_see_reports(ledger: PaymentLedger) -> Screen:
     while True:
         screen_clear()
         ledger.print_report()
-        print(f"B. Voltar ao menu anterior")
-        print(f"P. Salvar gráfico em arquivo")
+        print(f"P. Salvar gráfico em arquivo\n")
+        print_main_options(back=True, main=True, stop=True)
         choice: str = input("> ").strip().lower()
         match choice:
             case "b":
                 return Screen.BACK
+                
+            case "q":
+                return Screen.EXIT
+                
+            case "m":
+                return Screen.MAIN
 
             case "p":
                 ledger.save_report_graph()
                 continue
-
-            case "q":
-                return Screen.EXIT
 
         return Screen.BACK
     return Screen.BACK
