@@ -166,7 +166,6 @@ class PaymentLedger:
         self.display_sub_report("Quantidade por Item", data['by_item'], is_money=False)
         
         print("="*markers + "\n")
-        self.save_report_graph()
 
     def display_sub_report(self, title: str, mapping: dict, is_money: bool) -> None:
         if not mapping:

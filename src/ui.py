@@ -322,15 +322,21 @@ def menu_admin_see_reports(ledger: PaymentLedger) -> Screen:
         screen_clear()
         ledger.print_report()
         print(f"B. Voltar ao menu anterior")
+        print(f"P. Salvar gráfico em arquivo")
         choice: str = input("> ").strip().lower()
         match choice:
             case "b":
                 return Screen.BACK
 
+            case "p":
+                ledger.save_report_graph()
+                continue
+
             case "q":
                 return Screen.EXIT
 
         return Screen.BACK
+    return Screen.BACK
 
 # ------------------------------------------------
 
