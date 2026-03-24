@@ -364,20 +364,22 @@ def menu_client(client_name: str) -> Screen:
 
     print("Como prosseguir?\n")
     print("0. Voltar")
-    print("1. Ver estoque")
-    print("Q. Sair")
+    print("1. Ver estoque\n")
+    print_main_options(back=True, main=False, stop=True)
 
     choice: str = input("\nEscolha uma opção: ")
 
     match choice:
+        case "q":
+            return Screen.EXIT
+        case "b":
+            return Screen.BACK
+
         case "0":
             return Screen.BACK
 
         case "1":
             return Screen.CLIENT_BUY
-
-        case "q":
-            return Screen.EXIT
 
         case _:
             print("Essa não é uma opção. Tente novamente")
@@ -392,8 +394,8 @@ def menu_client_buy(
     while True:
         print("Escolha o que deseja comprar.")
         print("Formato: ID.quantidade, separados por espaço. Ex.: 0.2, 3.4")
-        print("E. Mostrar estoque")
-        print("B. Voltar ao menu anterior")
+        print("E. Mostrar estoque\n")
+        print_main_options(back=True, main=False, stop=True)
 
         choice: str = input("> ").strip()
         if choice == "b":
