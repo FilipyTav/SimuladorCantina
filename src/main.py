@@ -1,4 +1,4 @@
-from gen_dummy_data import gen_payment, gen_product
+from utils.gen_dummy_data import gen_payment, gen_product
 from menu_stack import MenuStack
 from payment import Payment, typeCourse, userInfo
 from payment_history import PaymentLedger
