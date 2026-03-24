@@ -121,7 +121,7 @@ def menu_admin_buy(prods_available: PQueue, stock: PQueue) -> Screen:
 
     while True:
         print("Escolha o que deseja comprar.")
-        print("Formato: ID.quantidade, separados por espaço. Ex.: 0.2, 3.4")
+        print("Formato: ID.quantidade, separados por espaço. Ex.: 0.2  3.4")
         print("E. Mostrar produtos disponíveis\n")
 
         print_main_options(back=True, main=True, stop=True)
@@ -393,7 +393,7 @@ def menu_client_buy(
 
     while True:
         print("Escolha o que deseja comprar.")
-        print("Formato: ID.quantidade, separados por espaço. Ex.: 0.2, 3.4")
+        print("Formato: ID.quantidade, separados por espaço. Ex.: 0.2 3.4")
         print("E. Mostrar estoque\n")
         print_main_options(back=True, main=False, stop=True)
 
@@ -408,11 +408,11 @@ def menu_client_buy(
 
         try:
             print()
-            parts: str = choice.replace(" ", "")
+            parts: str = choice
             if not parts:
                 raise ValueError("Entrada vazia.")
 
-            s: list[str] = parts.split(",")
+            s: list[str] = parts.split(" ")
             for item in s:
                 if "." not in item:
                     raise ValueError(
@@ -435,9 +435,9 @@ def menu_client_buy(
             print()
         except ValueError:
             print(
-                "[!] Entrada inválida. Use apenas números no formato ID.quantidade separados por vírgula. [!]"
+                "[!] Entrada inválida. Use apenas números no formato ID.quantidade separados por espaço. [!]"
             )
-            print("[Exemplo correto: 1.5, 2.10]\n")
+            print("[Exemplo correto: 1.5 2.10]\n")
 
     return Screen.CLIENT_BUY
 
