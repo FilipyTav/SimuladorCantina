@@ -1,16 +1,17 @@
+import os
+from enum import Enum, auto
+
 from structs.payment import (
     COURSES_AVAILABLE,
     USERS_CATEGORIES,
     Payment,
     process_sale,
-    userInfo,
 )
 from structs.payment_history import PaymentLedger
 from structs.pqueue import PQueue
-from enum import Enum, auto
-import os
-
 from structs.product import Product
+
+from utils.types import UserInfo
 from utils.input import get_valid_date, get_valid_index, get_valid_int, get_valid_price
 
 
@@ -43,10 +44,15 @@ class Screen(Enum):
     EXIT = auto()
     # ------------------------
 
+
 def print_main_options(back: bool = True, main: bool = True, stop: bool = True) -> None:
-    if back: print("B. Voltar ao menu anterior")
-    if main: print("M. Voltar ao menu inicial")
-    if stop: print("Q. Fechar programa")
+    if back:
+        print("B. Voltar ao menu anterior")
+    if main:
+        print("M. Voltar ao menu inicial")
+    if stop:
+        print("Q. Fechar programa")
+
 
 def main_menu() -> Screen:
     print("\n" + "=" * 40)
@@ -327,6 +333,7 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
 
     return Screen.BACK
 
+
 def menu_admin_see_reports(ledger: PaymentLedger) -> Screen:
     while True:
         screen_clear()
@@ -337,10 +344,10 @@ def menu_admin_see_reports(ledger: PaymentLedger) -> Screen:
         match choice:
             case "b":
                 return Screen.BACK
-                
+
             case "q":
                 return Screen.EXIT
-                
+
             case "m":
                 return Screen.MAIN
 
@@ -350,6 +357,7 @@ def menu_admin_see_reports(ledger: PaymentLedger) -> Screen:
 
         return Screen.BACK
     return Screen.BACK
+
 
 # ------------------------------------------------
 
@@ -387,7 +395,7 @@ def menu_client(client_name: str) -> Screen:
 
 
 def menu_client_buy(
-    stock: PQueue, ledger: PaymentLedger, user_info: userInfo
+    stock: PQueue, ledger: PaymentLedger, user_info: UserInfo
 ) -> Screen:
     print_prods_screen(stock)
 
@@ -442,7 +450,7 @@ def menu_client_buy(
     return Screen.CLIENT_BUY
 
 
-def menu_client_get_info() -> tuple[Screen, userInfo]:
+def menu_client_get_info() -> tuple[Screen, UserInfo]:
     print("\n--- Cadastro de Cliente ---")
 
     name = input("Qual seu nome?\n> ").strip()

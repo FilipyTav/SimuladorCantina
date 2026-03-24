@@ -1,31 +1,29 @@
-from typing import Literal, TypeAlias, get_args
+from typing import get_args
 from datetime import datetime
+
+from utils.types import TypeUser, TypeCourse, UserInfo
 
 from structs.pqueue import PQueue
 from structs.product import Product
 
-typeUser = Literal["aluno", "servidor", "professor"]
-typeCourse = Literal["IA", "ESG"]
-userInfo: TypeAlias = tuple[str, typeUser, typeCourse]
-
-USERS_CATEGORIES = get_args(typeUser)
-COURSES_AVAILABLE = get_args(typeCourse)
+USERS_CATEGORIES = get_args(TypeUser)
+COURSES_AVAILABLE = get_args(TypeCourse)
 
 
 class Payment:
     def __init__(
         self,
         name: str,
-        category: typeUser,
-        course: typeCourse,
+        category: TypeUser,
+        course: TypeCourse,
         value: int,
         items: dict[int, int],
         dttime: datetime = datetime.now(),
     ) -> None:
         # Client info
         self.name: str = name
-        self.category: typeUser = category
-        self.course: typeCourse = course
+        self.category: TypeUser = category
+        self.course: TypeCourse = course
 
         # In cents
         self.value: int = value
@@ -59,11 +57,11 @@ class Payment:
         return self.name
 
     # User type
-    def get_client_category(self) -> typeUser:
+    def get_client_category(self) -> TypeUser:
         return self.category
 
     # User course
-    def get_client_course(self) -> typeCourse:
+    def get_client_course(self) -> TypeCourse:
         return self.course
 
     # Value
@@ -92,7 +90,7 @@ class Payment:
 
 def process_sale(
     p: dict[int, int],
-    client_info: userInfo,
+    client_info: UserInfo,
     stock: PQueue,
     needs_confirmation: bool = False,
 ) -> Payment | None:

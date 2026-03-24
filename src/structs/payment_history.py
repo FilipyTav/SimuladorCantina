@@ -1,11 +1,13 @@
-from structs.payment import Payment, typeUser, typeCourse
 from typing import TypedDict
 import matplotlib.pyplot as plt
 
+from structs.payment import Payment
+from utils.types import TypeUser, TypeCourse
+
 
 class ReportData(TypedDict):
-    by_category: dict[typeUser, int]
-    by_course: dict[typeCourse, int]
+    by_category: dict[TypeUser, int]
+    by_course: dict[TypeCourse, int]
     by_item: dict[int, int]
     total_profit: int
     total_prods: int

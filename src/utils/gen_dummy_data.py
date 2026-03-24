@@ -2,13 +2,12 @@ from faker import Faker
 from datetime import timedelta
 import random
 
+from utils.types import TypeCourse, TypeUser
 from structs.product import Product
 from structs.payment import (
     COURSES_AVAILABLE,
     USERS_CATEGORIES,
     Payment,
-    typeCourse,
-    typeUser,
 )
 
 fake = Faker()
@@ -41,8 +40,8 @@ def gen_product() -> Product:
 
 
 def gen_payment() -> Payment:
-    category: typeUser = random.choice(USERS_CATEGORIES)
-    course: typeCourse = random.choice(COURSES_AVAILABLE)
+    category: TypeUser = random.choice(USERS_CATEGORIES)
+    course: TypeCourse = random.choice(COURSES_AVAILABLE)
 
     value_in_cents = random.randint(1000, 10000)
 
