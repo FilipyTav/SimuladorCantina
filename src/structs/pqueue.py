@@ -34,13 +34,13 @@ class PQueue:
 
         # First
         if not (self.__tail and self.__head) or (new_dtexp <= self.__head.data.get_dtexp()):  # type: ignore[reportOptionalMemberAccess]
-            self.insert_first(p)
+            self.__insert_first(p)
             return True
 
         # Last
         assert self.__tail.data
         if new_dtexp >= self.__tail.data.get_dtexp():
-            self.insert_last(p)
+            self.__insert_last(p)
             return True
 
         current: PNode = self.__head
@@ -48,7 +48,7 @@ class PQueue:
             assert current.next
             current = current.next
 
-        self.insert_before(p, current)
+        self.__insert_before(p, current)
         return True
 
     def dequeue(self) -> PNode | None:
@@ -69,7 +69,7 @@ class PQueue:
         return node
 
     # pos: [0, self.count]
-    def insert_at(self, product: Product, pos: int) -> bool:
+    def _insert_at(self, product: Product, pos: int) -> bool:
         if pos < 0 or pos > self.__count:
             print(f"Index out of range: {pos}, the list has {self.__count} element(s)")
             return False
@@ -83,6 +83,8 @@ class PQueue:
             self.__ids.append(product.get_id())
             return True
 
+        assert self.__head
+        assert self.__tail
         # new_node is now the head
         if pos == 0:
             new_node.next = self.__head
@@ -118,9 +120,9 @@ class PQueue:
         self.__ids.append(product.get_id())
         return True
 
-    def insert_before(self, p: Product, node: PNode) -> None:
+    def __insert_before(self, p: Product, node: PNode) -> None:
         if self.is_empty() or node == self.__head:
-            self.insert_first(p)
+            self.__insert_first(p)
             return
 
         new_node: PNode = PNode(p)
@@ -136,12 +138,12 @@ class PQueue:
         self.__count += 1
         self.__ids.append(p.get_id())
 
-    def insert_after(self, p: Product, node: PNode) -> None:
+    def __insert_after(self, p: Product, node: PNode) -> None:
         if self.is_empty():
-            self.insert_first(p)
+            self.__insert_first(p)
             return
         if node == self.__tail:
-            self.insert_last(p)
+            self.__insert_last(p)
             return
 
         new_node: PNode = PNode(p)
@@ -157,11 +159,11 @@ class PQueue:
         self.__count += 1
         self.__ids.append(p.get_id())
 
-    def insert_first(self, p: Product) -> bool:
-        return self.insert_at(p, 0)
+    def __insert_first(self, p: Product) -> bool:
+        return self._insert_at(p, 0)
 
-    def insert_last(self, p: Product) -> bool:
-        return self.insert_at(p, self.__count)
+    def __insert_last(self, p: Product) -> bool:
+        return self._insert_at(p, self.__count)
 
     def is_empty(self) -> bool:
         return not (self.__head and self.__tail)
@@ -178,7 +180,7 @@ class PQueue:
         if self.is_empty():
             return
 
-        current: PNode = self.__head
+        current: PNode | None = self.__head
         while current:
             assert current.data
             if current.data.get_name().lower() == pname.lower():
@@ -190,7 +192,7 @@ class PQueue:
             return []
 
         prods: list[Product] = []
-        current: PNode = self.__head
+        current: PNode | None = self.__head
         while current:
             assert current.data
             if current.data.get_id() in ids:
@@ -205,7 +207,7 @@ class PQueue:
         if self.is_empty():
             return
 
-        current: PNode = self.__head
+        current: PNode | None = self.__head
         while current:
             if not current.data:
                 break
@@ -231,7 +233,7 @@ class PQueue:
         if self.is_empty():
             return
 
-        current: PNode = self.__head
+        current: PNode | None = self.__head
         while current:
             if not current.data:
                 break
