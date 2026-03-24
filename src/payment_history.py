@@ -1,5 +1,6 @@
 from payment import Payment
 from typing import TypedDict
+from payment import typeUser, typeCourse
 import matplotlib.pyplot as plt
 
 
@@ -84,11 +85,17 @@ class PaymentLedger:
         val: int = p.get_value()
         prods: dict[int, int] = p.get_items()
 
-        self.report_info["by_category"][cat] = self.report_info["by_category"].get(cat, 0) + val
-        self.report_info["by_course"][course] = self.report_info["by_course"].get(course, 0) + val
+        self.report_info["by_category"][cat] = (
+            self.report_info["by_category"].get(cat, 0) + val
+        )
+        self.report_info["by_course"][course] = (
+            self.report_info["by_course"].get(course, 0) + val
+        )
 
         for pid, amount in prods.items():
-            self.report_info["by_item"][pid] = self.report_info["by_item"].get(pid, 0) + amount
+            self.report_info["by_item"][pid] = (
+                self.report_info["by_item"].get(pid, 0) + amount
+            )
 
         self.report_info["total_prods"] += sum(prods.values())
         self.report_info["total_profit"] += val
@@ -142,17 +149,17 @@ class PaymentLedger:
     def print_report(self) -> None:
         data: ReportData = self.report_info
         markers: int = 45
-        
+
         # --- Header ---
-        print("\n" + "="*markers)
+        print("\n" + "=" * markers)
         print(f"{'RELATÓRIO GERAL':^45}")
-        print("="*markers)
+        print("=" * markers)
 
         profit_formatted: str = f"R${data['total_profit'] / 100:,.2f}".replace(".", ",")
 
-        atv: int = 0
-        if data['total_transactions'] > 0:
-            atv = data['total_profit'] / data['total_transactions']
+        atv: float = 0
+        if data["total_transactions"] > 0:
+            atv = data["total_profit"] / data["total_transactions"]
         atv_fmt: str = f"{atv/100:,.2f}".replace(".", ",")
 
         print(f"    Renda Total:        {profit_formatted:>15}")
@@ -161,16 +168,18 @@ class PaymentLedger:
         print(f"    Renda média/venda:  {f'R${atv_fmt}':>15}")
         print("-" * markers)
 
-        self.display_sub_report("Renda por Categoria", data['by_category'], is_money=True)
-        self.display_sub_report("Renda por Curso", data['by_course'], is_money=True)
-        self.display_sub_report("Quantidade por Item", data['by_item'], is_money=False)
-        
-        print("="*markers + "\n")
+        self.display_sub_report(
+            "Renda por Categoria", data["by_category"], is_money=True
+        )
+        self.display_sub_report("Renda por Curso", data["by_course"], is_money=True)
+        self.display_sub_report("Quantidade por Item", data["by_item"], is_money=False)
+
+        print("=" * markers + "\n")
 
     def display_sub_report(self, title: str, mapping: dict, is_money: bool) -> None:
         if not mapping:
             return
-        
+
         print(f"\n{title}:")
         for key, val in mapping.items():
             val_fmt: str = f"{val/100:,.2f}".replace(".", ",")
@@ -179,34 +188,34 @@ class PaymentLedger:
 
     def save_report_graph(self, filename: str = "report.png") -> None:
         data: ReportData = self.report_info
-        
+
         # 3 subplots (1 row, 3 columns)
         fig, axs = plt.subplots(1, 3, figsize=(18, 6))
-        fig.suptitle('Relatório Geral de Vendas', fontsize=20, fontweight='bold')
+        fig.suptitle("Relatório Geral de Vendas", fontsize=20, fontweight="bold")
 
         # Category
-        cats = list(data['by_category'].keys())
-        cat_vals = [v / 100 for v in data['by_category'].values()] # Convert to Reais
-        axs[0].bar(cats, cat_vals, color='skyblue')
-        axs[0].set_title('Renda por Categoria (R$)')
-        axs[0].set_ylabel('Valor em R$')
+        cats = list(data["by_category"].keys())
+        cat_vals = [v / 100 for v in data["by_category"].values()]  # Convert to Reais
+        axs[0].bar(cats, cat_vals, color="skyblue")
+        axs[0].set_title("Renda por Categoria (R$)")
+        axs[0].set_ylabel("Valor em R$")
 
         # Course
-        courses = list(data['by_course'].keys())
-        course_vals = [v / 100 for v in data['by_course'].values()]
-        axs[1].bar(courses, course_vals, color='salmon')
-        axs[1].set_title('Renda por Curso (R$)')
+        courses = list(data["by_course"].keys())
+        course_vals = [v / 100 for v in data["by_course"].values()]
+        axs[1].bar(courses, course_vals, color="salmon")
+        axs[1].set_title("Renda por Curso (R$)")
 
         # Item
-        items = [f"ID {k}" for k in data['by_item'].keys()]
-        item_vals = list(data['by_item'].values())
-        axs[2].bar(items, item_vals, color='lightgreen')
-        axs[2].set_title('Quantidade por Item')
-        axs[2].set_ylabel('Unidades')
+        items = [f"ID {k}" for k in data["by_item"].keys()]
+        item_vals = list(data["by_item"].values())
+        axs[2].bar(items, item_vals, color="lightgreen")
+        axs[2].set_title("Quantidade por Item")
+        axs[2].set_ylabel("Unidades")
 
         # Layout adjustment to prevent labels from overlapping
         plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-        
+
         plt.savefig(filename)
         plt.close()
         print(f"Gráfico salvo com sucesso como: {filename}")

@@ -1,4 +1,5 @@
 from gen_dummy_data import gen_payment, gen_product
+from menu_stack import MenuStack
 from payment import Payment, typeCourse, userInfo
 from payment_history import PaymentLedger
 from pqueue import PQueue
@@ -33,15 +34,23 @@ if __name__ == "__main__":
 
     is_admin: bool = False
     is_running: bool = True
-    history: list[Screen] = [Screen.MAIN]
+
+    screen_history: MenuStack = MenuStack()
+    screen_history.push(Screen.MAIN)
+
     client_info: userInfo | None = None
-    while is_running and history:
-        screen: Screen = history[-1]
+    while is_running and not screen_history.is_empty():
+        screen: Screen | None = screen_history.pop()
+
+        if not screen:
+            break
+
         new_sc: Screen = screen
 
         screen_clear()
         # print(f"\t--------{screen}--------\t")
-        print(history)
+        print(screen_history)
+
         match screen:
             case Screen.MAIN:
                 new_sc = main_menu()
@@ -94,15 +103,16 @@ if __name__ == "__main__":
             continue
 
         elif new_sc == Screen.MAIN:
-            history = [Screen.MAIN]
+            screen_history.clear()
+            screen_history.push(Screen.MAIN)
 
         elif new_sc == Screen.EXIT:
             print("\nEncerrando o sistema...")
-            history.clear()
+            screen_history.clear()
 
         elif new_sc == Screen.BACK:
             print("Should go back")
-            history.pop()
+            screen_history.pop()
 
         else:
-            history.append(new_sc)
+            screen_history.push(new_sc)
