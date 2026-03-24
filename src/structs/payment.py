@@ -1,9 +1,8 @@
-# Crie estrutura de dados adequada para gerenciar cada pagamento realizado. Armazenar o nome de quem pagou, categoria ( aluno, servidor ou professor ), curso, valor pago, data e hora do pagamento.
 from typing import Literal, TypeAlias, get_args
 from datetime import datetime
 
-from pqueue import PQueue
-from product import Product
+from structs.pqueue import PQueue
+from structs.product import Product
 
 typeUser = Literal["aluno", "servidor", "professor"]
 typeCourse = Literal["IA", "ESG"]

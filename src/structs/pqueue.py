@@ -1,4 +1,4 @@
-from product import Product
+from structs.product import Product
 from datetime import date
 
 

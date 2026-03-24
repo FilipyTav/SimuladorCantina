@@ -1,16 +1,16 @@
-from payment import (
+from structs.payment import (
     COURSES_AVAILABLE,
     USERS_CATEGORIES,
     Payment,
     process_sale,
     userInfo,
 )
-from payment_history import PaymentLedger
-from pqueue import PQueue
+from structs.payment_history import PaymentLedger
+from structs.pqueue import PQueue
 from enum import Enum, auto
 import os
 
-from product import Product
+from structs.product import Product
 from utils.input import get_valid_date, get_valid_index, get_valid_int, get_valid_price
 
 

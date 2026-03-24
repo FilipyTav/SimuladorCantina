@@ -1,9 +1,9 @@
 from utils.gen_dummy_data import gen_payment, gen_product
-from menu_stack import MenuStack
-from payment import Payment, typeCourse, userInfo
-from payment_history import PaymentLedger
-from pqueue import PQueue
-from product import Product
+from structs.menu_stack import MenuStack
+from structs.payment import userInfo
+from structs.payment_history import PaymentLedger
+from structs.pqueue import PQueue
+from structs.product import Product
 from ui import (
     Screen,
     main_menu,

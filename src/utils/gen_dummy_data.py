@@ -2,8 +2,14 @@ from faker import Faker
 from datetime import timedelta
 import random
 
-from product import Product
-from payment import COURSES_AVAILABLE, USERS_CATEGORIES, Payment, typeCourse, typeUser
+from structs.product import Product
+from structs.payment import (
+    COURSES_AVAILABLE,
+    USERS_CATEGORIES,
+    Payment,
+    typeCourse,
+    typeUser,
+)
 
 fake = Faker()
 
@@ -45,6 +51,10 @@ def gen_payment() -> Payment:
         category=category,
         course=course,
         value=value_in_cents,
-        items={0: fake.random_int(1, 100), 1: fake.random_int(1, 100), 2: fake.random_int(1, 100)},
+        items={
+            0: fake.random_int(1, 100),
+            1: fake.random_int(1, 100),
+            2: fake.random_int(1, 100),
+        },
         # dttime=fake.date_time_between(start_date='-30d', end_date='now')
     )

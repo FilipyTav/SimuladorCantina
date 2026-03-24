@@ -1,6 +1,5 @@
-from payment import Payment
+from structs.payment import Payment, typeUser, typeCourse
 from typing import TypedDict
-from payment import typeUser, typeCourse
 import matplotlib.pyplot as plt
 
 
