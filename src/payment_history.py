@@ -22,7 +22,7 @@ class PaymentLedger:
         new_node: PaymentNode = PaymentNode(p)
 
         # Empty
-        if self.count == 0 or not (self.head and self.tail):
+        if self.is_empty():
             self.head = self.tail = new_node
             self.count += 1
             return True
@@ -34,6 +34,7 @@ class PaymentLedger:
             self.head = new_node
         # new_node is now the tail
         elif pos == self.count:
+            assert self.tail
             self.tail.next = new_node
 
             self.tail = new_node
@@ -54,6 +55,9 @@ class PaymentLedger:
 
         self.count += 1
         return True
+
+    def is_empty(self) -> bool:
+        return not (self.head and self.tail) or self.count == 0
 
     def push(self, p: Payment) -> bool:
         return self.insert_at(p, self.count)
