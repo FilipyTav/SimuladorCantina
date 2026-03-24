@@ -23,11 +23,15 @@ class PQueue:
         self.__count: int = 0
 
         # Avoid repetition
-        self.__ids: list[int] = []
+        # TODO: uncomment later
+        # self.__ids: list[int] = []
 
     def enqueue(self, p: Product) -> bool:
         """Returns false if product.id already in the queue"""
-        if p.get_id() in self.__ids:
+        # if p.get_id() in self.__ids:
+        #     return False
+
+        if self.__exists(p.get_id()):
             return False
 
         new_dtexp: date = p.date_expire
@@ -80,7 +84,7 @@ class PQueue:
         if self.is_empty():
             self.__head = self.__tail = new_node
             self.__count += 1
-            self.__ids.append(product.get_id())
+            # self.__ids.append(product.get_id())
             return True
 
         assert self.__head
@@ -117,7 +121,7 @@ class PQueue:
             current.prev = new_node
 
         self.__count += 1
-        self.__ids.append(product.get_id())
+        # self.__ids.append(product.get_id())
         return True
 
     def __insert_before(self, p: Product, node: PNode) -> None:
@@ -136,7 +140,7 @@ class PQueue:
         node.prev = new_node
 
         self.__count += 1
-        self.__ids.append(p.get_id())
+        # self.__ids.append(p.get_id())
 
     def __insert_after(self, p: Product, node: PNode) -> None:
         if self.is_empty():
@@ -157,13 +161,21 @@ class PQueue:
         node.next = new_node
 
         self.__count += 1
-        self.__ids.append(p.get_id())
+        # self.__ids.append(p.get_id())
 
     def __insert_first(self, p: Product) -> bool:
         return self._insert_at(p, 0)
 
     def __insert_last(self, p: Product) -> bool:
         return self._insert_at(p, self.__count)
+
+    def __exists(self, id: int) -> bool:
+        current = self.__head
+        while current:
+            if current.data.get_id() == id:  # type: ignore
+                return True
+            current = current.next
+        return False
 
     def is_empty(self) -> bool:
         return not (self.__head and self.__tail)
