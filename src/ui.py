@@ -118,7 +118,7 @@ def menu_admin_buy(prods_available: PQueue) -> Screen:
     while True:
         print("Escolha o que deseja comprar.")
         print("Formato: ID.quantidade, separados por espaço. Ex.: 0.2, 3.4")
-        print("E. Mostrar estoque")
+        print("E. Mostrar produtos disponíveis")
         print("B. Voltar ao menu anterior")
         # (∞)
         choice: str = input("> ").strip()
@@ -132,11 +132,11 @@ def menu_admin_buy(prods_available: PQueue) -> Screen:
 
         try:
             print()
-            parts: str = choice.replace(" ", "")
+            parts: str = choice
             if not parts:
                 raise ValueError("Entrada vazia.")
 
-            s: list[str] = parts.split(",")
+            s: list[str] = parts.split(" ")
             for item in s:
                 if "." not in item:
                     raise ValueError(
@@ -148,18 +148,19 @@ def menu_admin_buy(prods_available: PQueue) -> Screen:
                 k, v = p.split(".")
                 prods_dict[int(k)] = int(v)
 
-            # Start here
             products: list[Product] = prods_available.get_by_ids(set(prods_dict.keys()))
-            # TODO: add to stock
             for p in products:
                 p.set_amount(p.get_amount() + prods_dict[p.get_id()])
+                print(
+                    f"Item '{p.get_name()}' (ID: {p.get_id()}) -> +{prods_dict[p.get_id()]} unidade(s)"
+                )
 
             print()
         except ValueError:
             print(
-                "[!] Entrada inválida. Use apenas números no formato ID.quantidade separados por vírgula. [!]"
+                "[!] Entrada inválida. Use apenas números no formato ID.quantidade separados por espaço. [!]"
             )
-            print("[Exemplo correto: 1.5, 2.10]\n")
+            print("[Exemplo correto: 1.5 2.10]\n")
 
     return Screen.ADMIN_BUY
 
