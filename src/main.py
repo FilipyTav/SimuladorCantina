@@ -15,6 +15,7 @@ from ui import (
     menu_client_buy,
     menu_client_get_info,
     screen_clear,
+    menu_admin_see_reports,
 )
 
 if __name__ == "__main__":
@@ -64,6 +65,9 @@ if __name__ == "__main__":
 
             case Screen.ADMIN_SEE_PAYMENTS:
                 new_sc = menu_admin_see_payments(ledger)
+
+            case Screen.ADMIN_REPORTS:
+                new_sc = menu_admin_see_reports(ledger)
             # ------------------------
 
             # Client

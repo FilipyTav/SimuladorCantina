@@ -317,6 +317,20 @@ def menu_admin_update_stock(stock: PQueue) -> Screen:
 
     return Screen.BACK
 
+def menu_admin_see_reports(ledger: PaymentLedger) -> Screen:
+    while True:
+        screen_clear()
+        ledger.print_report()
+        print(f"B. Voltar ao menu anterior")
+        choice: str = input("> ").strip().lower()
+        match choice:
+            case "b":
+                return Screen.BACK
+
+            case "q":
+                return Screen.EXIT
+
+        return Screen.BACK
 
 # ------------------------------------------------
 

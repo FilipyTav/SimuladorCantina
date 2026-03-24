@@ -7,6 +7,7 @@ class ReportData(TypedDict):
     by_item: dict[int, int]
     total_profit: int
     total_prods: int
+    total_transactions: int
 
 
 class PaymentNode:
@@ -28,6 +29,7 @@ class PaymentLedger:
             "by_item": {},
             "total_profit": 0,
             "total_prods": 0,
+            "total_transactions": 0,
         }
 
     def insert_at(self, p: Payment, pos: int) -> bool:
@@ -80,14 +82,15 @@ class PaymentLedger:
         val: int = p.get_value()
         prods: dict[int, int] = p.get_items()
 
-        self.report_info["by_category"] = self.report_info["by_category"].get(cat, 0) + val
-        self.report_info["by_course"] = self.report_info["by_course"].get(course, 0) + val
+        self.report_info["by_category"][cat] = self.report_info["by_category"].get(cat, 0) + val
+        self.report_info["by_course"][course] = self.report_info["by_course"].get(course, 0) + val
 
         for pid, amount in prods.items():
-            self.report_info["by_item"][pid] = self.report_info["by_item"].get(item_id, 0) + amount
+            self.report_info["by_item"][pid] = self.report_info["by_item"].get(pid, 0) + amount
 
         self.report_info["total_prods"] += sum(prods.values())
         self.report_info["total_profit"] += val
+        self.report_info["total_transactions"] += 1
 
         return self.insert_at(p, self.count)
 
@@ -134,8 +137,44 @@ class PaymentLedger:
         print(f"{'TOTAL DE VENDAS:':>65} {self.count}")
         print("=" * markers + "\n")
 
+    # TODO: gen matplotlib graph
     def print_report(self) -> None:
-        return
+        data: ReportData = self.report_info
+        markers: int = 45
+        
+        # --- Header ---
+        print("\n" + "="*markers)
+        print(f"{'RELATÓRIO GERAL':^45}")
+        print("="*markers)
+
+        profit_formatted: str = f"R${data['total_profit'] / 100:,.2f}".replace(".", ",")
+
+        atv: int = 0
+        if data['total_transactions'] > 0:
+            atv = data['total_profit'] / data['total_transactions']
+        atv_fmt: str = f"{atv/100:,.2f}".replace(".", ",")
+
+        print(f"    Renda Total:        {profit_formatted:>15}")
+        print(f"    Unidades vendidas:  {data['total_prods']:>15}")
+        print(f"    Transações:         {data['total_transactions']:>15}")
+        print(f"    Renda média/venda:  {f'R${atv_fmt}':>15}")
+        print("-" * markers)
+
+        self.display_sub_report("Renda por Categoria", data['by_category'], is_money=True)
+        self.display_sub_report("Renda por Curso", data['by_course'], is_money=True)
+        self.display_sub_report("Quantidade por Item", data['by_item'], is_money=False)
+        
+        print("="*markers + "\n")
+
+    def display_sub_report(self, title: str, mapping: dict, is_money: bool) -> None:
+        if not mapping:
+            return
+        
+        print(f"\n{title}:")
+        for key, val in mapping.items():
+            val_fmt: str = f"{val/100:,.2f}".replace(".", ",")
+            display_val = f"R${val_fmt}" if is_money else str(val)
+            print(f"  • {str(key).upper():<20} : {display_val:>15}")
 
     def __repr__(self) -> str:
         if not self.head:
