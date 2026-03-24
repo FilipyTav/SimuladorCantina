@@ -1,4 +1,12 @@
 from payment import Payment
+from typing import TypedDict
+
+class ReportData(TypedDict):
+    by_category: dict[typeUser, int]
+    by_course: dict[typeCourse, int]
+    by_item: dict[int, int]
+    total_profit: int
+    total_prods: int
 
 
 class PaymentNode:
@@ -13,6 +21,14 @@ class PaymentLedger:
         self.head: PaymentNode | None = None
         self.tail: PaymentNode | None = None
         self.count: int = 0
+
+        self.report_info: ReportData = {
+            "by_category": {},
+            "by_course": {},
+            "by_item": {},
+            "total_profit": 0,
+            "total_prods": 0,
+        }
 
     def insert_at(self, p: Payment, pos: int) -> bool:
         if pos < 0 or pos > self.count:
@@ -60,6 +76,19 @@ class PaymentLedger:
         return not (self.head and self.tail) or self.count == 0
 
     def push(self, p: Payment) -> bool:
+        cat, course = p.get_client_category(), p.get_client_course()
+        val: int = p.get_value()
+        prods: dict[int, int] = p.get_items()
+
+        self.report_info["by_category"] = self.report_info["by_category"].get(cat, 0) + val
+        self.report_info["by_course"] = self.report_info["by_course"].get(course, 0) + val
+
+        for pid, amount in prods.items():
+            self.report_info["by_item"][pid] = self.report_info["by_item"].get(item_id, 0) + amount
+
+        self.report_info["total_prods"] += sum(prods.values())
+        self.report_info["total_profit"] += val
+
         return self.insert_at(p, self.count)
 
     def print_admin(self) -> None:
@@ -104,6 +133,9 @@ class PaymentLedger:
         print(f"{'FATURAMENTO TOTAL:':>65} {total_final}")
         print(f"{'TOTAL DE VENDAS:':>65} {self.count}")
         print("=" * markers + "\n")
+
+    def print_report(self) -> None:
+        return
 
     def __repr__(self) -> str:
         if not self.head:
