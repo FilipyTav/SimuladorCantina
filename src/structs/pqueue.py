@@ -18,31 +18,32 @@ class PNode(object):
 # Doubly linked list - priority queue
 class PQueue:
     def __init__(self):
-        self.head: PNode | None = None
-        self.tail: PNode | None = None
-        self.count: int = 0
+        self.__head: PNode | None = None
+        self.__tail: PNode | None = None
+        self.__count: int = 0
 
-        self.ids: list[int] = []
+        # Avoid repetition
+        self.__ids: list[int] = []
 
     def enqueue(self, p: Product) -> bool:
         """Returns false if product.id already in the queue"""
-        if p.get_id() in self.ids:
+        if p.get_id() in self.__ids:
             return False
 
         new_dtexp: date = p.date_expire
 
         # First
-        if not (self.tail and self.head) or (new_dtexp <= self.head.data.get_dtexp()):  # type: ignore[reportOptionalMemberAccess]
+        if not (self.__tail and self.__head) or (new_dtexp <= self.__head.data.get_dtexp()):  # type: ignore[reportOptionalMemberAccess]
             self.insert_first(p)
             return True
 
         # Last
-        assert self.tail.data
-        if new_dtexp >= self.tail.data.get_dtexp():
+        assert self.__tail.data
+        if new_dtexp >= self.__tail.data.get_dtexp():
             self.insert_last(p)
             return True
 
-        current: PNode = self.head
+        current: PNode = self.__head
         while current and current.data.get_dtexp() <= new_dtexp:  # type: ignore[reportOptionalMemberAccess]
             assert current.next
             current = current.next
@@ -51,51 +52,51 @@ class PQueue:
         return True
 
     def dequeue(self) -> PNode | None:
-        if not self.head:
+        if not self.__head:
             print("No element to dequeue - list empty")
             return None
 
-        node: PNode = self.head
+        node: PNode = self.__head
 
-        self.head = self.head.next
+        self.__head = self.__head.next
 
-        if self.head:
-            self.head.prev = None
+        if self.__head:
+            self.__head.prev = None
         else:
-            self.tail = None
+            self.__tail = None
 
-        self.count -= 1
+        self.__count -= 1
         return node
 
     # pos: [0, self.count]
     def insert_at(self, product: Product, pos: int) -> bool:
-        if pos < 0 or pos > self.count:
-            print(f"Index out of range: {pos}, the list has {self.count} element(s)")
+        if pos < 0 or pos > self.__count:
+            print(f"Index out of range: {pos}, the list has {self.__count} element(s)")
             return False
 
         new_node: PNode = PNode(product)
 
         # Empty
         if self.is_empty():
-            self.head = self.tail = new_node
-            self.count += 1
-            self.ids.append(product.get_id())
+            self.__head = self.__tail = new_node
+            self.__count += 1
+            self.__ids.append(product.get_id())
             return True
 
         # new_node is now the head
         if pos == 0:
-            new_node.next = self.head
-            self.head.prev = new_node
+            new_node.next = self.__head
+            self.__head.prev = new_node
 
-            self.head = new_node
+            self.__head = new_node
         # new_node is now the tail
-        elif pos == self.count:
-            new_node.prev = self.tail
-            self.tail.next = new_node
+        elif pos == self.__count:
+            new_node.prev = self.__tail
+            self.__tail.next = new_node
 
-            self.tail = new_node
+            self.__tail = new_node
         else:
-            current: PNode | None = self.head
+            current: PNode | None = self.__head
 
             for _ in range(pos):
                 if not current:
@@ -113,12 +114,12 @@ class PQueue:
 
             current.prev = new_node
 
-        self.count += 1
-        self.ids.append(product.get_id())
+        self.__count += 1
+        self.__ids.append(product.get_id())
         return True
 
     def insert_before(self, p: Product, node: PNode) -> None:
-        if self.is_empty() or node == self.head:
+        if self.is_empty() or node == self.__head:
             self.insert_first(p)
             return
 
@@ -132,14 +133,14 @@ class PQueue:
 
         node.prev = new_node
 
-        self.count += 1
-        self.ids.append(p.get_id())
+        self.__count += 1
+        self.__ids.append(p.get_id())
 
     def insert_after(self, p: Product, node: PNode) -> None:
         if self.is_empty():
             self.insert_first(p)
             return
-        if node == self.tail:
+        if node == self.__tail:
             self.insert_last(p)
             return
 
@@ -153,17 +154,17 @@ class PQueue:
 
         node.next = new_node
 
-        self.count += 1
-        self.ids.append(p.get_id())
+        self.__count += 1
+        self.__ids.append(p.get_id())
 
     def insert_first(self, p: Product) -> bool:
         return self.insert_at(p, 0)
 
     def insert_last(self, p: Product) -> bool:
-        return self.insert_at(p, self.count)
+        return self.insert_at(p, self.__count)
 
     def is_empty(self) -> bool:
-        return not (self.head and self.tail) or self.count <= 0
+        return not (self.__head and self.__tail)
 
     def set_product_amount(self, pname: str, amount: int) -> bool:
         prod: Product | None = self.get_by_name(pname)
@@ -177,7 +178,7 @@ class PQueue:
         if self.is_empty():
             return
 
-        current: PNode = self.head
+        current: PNode = self.__head
         while current:
             assert current.data
             if current.data.get_name().lower() == pname.lower():
@@ -189,7 +190,7 @@ class PQueue:
             return []
 
         prods: list[Product] = []
-        current: PNode = self.head
+        current: PNode = self.__head
         while current:
             assert current.data
             if current.data.get_id() in ids:
@@ -204,7 +205,7 @@ class PQueue:
         if self.is_empty():
             return
 
-        current: PNode = self.head
+        current: PNode = self.__head
         while current:
             if not current.data:
                 break
@@ -230,7 +231,7 @@ class PQueue:
         if self.is_empty():
             return
 
-        current: PNode = self.head
+        current: PNode = self.__head
         while current:
             if not current.data:
                 break
@@ -253,16 +254,16 @@ class PQueue:
             current = current.next  # type: ignore[reportOptionalMemberAccess]
 
     def __str__(self) -> str:
-        if not self.head:
+        if not self.__head:
             return "List is empty."
 
         nodes = []
-        current = self.head
+        current = self.__head
         while current:
-            if current == self.head:
+            if current == self.__head:
                 nodes.append(f"[HEAD: {current.data}]")
-            elif current == self.tail:
-                nodes.append(f"[TAIL: {current.data}] - L: {self.count}")
+            elif current == self.__tail:
+                nodes.append(f"[TAIL: {current.data}] - L: {self.__count}")
             else:
                 nodes.append(str(current.data))
 
