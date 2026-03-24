@@ -33,7 +33,6 @@ if __name__ == "__main__":
 
     is_admin: bool = False
     is_running: bool = True
-    # TODO: make it a custom stack struct
     history: list[Screen] = [Screen.MAIN]
     client_info: userInfo | None = None
     while is_running and history:
