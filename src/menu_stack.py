@@ -41,3 +41,30 @@ class MenuStack:
     def peek(self) -> Screen | None:
         return self.__top.data if self.__top else None
 
+    def print_stack(self) -> None:
+        if self.is_empty():
+            print("\n[Vazio] Pilha de Menus sem telas.")
+            return
+
+        print("\n" + "—" * 30)
+        print(f"{'PILHA DE NAVEGAÇÃO':^30}")
+        print("—" * 30)
+
+        current = self.__top
+        index = 0
+
+        while current:
+            # Shows top
+            pointer: str = "--> " if index == 0 else "    "
+
+            screen_name = str(current.data)
+            print(f"{pointer}[{self.__count - index}] {screen_name}")
+
+            # Goes down
+            current = current.prev
+            index += 1
+
+        print("—" * 30)
+        print(f"{'BASE DA PILHA':^30}")
+        print("—" * 30 + "\n")
+

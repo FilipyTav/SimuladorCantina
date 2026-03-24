@@ -48,8 +48,7 @@ if __name__ == "__main__":
         new_sc: Screen = screen
 
         screen_clear()
-        # print(f"\t--------{screen}--------\t")
-        print(screen_history)
+        # screen_history.print_stack()
 
         match screen:
             case Screen.MAIN:
