@@ -14,7 +14,7 @@ def gen_product() -> Product:
     # global expiry_counter
     # expiry_counter += 10
 
-    d_buy = fake.date_between(start_date="-30d", end_date="today")
+    d_buy = fake.date_between(start_date="-30d", end_date="+30d")
     d_exp = d_buy + timedelta(days=fake.random_int(min=1, max=100))
 
     # d_buy = date.today()
@@ -45,6 +45,6 @@ def gen_payment() -> Payment:
         category=category,
         course=course,
         value=value_in_cents,
-        items={0: 2, 1: 2, 2: 2},
+        items={0: fake.random_int(1, 100), 1: fake.random_int(1, 100), 2: fake.random_int(1, 100)},
         # dttime=fake.date_time_between(start_date='-30d', end_date='now')
     )
