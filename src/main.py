@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     client_info: userInfo | None = None
     while is_running and not screen_history.is_empty():
-        screen: Screen | None = screen_history.pop()
+        screen: Screen | None = screen_history.peek()
 
         if not screen:
             break
@@ -111,7 +111,6 @@ if __name__ == "__main__":
             screen_history.clear()
 
         elif new_sc == Screen.BACK:
-            print("Should go back")
             screen_history.pop()
 
         else:
