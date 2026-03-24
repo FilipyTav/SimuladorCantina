@@ -8,6 +8,7 @@ from ui import (
     main_menu,
     menu_admin,
     menu_admin_buy,
+    menu_admin_see_payments,
     menu_admin_stock,
     menu_admin_update_stock,
     menu_client,
@@ -74,6 +75,9 @@ if __name__ == "__main__":
 
             case Screen.ADMIN_UPDATE_STOCK:
                 new_sc = menu_admin_update_stock(prods_available)
+
+            case Screen.ADMIN_SEE_PAYMENTS:
+                new_sc = menu_admin_see_payments(ledger)
             # ------------------------
 
             # Client

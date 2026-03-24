@@ -5,6 +5,7 @@ from payment import (
     process_sale,
     userInfo,
 )
+from payment_history import PaymentLedger
 from pqueue import PQueue
 from enum import Enum, auto
 import os
@@ -189,6 +190,22 @@ def menu_admin_stock(stock: PQueue) -> Screen:
                 return Screen.ADMIN_SEE_STOCK
 
     return Screen.BACK
+
+
+def menu_admin_see_payments(ledger: PaymentLedger) -> Screen:
+    while True:
+        screen_clear()
+        ledger.print_admin()
+        print(f"B. Voltar ao menu anterior")
+        choice: str = input("> ").strip().lower()
+        match choice:
+            case "b":
+                return Screen.BACK
+
+            case "q":
+                return Screen.EXIT
+
+        return Screen.BACK
 
 
 def modify_prod(p: Product) -> bool:

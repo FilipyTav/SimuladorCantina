@@ -58,6 +58,49 @@ class PaymentLedger:
     def push(self, p: Payment) -> bool:
         return self.insert_at(p, self.count)
 
+    def print_admin(self) -> None:
+        if not self.head:
+            print("[!] O livro razão está vazio. Nenhuma venda registrada. [!]\n")
+            return
+
+        markers: int = 85
+        print("\n" + "=" * markers)
+        print(
+            f"{'DATA/HORA':<18} | {'CLIENTE':<15} | {'CURSO':<10} | {'Categoria':<10} | {'TOTAL'}"
+        )
+        print("-" * markers)
+
+        current: Pnode = self.head  # type: ignore
+        total: int = 0
+
+        while current:
+            p: Payment = current.data
+
+            if p:
+                dt_fmt = p.get_dttime().strftime("%d/%m/%Y %H:%M")
+
+                valor_fmt = f"R$ {p.get_value() / 100:>8.2f}".replace(".", ",")
+
+                total_itens = sum(p.get_items().values())
+
+                print(
+                    f"{dt_fmt:<18} | {p.get_client_name()[:15]:<15} | {p.get_client_course()[:10]:<10} | {p.get_client_category():<10} | {valor_fmt}"
+                )
+
+                total += p.value
+
+            current = current.next
+
+        total_final = (
+            f"R$ {total / 100:,.2f}".replace(",", "X")
+            .replace(".", ",")
+            .replace("X", ".")
+        )
+        print("-" * markers)
+        print(f"{'FATURAMENTO TOTAL:':>65} {total_final}")
+        print(f"{'TOTAL DE VENDAS:':>65} {self.count}")
+        print("=" * markers + "\n")
+
     def __repr__(self) -> str:
         if not self.head:
             return "PaymentLedger: [Vazio]"

@@ -55,6 +55,30 @@ class Payment:
             f"\n" + "=" * (markers * 2 + len(title) + 2) + "\n",
         )
 
+    # Name
+    def get_client_name(self) -> str:
+        return self.name
+
+    # User type
+    def get_client_category(self) -> typeUser:
+        return self.category
+
+    # User course
+    def get_client_course(self) -> typeCourse:
+        return self.course
+
+    # Value
+    def get_value(self) -> int:
+        return self.value
+
+    # Items
+    def get_items(self) -> dict[int, int]:
+        return self.items
+
+    # Datetime
+    def get_dttime(self) -> datetime:
+        return self.dttime
+
     def __repr__(self) -> str:
         return f"[{self.name} - {self.value}]"
 
