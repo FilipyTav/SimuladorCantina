@@ -28,7 +28,7 @@ if __name__ == "__main__":
         prods_available.enqueue(prod)
 
     ledger: PaymentLedger = PaymentLedger()
-    for _ in range(5):
+    for _ in range(15):
         ledger.push(gen_payment())
 
     is_admin: bool = False

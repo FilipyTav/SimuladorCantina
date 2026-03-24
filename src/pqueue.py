@@ -24,7 +24,6 @@ class PQueue:
 
         self.ids: list[int] = []
 
-    # TODO: create is_empty method
     def enqueue(self, p: Product) -> bool:
         """Returns false if product.id already in the queue"""
         if p.get_id() in self.ids:

@@ -1,5 +1,7 @@
 from payment import Payment
 from typing import TypedDict
+import matplotlib.pyplot as plt
+
 
 class ReportData(TypedDict):
     by_category: dict[typeUser, int]
@@ -137,7 +139,6 @@ class PaymentLedger:
         print(f"{'TOTAL DE VENDAS:':>65} {self.count}")
         print("=" * markers + "\n")
 
-    # TODO: gen matplotlib graph
     def print_report(self) -> None:
         data: ReportData = self.report_info
         markers: int = 45
@@ -165,6 +166,7 @@ class PaymentLedger:
         self.display_sub_report("Quantidade por Item", data['by_item'], is_money=False)
         
         print("="*markers + "\n")
+        self.save_report_graph()
 
     def display_sub_report(self, title: str, mapping: dict, is_money: bool) -> None:
         if not mapping:
@@ -175,6 +177,40 @@ class PaymentLedger:
             val_fmt: str = f"{val/100:,.2f}".replace(".", ",")
             display_val = f"R${val_fmt}" if is_money else str(val)
             print(f"  • {str(key).upper():<20} : {display_val:>15}")
+
+    def save_report_graph(self, filename: str = "report.png") -> None:
+        data: ReportData = self.report_info
+        
+        # 3 subplots (1 row, 3 columns)
+        fig, axs = plt.subplots(1, 3, figsize=(18, 6))
+        fig.suptitle('Relatório Geral de Vendas', fontsize=20, fontweight='bold')
+
+        # Category
+        cats = list(data['by_category'].keys())
+        cat_vals = [v / 100 for v in data['by_category'].values()] # Convert to Reais
+        axs[0].bar(cats, cat_vals, color='skyblue')
+        axs[0].set_title('Renda por Categoria (R$)')
+        axs[0].set_ylabel('Valor em R$')
+
+        # Course
+        courses = list(data['by_course'].keys())
+        course_vals = [v / 100 for v in data['by_course'].values()]
+        axs[1].bar(courses, course_vals, color='salmon')
+        axs[1].set_title('Renda por Curso (R$)')
+
+        # Item
+        items = [f"ID {k}" for k in data['by_item'].keys()]
+        item_vals = list(data['by_item'].values())
+        axs[2].bar(items, item_vals, color='lightgreen')
+        axs[2].set_title('Quantidade por Item')
+        axs[2].set_ylabel('Unidades')
+
+        # Layout adjustment to prevent labels from overlapping
+        plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+        
+        plt.savefig(filename)
+        plt.close()
+        print(f"Gráfico salvo com sucesso como: {filename}")
 
     def __repr__(self) -> str:
         if not self.head:
