@@ -137,7 +137,7 @@ class PaymentLedger:
 
             current = current.next
 
-        total_final = (
+        total_final: str = (
             f"R$ {total / 100:,.2f}".replace(",", "X")
             .replace(".", ",")
             .replace("X", ".")
@@ -156,12 +156,18 @@ class PaymentLedger:
         print(f"{'RELATÓRIO GERAL':^45}")
         print("=" * markers)
 
-        profit_formatted: str = f"R${data['total_profit'] / 100:,.2f}".replace(".", ",")
+        profit_formatted: str = (
+            f"R${data['total_profit'] / 100:,.2f}".replace(",", "X")
+            .replace(".", ",")
+            .replace("X", ".")
+        )
 
         atv: float = 0
         if data["total_transactions"] > 0:
             atv = data["total_profit"] / data["total_transactions"]
-        atv_fmt: str = f"{atv/100:,.2f}".replace(".", ",")
+        atv_fmt: str = (
+            f"{atv/100:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        )
 
         print(f"    Renda Total:        {profit_formatted:>15}")
         print(f"    Unidades vendidas:  {data['total_prods']:>15}")
@@ -169,21 +175,25 @@ class PaymentLedger:
         print(f"    Renda média/venda:  {f'R${atv_fmt}':>15}")
         print("-" * markers)
 
-        self._display_sub_report(
+        self.__display_sub_report(
             "Renda por Categoria", data["by_category"], is_money=True
         )
-        self._display_sub_report("Renda por Curso", data["by_course"], is_money=True)
-        self._display_sub_report("Quantidade por Item", data["by_item"], is_money=False)
+        self.__display_sub_report("Renda por Curso", data["by_course"], is_money=True)
+        self.__display_sub_report(
+            "Quantidade por Item", data["by_item"], is_money=False
+        )
 
         print("=" * markers + "\n")
 
-    def _display_sub_report(self, title: str, mapping: dict, is_money: bool) -> None:
+    def __display_sub_report(self, title: str, mapping: dict, is_money: bool) -> None:
         if not mapping:
             return
 
         print(f"\n{title}:")
         for key, val in mapping.items():
-            val_fmt: str = f"{val/100:,.2f}".replace(".", ",")
+            val_fmt: str = (
+                f"{val/100:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            )
             display_val = f"R${val_fmt}" if is_money else str(val)
             print(f"  • {str(key).upper():<20} : {display_val:>15}")
 
