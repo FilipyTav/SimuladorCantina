@@ -112,7 +112,7 @@ def menu_admin() -> Screen:
     return Screen.MAIN
 
 
-def menu_admin_buy(prods_available: PQueue) -> Screen:
+def menu_admin_buy(prods_available: PQueue, stock: PQueue) -> Screen:
     print_prods_screen(prods_available, True)
 
     while True:
@@ -151,6 +151,9 @@ def menu_admin_buy(prods_available: PQueue) -> Screen:
             products: list[Product] = prods_available.get_by_ids(set(prods_dict.keys()))
             for p in products:
                 p.set_amount(p.get_amount() + prods_dict[p.get_id()])
+                if stock.enqueue(p):
+                    p.set_amount(prods_dict[p.get_id()])
+
                 print(
                     f"Item '{p.get_name()}' (ID: {p.get_id()}) -> +{prods_dict[p.get_id()]} unidade(s)"
                 )

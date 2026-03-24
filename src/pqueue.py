@@ -22,19 +22,26 @@ class PQueue:
         self.tail: PNode | None = None
         self.count: int = 0
 
-    def enqueue(self, p: Product) -> None:
+        self.ids: list[int] = []
+
+    # TODO: create is_empty method
+    def enqueue(self, p: Product) -> bool:
+        """Returns false if product.id already in the queue"""
+        if p.get_id() in self.ids:
+            return False
+
         new_dtexp: date = p.date_expire
 
         # First
         if not (self.tail and self.head) or (new_dtexp <= self.head.data.get_dtexp()):  # type: ignore[reportOptionalMemberAccess]
             self.insert_first(p)
-            return
+            return True
 
         # Last
         assert self.tail.data
         if new_dtexp >= self.tail.data.get_dtexp():
             self.insert_last(p)
-            return
+            return True
 
         current: PNode = self.head
         while current and current.data.get_dtexp() <= new_dtexp:  # type: ignore[reportOptionalMemberAccess]
@@ -42,6 +49,7 @@ class PQueue:
             current = current.next
 
         self.insert_before(p, current)
+        return True
 
     def dequeue(self) -> PNode | None:
         if not self.head:
@@ -72,6 +80,7 @@ class PQueue:
         if self.count == 0 or not (self.head and self.tail):
             self.head = self.tail = new_node
             self.count += 1
+            self.ids.append(product.get_id())
             return True
 
         # new_node is now the head
@@ -106,6 +115,7 @@ class PQueue:
             current.prev = new_node
 
         self.count += 1
+        self.ids.append(product.get_id())
         return True
 
     def insert_before(self, p: Product, node: PNode) -> None:
@@ -124,6 +134,7 @@ class PQueue:
         node.prev = new_node
 
         self.count += 1
+        self.ids.append(p.get_id())
 
     def insert_after(self, p: Product, node: PNode) -> None:
         if not (self.head and self.tail):
@@ -144,6 +155,7 @@ class PQueue:
         node.next = new_node
 
         self.count += 1
+        self.ids.append(p.get_id())
 
     def insert_first(self, p: Product) -> bool:
         return self.insert_at(p, 0)

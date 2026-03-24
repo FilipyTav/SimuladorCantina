@@ -49,16 +49,15 @@ if __name__ == "__main__":
             # Admin
             # ------------------------
             case Screen.ADMIN:
-                # TODO: add to stock
                 # TODO: show payment graph
                 # TODO: password verification
                 new_sc = menu_admin()
 
             case Screen.ADMIN_BUY:
-                new_sc = menu_admin_buy(prods_available)
+                new_sc = menu_admin_buy(prods_available, stock)
 
             case Screen.ADMIN_SEE_STOCK:
-                new_sc = menu_admin_stock(prods_available)
+                new_sc = menu_admin_stock(stock)
 
             case Screen.ADMIN_UPDATE_STOCK:
                 new_sc = menu_admin_update_stock(prods_available)
