@@ -2,6 +2,7 @@ from faker import Faker
 from datetime import timedelta
 import random
 
+from structs.pqueue import PQueue
 from utils.types import TypeCourse, TypeUser
 from structs.product import Product
 from structs.payment import (
@@ -39,7 +40,7 @@ def gen_product() -> Product:
     )
 
 
-def gen_payment() -> Payment:
+def gen_payment(stock: PQueue) -> Payment:
     category: TypeUser = random.choice(USERS_CATEGORIES)
     course: TypeCourse = random.choice(COURSES_AVAILABLE)
 
@@ -51,9 +52,9 @@ def gen_payment() -> Payment:
         course=course,
         value=value_in_cents,
         items={
-            0: fake.random_int(1, 100),
-            1: fake.random_int(1, 100),
-            2: fake.random_int(1, 100),
+            fake.random_int(0, stock.get_count()): fake.random_int(1, 100),
+            fake.random_int(0, stock.get_count()): fake.random_int(1, 100),
+            fake.random_int(0, stock.get_count()): fake.random_int(1, 100),
         },
         dttime=fake.date_time_between(start_date="-90d", end_date="+90d"),
     )

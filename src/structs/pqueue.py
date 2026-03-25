@@ -271,6 +271,9 @@ class PQueue:
 
             current = current.next  # type: ignore[reportOptionalMemberAccess]
 
+    def get_count(self) -> int:
+        return self.__count
+
     def __str__(self) -> str:
         if not self.__head:
             return "List is empty."

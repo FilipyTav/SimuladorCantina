@@ -103,7 +103,7 @@ def menu_admin(stock: PQueue, prods_avail: PQueue, ledger: PaymentLedger) -> tup
                 prods_avail.enqueue(prod)
             
             for _ in range(15):
-                ledger.push(gen_payment())
+                ledger.push(gen_payment(stock))
 
             return Screen.ADMIN, None
 

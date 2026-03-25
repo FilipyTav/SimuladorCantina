@@ -1,6 +1,6 @@
 from structs.menu import MenuManager
-from utils.types import UserInfo, Screen
 
+from utils.types import UserInfo, Screen
 from utils.gen_dummy_data import gen_payment, gen_product
 
 from structs.menu_stack import MenuStack
