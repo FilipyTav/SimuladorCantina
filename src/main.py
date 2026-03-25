@@ -1,4 +1,4 @@
-from utils.types import UserInfo
+from utils.types import UserInfo, Screen
 
 from utils.gen_dummy_data import gen_payment, gen_product
 
@@ -8,7 +8,6 @@ from structs.pqueue import PQueue
 from structs.product import Product
 
 from ui import (
-    Screen,
     main_menu,
     menu_admin,
     menu_admin_buy,

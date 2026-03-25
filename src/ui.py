@@ -1,5 +1,4 @@
 import os
-from enum import Enum, auto
 
 from structs.payment import (
     COURSES_AVAILABLE,
@@ -11,38 +10,12 @@ from structs.payment_history import PaymentLedger
 from structs.pqueue import PQueue
 from structs.product import Product
 
-from utils.types import UserInfo
+from utils.types import Screen, UserInfo
 from utils.input import get_valid_date, get_valid_index, get_valid_int, get_valid_price
 
 
 def screen_clear():
     os.system("cls" if os.name == "nt" else "clear")
-
-
-class Screen(Enum):
-    # Admin
-    # ------------------------
-    ADMIN = auto()
-    ADMIN_BUY = auto()
-    ADMIN_SEE_STOCK = auto()
-    ADMIN_UPDATE_STOCK = auto()
-    ADMIN_SEE_PAYMENTS = auto()
-    ADMIN_REPORTS = auto()
-    # ------------------------
-
-    # Client
-    # ------------------------
-    CLIENT = auto()
-    CLIENT_BUY = auto()
-    CLIENT_ASK_INFO = auto()
-    # ------------------------
-
-    # Helpers
-    # ------------------------
-    MAIN = auto()
-    BACK = auto()
-    EXIT = auto()
-    # ------------------------
 
 
 def print_main_options(back: bool = True, main: bool = True, stop: bool = True) -> None:
