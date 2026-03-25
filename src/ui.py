@@ -439,8 +439,14 @@ def menu_client_buy(
             s: list[str] = parts.split(" ")
             for item in s:
                 if "." not in item:
+                    raise ValueError(f"Formato incorreto em '{item}'.")
+
+                k, v = item.split(".")
+                id_prod, qtd_prod = int(k), int(v)
+
+                if qtd_prod <= 0:
                     raise ValueError(
-                        f"Item '{item}' está fora do formato ID.quantidade"
+                        f"Quantidade de '{id_prod}' deve ser maior que zero."
                     )
 
             prods: dict[int, int] = {}
@@ -457,11 +463,9 @@ def menu_client_buy(
                 payment.print_for_client()
 
             print()
-        except ValueError:
-            print(
-                "[!] Entrada inválida. Use apenas números no formato ID.quantidade separados por espaço. [!]"
-            )
-            print("[Exemplo correto: 1.5 2.10]\n")
+        except ValueError as e:
+            print(f"[!] Erro de validação: {e} [!]")
+            print("[Exemplo correto: 1.5 2.10 (ID.quantidade)]\n")
 
     return Screen.CLIENT_BUY
 
