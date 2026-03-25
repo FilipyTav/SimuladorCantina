@@ -42,7 +42,11 @@ class MenuManager:
             # Admin
             # ------------------------
             case Screen.ADMIN:
-                return menu_admin(self.__stock, self.__prods_available, self.__ledger)
+                screen, structs = menu_admin(self.__stock, self.__prods_available, self.__ledger)
+                if structs:
+                    self.__stock, self.__prods_available, self.__ledger = structs
+
+                return screen
 
             case Screen.ADMIN_BUY:
                 return menu_admin_buy(self.__prods_available, self.__stock)

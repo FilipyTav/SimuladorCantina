@@ -11,6 +11,7 @@ from structs.pqueue import PQueue
 from structs.product import Product
 
 from utils.gen_dummy_data import gen_payment, gen_product
+from utils.save_data import StructsSaved, load_structs, save_structs
 from utils.types import Screen, UserInfo
 from utils.input import get_valid_date, get_valid_index, get_valid_int, get_valid_price
 
@@ -56,7 +57,7 @@ def main_menu() -> Screen:
 
 # Admin
 # ------------------------------------------------
-def menu_admin(stock: PQueue, prods_avail: PQueue, ledger: PaymentLedger) -> Screen:
+def menu_admin(stock: PQueue, prods_avail: PQueue, ledger: PaymentLedger) -> tuple[Screen, StructsSaved | None]:
     print("\n" + "=" * 40)
     print("--- PAINEL ADMINISTRADOR ---")
     print("=" * 40)
@@ -70,28 +71,30 @@ def menu_admin(stock: PQueue, prods_avail: PQueue, ledger: PaymentLedger) -> Scr
 
         f"4. Gerar produtos\n"
         f"5. Gerar pagamentos\n"
+        f"6. Salvar dados\n"
+        f"7. Carregar dados\n"
     )
     print_main_options(back=True, main=False, stop=True)
     choice: str = input("> ").strip().lower()
 
     match choice:
         case "q":
-            return Screen.EXIT
+            return Screen.EXIT, None
 
         case "b":
-            return Screen.BACK
+            return Screen.BACK, None
 
         case "0":
-            return Screen.ADMIN_SEE_STOCK
+            return Screen.ADMIN_SEE_STOCK, None
 
         case "1":
-            return Screen.ADMIN_BUY
+            return Screen.ADMIN_BUY, None
 
         case "2":
-            return Screen.ADMIN_SEE_PAYMENTS
+            return Screen.ADMIN_SEE_PAYMENTS, None
 
         case "3":
-            return Screen.ADMIN_REPORTS
+            return Screen.ADMIN_REPORTS, None
 
         case "4":
             for i in range(5):
@@ -100,16 +103,30 @@ def menu_admin(stock: PQueue, prods_avail: PQueue, ledger: PaymentLedger) -> Scr
                     stock.enqueue(prod)
                 prods_avail.enqueue(prod)
 
-            return Screen.ADMIN
+            return Screen.ADMIN, None
 
         case "5":
             for _ in range(15):
                 ledger.push(gen_payment())
 
-            return Screen.ADMIN
+            return Screen.ADMIN, None
+
+        case "6":
+            if save_structs((stock, prods_avail, ledger)):
+                print("Dados salvos")
+
+            return Screen.ADMIN, None
+
+        case "7":
+            structs: StructsSaved | None = load_structs()
+            if structs:
+                print("Dados carregados")
+                return Screen.ADMIN, structs
+
+            return Screen.ADMIN, None
 
         case _:
-            return Screen.BACK
+            return Screen.BACK, None
 
     return Screen.MAIN
 
