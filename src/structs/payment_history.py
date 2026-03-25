@@ -113,7 +113,7 @@ class PaymentLedger:
         markers: int = 85
         print("\n" + "=" * markers)
         print(
-            f"{'DATA/HORA':<18} | {'CLIENTE':<15} | {'CURSO':<10} | {'Categoria':<10} | {'TOTAL'}"
+            f"{'DATA/HORA':<18} | {'CLIENTE':<20} | {'CURSO':<10} | {'Categoria':<10} | {'TOTAL'}"
         )
         print("-" * markers)
 
@@ -131,7 +131,7 @@ class PaymentLedger:
                 total_itens: int = sum(p.get_items().values())
 
                 print(
-                    f"{dt_fmt:<18} | {p.get_client_name()[:15]:<15} | {p.get_client_course()[:10]:<10} | {p.get_client_category():<10} | {valor_fmt}"
+                    f"{dt_fmt:<18} | {p.get_client_name()[:20]:<20} | {p.get_client_course()[:10]:<10} | {p.get_client_category():<10} | {valor_fmt}"
                 )
 
                 total += p.get_value()
@@ -144,8 +144,8 @@ class PaymentLedger:
             .replace("X", ".")
         )
         print("-" * markers)
-        print(f"{'FATURAMENTO TOTAL:':>65} {total_final}")
-        print(f"{'TOTAL DE VENDAS:':>65} {self.__count}")
+        print(f"{'FATURAMENTO TOTAL:':>70} {total_final}")
+        print(f"{'TOTAL DE VENDAS:':>70} {self.__count}")
         print("=" * markers + "\n")
 
     def print_report(self) -> None:

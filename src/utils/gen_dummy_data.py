@@ -58,7 +58,7 @@ fruits: DynamicProvider = DynamicProvider(
     ],
 )
 
-fake: Faker = Faker()
+fake: Faker = Faker("pt_BR")
 
 fake.add_provider(fruits)
 
