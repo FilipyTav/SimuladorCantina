@@ -2,7 +2,20 @@ from structs.menu_stack import MenuStack
 from structs.payment_history import PaymentLedger
 from structs.pqueue import PQueue
 
-from ui import (main_menu, menu_admin, menu_admin_buy, menu_admin_see_payments, menu_admin_see_reports, menu_admin_stock, menu_admin_update_stock, menu_client, menu_client_buy, menu_client_get_info, screen_clear)
+from ui import (
+    main_menu,
+    menu_admin,
+    menu_admin_buy,
+    menu_admin_see_payments,
+    menu_admin_see_reports,
+    menu_admin_stock,
+    menu_admin_update_stock,
+    menu_client,
+    menu_client_buy,
+    menu_client_get_info,
+    screen_clear,
+)
+
 from utils.types import Screen, UserInfo
 
 
@@ -18,7 +31,6 @@ class MenuManager:
 
         self.__is_running: bool = True
         self.__screen_history.push(Screen.MAIN)
-
 
     def run(self):
         screen: Screen | None = None
@@ -38,11 +50,13 @@ class MenuManager:
         match screen:
             case Screen.MAIN:
                 return main_menu()
-            
+
             # Admin
             # ------------------------
             case Screen.ADMIN:
-                screen, structs = menu_admin(self.__stock, self.__prods_available, self.__ledger)
+                screen, structs = menu_admin(
+                    self.__stock, self.__prods_available, self.__ledger
+                )
                 if structs:
                     self.__stock, self.__prods_available, self.__ledger = structs
 
@@ -64,7 +78,6 @@ class MenuManager:
                 return menu_admin_see_reports(self.__ledger)
             # ------------------------
 
-
             # Client
             # ------------------------
             case Screen.CLIENT:
@@ -79,7 +92,9 @@ class MenuManager:
 
             case Screen.CLIENT_BUY:
                 if self._client_info:
-                    return menu_client_buy(self.__stock, self.__ledger, self._client_info)
+                    return menu_client_buy(
+                        self.__stock, self.__ledger, self._client_info
+                    )
                 return Screen.CLIENT_ASK_INFO
 
             case _:
@@ -87,8 +102,7 @@ class MenuManager:
                 return Screen.EXIT
             # ------------------------
 
-
-    def _navigate(self, current_sc: Screen, new_sc: Screen):
+    def _navigate(self, current_sc: Screen, new_sc: Screen) -> None:
         if new_sc == current_sc:
             return
 
@@ -106,3 +120,4 @@ class MenuManager:
 
         else:
             self.__screen_history.push(new_sc)
+

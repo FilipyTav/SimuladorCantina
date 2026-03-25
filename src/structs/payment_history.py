@@ -2,6 +2,7 @@ from typing import TypedDict
 import matplotlib.pyplot as plt
 
 from structs.payment import Payment
+
 from utils.types import TypeUser, TypeCourse
 
 
