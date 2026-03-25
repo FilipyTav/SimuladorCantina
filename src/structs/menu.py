@@ -11,23 +11,24 @@ from utils.types import Screen, UserInfo
 
 class MenuManager:
     def __init__(self, stock: PQueue, prods_available: PQueue, ledger: PaymentLedger):
-        self.stock: PQueue = stock
-        self.prods_available: PQueue = prods_available
-        self.ledger: PaymentLedger = ledger
+        self.__stock: PQueue = stock
+        self.__prods_available: PQueue = prods_available
+        self.__ledger: PaymentLedger = ledger
 
-        self.screen_history: MenuStack = MenuStack()
-        self.client_info: UserInfo | None = None
+        # TODO: encapsulate this
+        self.__screen_history: MenuStack = MenuStack()
+        self._client_info: UserInfo | None = None
 
-        self.is_running: bool = True
-        self.screen_history.push(Screen.MAIN)
+        self.__is_running: bool = True
+        self.__screen_history.push(Screen.MAIN)
 
 
     def run(self):
         screen: Screen | None = None
         new_sc: Screen = Screen.MAIN
 
-        while self.is_running and not self.screen_history.is_empty():
-            screen = self.screen_history.peek()
+        while self.__is_running and not self.__screen_history.is_empty():
+            screen = self.__screen_history.peek()
             if not screen:
                 break
 
@@ -47,37 +48,37 @@ class MenuManager:
                 return menu_admin()
 
             case Screen.ADMIN_BUY:
-                return menu_admin_buy(self.prods_available, self.stock)
+                return menu_admin_buy(self.__prods_available, self.__stock)
 
             case Screen.ADMIN_SEE_STOCK:
-                return menu_admin_stock(self.stock)
+                return menu_admin_stock(self.__stock)
 
             case Screen.ADMIN_UPDATE_STOCK:
-                return menu_admin_update_stock(self.prods_available)
+                return menu_admin_update_stock(self.__prods_available)
 
             case Screen.ADMIN_SEE_PAYMENTS:
-                return menu_admin_see_payments(self.ledger)
+                return menu_admin_see_payments(self.__ledger)
 
             case Screen.ADMIN_REPORTS:
-                return menu_admin_see_reports(self.ledger)
+                return menu_admin_see_reports(self.__ledger)
             # ------------------------
 
 
             # Client
             # ------------------------
             case Screen.CLIENT:
-                if not self.client_info:
+                if not self._client_info:
                     return Screen.CLIENT_ASK_INFO
-                return menu_client(self.client_info[0])
+                return menu_client(self._client_info[0])
 
             case Screen.CLIENT_ASK_INFO:
                 new_sc, info = menu_client_get_info()
-                self.client_info = info
+                self._client_info = info
                 return new_sc
 
             case Screen.CLIENT_BUY:
-                if self.client_info:
-                    return menu_client_buy(self.stock, self.ledger, self.client_info)
+                if self._client_info:
+                    return menu_client_buy(self.__stock, self.__ledger, self._client_info)
                 return Screen.CLIENT_ASK_INFO
 
             case _:
@@ -91,16 +92,16 @@ class MenuManager:
             return
 
         if new_sc == Screen.MAIN:
-            self.screen_history.clear()
-            self.screen_history.push(Screen.MAIN)
+            self.__screen_history.clear()
+            self.__screen_history.push(Screen.MAIN)
 
         elif new_sc == Screen.EXIT:
             print("\nEncerrando o sistema...")
-            self.is_running = False
-            self.screen_history.clear()
+            self.__is_running = False
+            self.__screen_history.clear()
 
         elif new_sc == Screen.BACK:
-            self.screen_history.pop()
+            self.__screen_history.pop()
 
         else:
-            self.screen_history.push(new_sc)
+            self.__screen_history.push(new_sc)
