@@ -10,6 +10,7 @@ from structs.payment_history import PaymentLedger
 from structs.pqueue import PQueue
 from structs.product import Product
 
+from utils.gen_dummy_data import gen_payment, gen_product
 from utils.types import Screen, UserInfo
 from utils.input import get_valid_date, get_valid_index, get_valid_int, get_valid_price
 
@@ -55,7 +56,7 @@ def main_menu() -> Screen:
 
 # Admin
 # ------------------------------------------------
-def menu_admin() -> Screen:
+def menu_admin(stock: PQueue, prods_avail: PQueue, ledger: PaymentLedger) -> Screen:
     print("\n" + "=" * 40)
     print("--- PAINEL ADMINISTRADOR ---")
     print("=" * 40)
@@ -65,7 +66,10 @@ def menu_admin() -> Screen:
         f"0. Ver estoque\n"
         f"1. Adicionar ao estoque\n"
         f"2. Mostrar vendas\n"
-        f"3. Relatório de vendas\n"
+        f"3. Relatório de vendas\n\n"
+
+        f"4. Gerar produtos\n"
+        f"5. Gerar pagamentos\n"
     )
     print_main_options(back=True, main=False, stop=True)
     choice: str = input("> ").strip().lower()
@@ -88,6 +92,21 @@ def menu_admin() -> Screen:
 
         case "3":
             return Screen.ADMIN_REPORTS
+
+        case "4":
+            for i in range(5):
+                prod: Product = gen_product()
+                if i < 3:
+                    stock.enqueue(prod)
+                prods_avail.enqueue(prod)
+
+            return Screen.ADMIN
+
+        case "5":
+            for _ in range(15):
+                ledger.push(gen_payment())
+
+            return Screen.ADMIN
 
         case _:
             return Screen.BACK

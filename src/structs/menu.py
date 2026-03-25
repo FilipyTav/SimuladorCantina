@@ -1,11 +1,8 @@
 from structs.menu_stack import MenuStack
-
 from structs.payment_history import PaymentLedger
-
 from structs.pqueue import PQueue
 
 from ui import (main_menu, menu_admin, menu_admin_buy, menu_admin_see_payments, menu_admin_see_reports, menu_admin_stock, menu_admin_update_stock, menu_client, menu_client_buy, menu_client_get_info, screen_clear)
-
 from utils.types import Screen, UserInfo
 
 
@@ -45,7 +42,7 @@ class MenuManager:
             # Admin
             # ------------------------
             case Screen.ADMIN:
-                return menu_admin()
+                return menu_admin(self.__stock, self.__prods_available, self.__ledger)
 
             case Screen.ADMIN_BUY:
                 return menu_admin_buy(self.__prods_available, self.__stock)
