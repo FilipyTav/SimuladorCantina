@@ -1,9 +1,13 @@
 from faker import Faker
-from datetime import timedelta
+from faker.providers import DynamicProvider
+from faker.exceptions import UniquenessException
+
+from datetime import timedelta, date
 import random
 
-from structs.pqueue import PQueue
 from utils.types import TypeCourse, TypeUser
+
+from structs.pqueue import PQueue
 from structs.product import Product
 from structs.payment import (
     COURSES_AVAILABLE,
@@ -11,7 +15,52 @@ from structs.payment import (
     Payment,
 )
 
-fake = Faker()
+fruits: DynamicProvider = DynamicProvider(
+    provider_name="fruits",
+    elements=[
+        # Frutas Inteiras
+        "Banana Nanica",
+        "Maçã Gala",
+        "Pera",
+        "Goiaba",
+        "Tangerina",
+        # Copos de Fruta
+        "Salada de Frutas (Copo 200ml)",
+        "Melancia em Cubos",
+        "Mamão Papaia fatiado",
+        "Abacaxi com Raspas de Limão",
+        "Uva Sem Semente (Potinho)",
+        # Saudáveis
+        "Açaí no Copo",
+        "Morango com Leite Condensado",
+        "Coco Gelado (Pedaços)",
+        # --- Frutas Tropicais e de Época ---
+        "Manga Palmer Fatiada",
+        "Caqui (Unidade)",
+        "Ameixa Vermelha",
+        "Jabuticaba (Saquinho)",
+        "Pitaya Rosa em Cubos",
+        "Caju Inteiro",
+        # --- Combinações com Iogurte/Cereais ---
+        "Iogurte com Pedaços de Morango",
+        "Banana com Granola e Mel",
+        "Maçã com Canela (Pote)",
+        "Abacate com Açúcar e Limão",
+        # --- Frutas Secas ---
+        "Mix de Frutas Secas (Damasco e Uva Passa)",
+        "Chips de Banana",
+        "Tâmara Recheada com Castanha",
+        "Maçã Desidratada",
+        # --- Suco/Vitamina ---
+        "Polpa de Acerola Fresca",
+        "Maracujá no Corte",
+        "Limão para Suco",
+    ],
+)
+
+fake: Faker = Faker()
+
+fake.add_provider(fruits)
 
 # expiry_counter = 0
 
@@ -20,18 +69,20 @@ def gen_product() -> Product:
     # global expiry_counter
     # expiry_counter += 10
 
-    d_buy = fake.date_between(start_date="-30d", end_date="+30d")
-    d_exp = d_buy + timedelta(days=fake.random_int(min=1, max=100))
+    d_buy: date = fake.date_between(start_date="-30d", end_date="+30d")
+    d_exp: date = d_buy + timedelta(days=fake.random_int(min=1, max=100))
 
     # d_buy = date.today()
     # d_exp = d_buy + timedelta(days=expiry_counter)
+    n_name: str = "Kiwi"
+    try:
+        n_name = fake.unique.fruits()
+    except UniquenessException:
+        fake.unique.clear()
+        n_name = fake.unique.fruits()
 
     return Product(
-        name=(
-            fake.ecommerce_name()
-            if hasattr(fake, "ecommerce_name")
-            else fake.word().capitalize()
-        ),
+        name=n_name,
         price_buy=fake.random_int(min=5, max=50) * 100,
         price_sell=fake.random_int(min=60, max=150) * 100,
         date_buy=d_buy,
