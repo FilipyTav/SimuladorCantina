@@ -60,7 +60,6 @@ if __name__ == "__main__":
             # Admin
             # ------------------------
             case Screen.ADMIN:
-                # TODO: show payment graph
                 # TODO: password verification
                 new_sc = menu_admin()
 

@@ -255,7 +255,7 @@ def modify_prod(p: Product) -> bool:
         options = list(attributes.keys())
         menu_opcoes = " | ".join([f"{i}. {op}" for i, op in enumerate(options)])
 
-        print(f"\nModificando: {p.name} (ID: {p.id})")
+        print(f"\nModificando: {p.get_name()} (ID: {p.get_id()})")
         print(f"{menu_opcoes} | C. Cancelar | S. Próximo/Sair")
 
         op: str = input("Selecione o campo: ").strip().lower()

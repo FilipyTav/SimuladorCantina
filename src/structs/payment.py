@@ -105,7 +105,7 @@ def process_sale(
     amount: int = 0
     # Check stock
     for prod in prods:
-        amount = p[prod.id]
+        amount = p[prod.get_id()]
         total += prod.get_sell_price() * amount
         if amount > prod.get_amount():
             print(
@@ -125,7 +125,7 @@ def process_sale(
 
     # Update stock
     for prod in prods:
-        amount = p[prod.id]
+        amount = p[prod.get_id()]
         prod.set_amount(prod.get_amount() - amount)
 
     name, category, course = client_info

@@ -34,7 +34,7 @@ class PQueue:
         if self.__exists(p.get_id()):
             return False
 
-        new_dtexp: date = p.date_expire
+        new_dtexp: date = p.get_dtexp()
 
         # First
         if not (self.__tail and self.__head) or (new_dtexp <= self.__head.data.get_dtexp()):  # type: ignore[reportOptionalMemberAccess]
@@ -226,13 +226,15 @@ class PQueue:
 
             prod: Product = current.data
             # Convert cents to a decimal currency format
-            display_price: str = f"R${prod.price_sell / 100:.2f}".replace(".", ",")
+            display_price: str = f"R${prod.get_sell_price() / 100:.2f}".replace(
+                ".", ","
+            )
 
             # Format the date (e.g., Jan 01, 2024)
-            expiry_str: str = prod.date_expire.strftime("%d/%m/%Y")
+            expiry_str: str = prod.get_dtexp().strftime("%d/%m/%Y")
 
             print(
-                f"-------- {prod.name.upper()} --------\n"
+                f"-------- {prod.get_name().upper()} --------\n"
                 f"Preço:      {display_price}\n"
                 f"Validade:   {expiry_str}\n"
                 f"Quantidade: ∞ unidades\n"
@@ -252,13 +254,15 @@ class PQueue:
 
             prod: Product = current.data
             # Convert cents to a decimal currency format
-            display_price: str = f"R${prod.price_sell / 100:.2f}".replace(".", ",")
+            display_price: str = f"R${prod.get_sell_price() / 100:.2f}".replace(
+                ".", ","
+            )
 
             # Format the date (e.g., Jan 01, 2024)
-            expiry_str: str = prod.date_expire.strftime("%d/%m/%Y")
+            expiry_str: str = prod.get_dtexp().strftime("%d/%m/%Y")
 
             print(
-                f"-------- {prod.name.upper()} --------\n"
+                f"-------- {prod.get_name().upper()} --------\n"
                 f"Preço:      {display_price}\n"
                 f"Validade:   {expiry_str}\n"
                 f"Quantidade: {prod.get_amount()} unidade(s)\n"
