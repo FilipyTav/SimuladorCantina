@@ -55,5 +55,5 @@ def gen_payment() -> Payment:
             1: fake.random_int(1, 100),
             2: fake.random_int(1, 100),
         },
-        # dttime=fake.date_time_between(start_date='-30d', end_date='now')
+        dttime=fake.date_time_between(start_date="-90d", end_date="+90d"),
     )
