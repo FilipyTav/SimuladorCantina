@@ -206,9 +206,9 @@ class PQueue:
         prods: list[Product] = []
         current: PNode | None = self.__head
         while current:
-            assert current.data
-            if current.data.get_id() in ids:
-                prods.append(current.data)
+            data: Product | None = current.data
+            if data and data.get_id() in ids:
+                prods.append(data)
 
                 if len(prods) == len(ids):
                     break

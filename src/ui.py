@@ -149,34 +149,50 @@ def menu_admin_buy(prods_available: PQueue, stock: PQueue) -> Screen:
             if not parts:
                 raise ValueError("Entrada vazia.")
 
+            prods_dict: dict[int, int] = {}
             s: list[str] = parts.split(" ")
+
+            # Type and format
             for item in s:
                 if "." not in item:
+                    raise ValueError(f"Formato incorreto em '{item}'.")
+
+                k, v = item.split(".")
+                id_prod, qtd_prod = int(k), int(v)
+
+                if qtd_prod <= 0:
                     raise ValueError(
-                        f"Item '{item}' está fora do formato ID.quantidade"
+                        f"Quantidade de '{id_prod}' deve ser maior que zero."
                     )
 
-            prods_dict: dict[int, int] = {}
-            for p in s:
-                k, v = p.split(".")
-                prods_dict[int(k)] = int(v)
+                prods_dict[id_prod] = qtd_prod
 
-            products: list[Product] = prods_available.get_by_ids(set(prods_dict.keys()))
+            request_ids: set[int] = set(prods_dict.keys())
+            products: list[Product] = prods_available.get_by_ids(request_ids)
+
+            # ID not found
+            if len(products) != len(request_ids):
+                found_ids: set[int] = {p.get_id() for p in products}
+                missing: set[int] = request_ids - found_ids
+                raise ValueError(f"ID(s) não encontrado(s): {missing}")
+
             for p in products:
-                p.set_amount(p.get_amount() + prods_dict[p.get_id()])
+                current_id: int = p.get_id()
+                qtd_to_add: int = prods_dict[current_id]
+
+                p.set_amount(p.get_amount() + qtd_to_add)
                 if stock.enqueue(p):
-                    p.set_amount(prods_dict[p.get_id()])
+                    p.set_amount(qtd_to_add)
 
                 print(
                     f"Item '{p.get_name()}' (ID: {p.get_id()}) -> +{prods_dict[p.get_id()]} unidade(s)"
                 )
 
             print()
-        except ValueError:
-            print(
-                "[!] Entrada inválida. Use apenas números no formato ID.quantidade separados por espaço. [!]"
-            )
-            print("[Exemplo correto: 1.5 2.10]\n")
+
+        except ValueError as e:
+            print(f"[!] Erro de validação: {e} [!]")
+            print("[Exemplo correto: 1.5 2.10 (ID.quantidade)]\n")
 
     return Screen.ADMIN_BUY
 
