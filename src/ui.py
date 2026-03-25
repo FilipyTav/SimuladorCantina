@@ -360,8 +360,7 @@ def menu_client(client_name: str) -> Screen:
     print("=" * 40)
 
     print("Como prosseguir?\n")
-    print("0. Voltar")
-    print("1. Ver estoque\n")
+    print("0. Ver estoque\n")
     print_main_options(back=True, main=False, stop=True)
 
     choice: str = input("\nEscolha uma opção: ")
@@ -373,9 +372,6 @@ def menu_client(client_name: str) -> Screen:
             return Screen.BACK
 
         case "0":
-            return Screen.BACK
-
-        case "1":
             return Screen.CLIENT_BUY
 
         case _:
