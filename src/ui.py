@@ -69,10 +69,9 @@ def menu_admin(stock: PQueue, prods_avail: PQueue, ledger: PaymentLedger) -> tup
         f"2. Mostrar vendas\n"
         f"3. Relatório de vendas\n\n"
 
-        f"4. Gerar produtos\n"
-        f"5. Gerar pagamentos\n"
-        f"6. Salvar dados\n"
-        f"7. Carregar dados\n"
+        f"4. Gerar dados\n"
+        f"5. Salvar dados\n"
+        f"6. Carregar dados\n"
     )
     print_main_options(back=True, main=False, stop=True)
     choice: str = input("> ").strip().lower()
@@ -102,22 +101,19 @@ def menu_admin(stock: PQueue, prods_avail: PQueue, ledger: PaymentLedger) -> tup
                 if i < 3:
                     stock.enqueue(prod)
                 prods_avail.enqueue(prod)
-
-            return Screen.ADMIN, None
-
-        case "5":
+            
             for _ in range(15):
                 ledger.push(gen_payment())
 
             return Screen.ADMIN, None
 
-        case "6":
+        case "5":
             if save_structs((stock, prods_avail, ledger)):
                 print("Dados salvos")
 
             return Screen.ADMIN, None
 
-        case "7":
+        case "6":
             structs: StructsSaved | None = load_structs()
             if structs:
                 print("Dados carregados")
