@@ -103,9 +103,9 @@ def gen_payment(stock: PQueue) -> Payment:
         course=course,
         value=value_in_cents,
         items={
-            fake.random_int(0, stock.get_count()): fake.random_int(1, 100),
-            fake.random_int(0, stock.get_count()): fake.random_int(1, 100),
-            fake.random_int(0, stock.get_count()): fake.random_int(1, 100),
+            stock.get_random_id(): fake.random_int(1, 100),
+            stock.get_random_id(): fake.random_int(1, 100),
+            stock.get_random_id(): fake.random_int(1, 100),
         },
         dttime=fake.date_time_between(start_date="-90d", end_date="+90d"),
     )

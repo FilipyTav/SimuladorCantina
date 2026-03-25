@@ -1,3 +1,4 @@
+import random
 from structs.product import Product
 from datetime import date
 
@@ -273,6 +274,24 @@ class PQueue:
 
     def get_count(self) -> int:
         return self.__count
+
+    def get_random_id(self) -> int:
+        if self.is_empty():
+            return -1
+
+        assert self.__head
+        current: PNode = self.__head
+
+        rand_index = random.randint(0, self.__count - 1)
+        curr_index: int = 0
+        while current and current.data:
+            if curr_index == rand_index:
+                return current.data.get_id()
+
+            current = current.next  # type: ignore
+            curr_index += 1
+
+        return -1
 
     def __str__(self) -> str:
         if not self.__head:
